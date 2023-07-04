@@ -2,6 +2,9 @@ import "./globals.css";
 
 import { ClerkProvider } from "@clerk/nextjs";
 import { Inter } from "next/font/google";
+import { Nav } from "@/components/Nav";
+import { Toaster } from "@/components/ui/toaster";
+import { TrpcProvider } from "@/utils/TrcpProvider";
 import { esES } from "@clerk/localizations";
 
 const inter = Inter({ subsets: ["latin"] });
@@ -17,10 +20,16 @@ export default function RootLayout({
   children: React.ReactNode;
 }) {
   return (
-    <ClerkProvider localization={esES}>
-      <html lang="es">
-        <body className={inter.className}>{children}</body>
-      </html>
-    </ClerkProvider>
+    <TrpcProvider>
+      <ClerkProvider localization={esES}>
+        <html lang="es">
+          <body className={inter.className}>
+            <Nav />
+            {children}
+            <Toaster />
+          </body>
+        </html>
+      </ClerkProvider>
+    </TrpcProvider>
   );
 }

@@ -1,0 +1,36 @@
+{
+  "version": "5",
+  "dialect": "mysql",
+  "id": "50bba70d-4366-4193-b0f0-62ffcd08f53b",
+  "prevId": "00000000-0000-0000-0000-000000000000",
+  "tables": {
+    "HealthEntities": {
+      "name": "HealthEntities",
+      "columns": {
+        "id": {
+          "name": "id",
+          "type": "varchar(36)",
+          "primaryKey": true,
+          "notNull": true,
+          "autoincrement": false
+        },
+        "name": {
+          "name": "name",
+          "type": "varchar(100)",
+          "primaryKey": false,
+          "notNull": true,
+          "autoincrement": false
+        }
+      },
+      "indexes": {},
+      "foreignKeys": {},
+      "compositePrimaryKeys": {}
+    }
+  },
+  "schemas": {},
+  "_meta": {
+    "schemas": {},
+    "tables": {},
+    "columns": {}
+  }
+}
