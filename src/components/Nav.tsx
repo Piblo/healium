@@ -12,16 +12,12 @@ import {
 import { UserButton, useUser } from "@clerk/nextjs";
 
 import Link from "next/link";
-import { trpc } from "@/utils/trpc";
 
 export const Nav = () => {
   const { user, isSignedIn } = useUser();
-  const hello = trpc.hello.useQuery({
-    text: "what?",
-  });
 
   return (
-    <NavigationMenu className="px-4 h-16 max-w-none border-b border-solid border-slate-300 flex items-center">
+    <NavigationMenu className="px-4 h-16 border-b border-solid border-slate-300 flex items-center">
       <div className="flex flex-1">
         <NavigationMenuList>
           <NavigationMenuItem>
