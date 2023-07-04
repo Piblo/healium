@@ -2,19 +2,42 @@
 
 import {
   NavigationMenu,
+  NavigationMenuContent,
   NavigationMenuItem,
+  NavigationMenuLink,
   NavigationMenuList,
-} from "@radix-ui/react-navigation-menu";
-import { SignInButton, UserButton, auth, useAuth } from "@clerk/nextjs";
+  NavigationMenuTrigger,
+  navigationMenuTriggerStyle,
+} from "./ui/navigation-menu";
+import { UserButton, useUser } from "@clerk/nextjs";
 
 import Link from "next/link";
+import { trpc } from "@/utils/trpc";
 
 export const Nav = () => {
-  const { isSignedIn } = useAuth();
+  const { user, isSignedIn } = useUser();
+  const hello = trpc.hello.useQuery({
+    text: "what?",
+  });
 
   return (
-    <NavigationMenu className="w-full px-4 h-16 border-b border-solid border-slate-300 flex items-center">
-      <div className="flex-1">HEALIUM</div>
+    <NavigationMenu className="px-4 h-16 max-w-none border-b border-solid border-slate-300 flex items-center">
+      <div className="flex flex-1">
+        <NavigationMenuList>
+          <NavigationMenuItem>
+            <NavigationMenuTrigger>Menu</NavigationMenuTrigger>
+            {!!user?.publicMetadata.healiumAdmin && (
+              <NavigationMenuContent>
+                <Link href="/health-entity/create" legacyBehavior passHref>
+                  <NavigationMenuLink className={navigationMenuTriggerStyle()}>
+                    Crear entidad sanitaria
+                  </NavigationMenuLink>
+                </Link>
+              </NavigationMenuContent>
+            )}
+          </NavigationMenuItem>
+        </NavigationMenuList>
+      </div>
       <NavigationMenuList>
         {!isSignedIn && (
           <NavigationMenuItem>
