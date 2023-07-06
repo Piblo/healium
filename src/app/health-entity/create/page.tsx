@@ -27,6 +27,7 @@ export default function CreateHealthEntity() {
     },
     resolver: zodResolver(schema),
   });
+
   const { toast } = useToast();
 
   async function onSubmit(values: FormValues) {

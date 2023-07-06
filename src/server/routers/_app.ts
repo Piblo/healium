@@ -1,21 +1,34 @@
-import { procedure, router } from "../trpc";
+import {
+  NewHealthEntity,
+  healthEntities,
+  healthEntityUsers,
+} from "../database/schema";
+import { protectedProcedure, router } from "../trpc";
 
-import { createHealthEntity } from "../database/healthEntityRepository";
 import { ulid } from "ulid";
 import { z } from "zod";
 
 export const appRouter = router({
   healthEntity: router({
-    create: procedure
+    create: protectedProcedure
       .input(
         z.object({
           name: z.string(),
         })
       )
-      .mutation(async (opts) => {
-        await createHealthEntity({
-          id: ulid(),
-          name: opts.input.name,
+      .mutation(async ({ ctx, input }) => {
+        await ctx.db.transaction(async (tx) => {
+          const healthEntity: NewHealthEntity = {
+            id: ulid(),
+            name: input.name,
+          };
+
+          await tx.insert(healthEntities).values(healthEntity);
+
+          await tx.insert(healthEntityUsers).values({
+            healthEntityId: healthEntity.id,
+            userId: ctx.auth.userId,
+          });
         });
       }),
   }),
