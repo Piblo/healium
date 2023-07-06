@@ -5,6 +5,7 @@ import {
 } from "../database/schema";
 import { protectedProcedure, router } from "../trpc";
 
+import { eq } from "drizzle-orm";
 import { ulid } from "ulid";
 import { z } from "zod";
 
@@ -31,6 +32,23 @@ export const appRouter = router({
           });
         });
       }),
+  }),
+  user: router({
+    healthEntities: protectedProcedure.query(async ({ ctx }) => {
+      const h = await ctx.db
+        .select({
+          id: healthEntities.id,
+          name: healthEntities.name,
+        })
+        .from(healthEntities)
+        .innerJoin(
+          healthEntityUsers,
+          eq(healthEntities.id, healthEntityUsers.healthEntityId)
+        )
+        .where(eq(healthEntityUsers.userId, ctx.auth.userId));
+
+      return h;
+    }),
   }),
 });
 
