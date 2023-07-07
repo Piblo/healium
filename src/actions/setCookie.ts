@@ -2,6 +2,6 @@
 
 import { cookies } from "next/headers";
 
-export async function setCookie() {
-  cookies().set("test", "test");
+export async function setCookie(healthEntityId: string) {
+  cookies().set("healium.healthEntity", healthEntityId);
 }

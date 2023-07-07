@@ -2,6 +2,7 @@
 
 import { Card, CardHeader } from "@/components/ui/card";
 
+import Link from "next/link";
 import { trpc } from "@/utils/trpc";
 
 export default function ChooseHealthEntity() {
@@ -13,11 +14,11 @@ export default function ChooseHealthEntity() {
       <ul>
         {data?.map((x) => (
           <li key={x.id}>
-            <button>
+            <Link href={`/health-entity/${x.id}/manage`}>
               <Card>
                 <CardHeader>{x.name}</CardHeader>
               </Card>
-            </button>
+            </Link>
           </li>
         ))}
       </ul>

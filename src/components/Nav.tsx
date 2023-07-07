@@ -12,9 +12,13 @@ import {
 import { UserButton, useUser } from "@clerk/nextjs";
 
 import Link from "next/link";
+import { trpc } from "@/utils/trpc";
 
 export const Nav = () => {
   const { user, isSignedIn } = useUser();
+  const { data } = trpc.user.healthEntities.useQuery();
+
+  console.log(data);
 
   return (
     <NavigationMenu className="px-4 h-16 max-w-none border-b border-solid border-slate-300 flex items-center">
@@ -22,15 +26,22 @@ export const Nav = () => {
         <NavigationMenuList>
           <NavigationMenuItem>
             <NavigationMenuTrigger>Menu</NavigationMenuTrigger>
-            {!!user?.publicMetadata.healiumAdmin && (
-              <NavigationMenuContent>
+            <NavigationMenuContent className="flex flex-col">
+              {!!user?.publicMetadata.healiumAdmin && (
                 <Link href="/health-entity/create" legacyBehavior passHref>
                   <NavigationMenuLink className={navigationMenuTriggerStyle()}>
                     Crear entidad sanitaria
                   </NavigationMenuLink>
                 </Link>
-              </NavigationMenuContent>
-            )}
+              )}
+              {data?.length && data.length > 1 ? (
+                <Link href="/health-entity/choose" legacyBehavior passHref>
+                  <NavigationMenuLink className={navigationMenuTriggerStyle()}>
+                    Elegir entidad sanitaria
+                  </NavigationMenuLink>
+                </Link>
+              ) : null}
+            </NavigationMenuContent>
           </NavigationMenuItem>
         </NavigationMenuList>
       </div>

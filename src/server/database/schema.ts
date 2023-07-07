@@ -1,4 +1,4 @@
-import { mysqlTable, primaryKey, varchar } from "drizzle-orm/mysql-core";
+import { date, mysqlTable, primaryKey, varchar } from "drizzle-orm/mysql-core";
 
 import { InferModel } from "drizzle-orm";
 
@@ -23,6 +23,7 @@ export const healthEntityUsers = mysqlTable(
     healthEntityId: varchar("health_entity_id", {
       length: 36,
     }).notNull(),
+    createdDate: date("created_date").notNull(),
   },
   (table) => ({
     pk: primaryKey(table.healthEntityId, table.userId),

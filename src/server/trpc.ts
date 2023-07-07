@@ -6,7 +6,6 @@ import superjson from "superjson";
 import { db } from "./database/connection";
 
 export const createContext = (opts: CreateNextContextOptions) => {
-  console.log("createContext");
   const auth = getAuth(opts.req);
   return {
     auth,
@@ -25,7 +24,6 @@ export const router = t.router;
 export const procedure = t.procedure;
 
 const isAuthenticated = t.middleware(({ next, ctx }) => {
-  console.log("isAuthenticated middleware");
   if (!ctx.auth.userId) {
     throw new TRPCError({ code: "UNAUTHORIZED" });
   }

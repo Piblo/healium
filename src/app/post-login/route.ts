@@ -8,7 +8,11 @@ export async function GET(req: NextRequest) {
 
   const result = await caller.user.healthEntities();
 
-  if (result.length) {
+  if (result.length === 1) {
+    return redirect(`/health-entity/${result[0].id}/manage`);
+  }
+
+  if (result.length > 1) {
     return redirect("/health-entity/choose");
   }
 

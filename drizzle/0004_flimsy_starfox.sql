@@ -1,0 +1,1 @@
+ALTER TABLE `users_to_health_entities` ADD `created_date` date NOT NULL;
