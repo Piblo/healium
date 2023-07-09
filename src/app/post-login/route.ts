@@ -1,5 +1,6 @@
 import { NextRequest } from "next/server";
 import { appRouter } from "@/server/routers/_app";
+import { cookies } from "next/headers";
 import { createContext } from "@/server/trpc";
 import { redirect } from "next/navigation";
 
@@ -9,7 +10,8 @@ export async function GET(req: NextRequest) {
   const result = await caller.user.healthEntities();
 
   if (result.length === 1) {
-    return redirect(`/health-entity/${result[0].id}/manage`);
+    cookies().set("healthEntityId", result[0].id);
+    return redirect(`/health-entity/manage`);
   }
 
   if (result.length > 1) {

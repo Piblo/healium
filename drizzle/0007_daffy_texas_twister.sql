@@ -1,0 +1,1 @@
+ALTER TABLE `users_to_health_entities` ADD `invite_status` enum('pending','accepted') DEFAULT 'accepted' NOT NULL;

@@ -11,18 +11,14 @@ import {
 
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
+import { getCookie } from "cookies-next";
 import { trpc } from "@/utils/trpc";
 import { useState } from "react";
 
-type Props = {
-  params: {
-    id: string;
-  };
-};
-
-export default function Members({ params }: Props) {
+export default function Members() {
+  const healthEntityId = getCookie("healthEntityId") as string;
   const { data } = trpc.healthEntity.members.useQuery({
-    healthEntityId: params.id,
+    healthEntityId: healthEntityId,
   });
 
   const { mutate } = trpc.healthEntity.inviteMember.useMutation();
@@ -41,6 +37,7 @@ export default function Members({ params }: Props) {
         onClick={() =>
           mutate({
             emailAddress: emailAddress!,
+            healthEntityId: healthEntityId,
           })
         }
       >

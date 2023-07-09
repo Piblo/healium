@@ -1,13 +1,13 @@
 import {
-  NewHealthEntity,
-  healthEntities,
-  healthEntityUsers,
-} from "../database/schema";
+  createHealthEntity,
+  getHealthEntity,
+  getHealthEntityMembers,
+} from "../database/healthEntityRepository";
+import { healthEntities, healthEntityUsers } from "../database/schema";
 import { protectedProcedure, router } from "../trpc";
 
 import { clerkClient } from "@clerk/nextjs";
 import { eq } from "drizzle-orm";
-import { ulid } from "ulid";
 import { z } from "zod";
 
 export const appRouter = router({
@@ -19,19 +19,18 @@ export const appRouter = router({
         })
       )
       .mutation(async ({ ctx, input }) => {
-        await ctx.db.transaction(async (tx) => {
-          const healthEntity: NewHealthEntity = {
-            id: ulid(),
+        const user = await clerkClient.users.getUser(ctx.auth.userId);
+
+        return await createHealthEntity({
+          healthEntity: {
             name: input.name,
-          };
-
-          await tx.insert(healthEntities).values(healthEntity);
-
-          await tx.insert(healthEntityUsers).values({
-            healthEntityId: healthEntity.id,
-            userId: ctx.auth.userId,
-            createdDate: new Date(),
-          });
+          },
+          user: {
+            email: user.emailAddresses.find(
+              (x) => x.id === user.primaryEmailAddressId
+            )?.emailAddress!,
+            id: ctx.auth.userId,
+          },
         });
       }),
     get: protectedProcedure
@@ -41,16 +40,7 @@ export const appRouter = router({
         })
       )
       .query(async ({ ctx, input }) => {
-        const result = await ctx.db
-          .select()
-          .from(healthEntities)
-          .where(eq(healthEntities.id, input.healthEntityId));
-
-        if (!result.length) {
-          return null;
-        }
-
-        return result[0];
+        return await getHealthEntity(input.healthEntityId);
       }),
     members: protectedProcedure
       .input(
@@ -59,19 +49,10 @@ export const appRouter = router({
         })
       )
       .query(async ({ ctx, input }) => {
-        const members = await ctx.db
-          .select({
-            userId: healthEntityUsers.userId,
-          })
-          .from(healthEntityUsers)
-          .innerJoin(
-            healthEntities,
-            eq(healthEntities.id, healthEntityUsers.healthEntityId)
-          )
-          .where(eq(healthEntities.id, input.healthEntityId));
+        const members = await getHealthEntityMembers(input.healthEntityId);
 
         const users = await clerkClient.users.getUserList({
-          userId: members.map((x) => x.userId),
+          emailAddress: members.map((x) => x.email),
         });
 
         return users.map((user) => ({
@@ -84,12 +65,25 @@ export const appRouter = router({
       .input(
         z.object({
           emailAddress: z.string(),
+          healthEntityId: z.string(),
         })
       )
-      .mutation(async ({ input }) => {
-        await clerkClient.invitations.createInvitation({
+      .mutation(async ({ input, ctx }) => {
+        const data = await clerkClient.invitations.createInvitation({
           emailAddress: input.emailAddress,
-          // redirectUrl: ''
+          redirectUrl: `${getBaseUrl()}/health-entity/${
+            input.healthEntityId
+          }/join`,
+          publicMetadata: {
+            healthEntityId: input.healthEntityId,
+          },
+        });
+
+        await ctx.db.insert(healthEntityUsers).values({
+          email: input.emailAddress,
+          healthEntityId: input.healthEntityId,
+          invitedDate: new Date(),
+          status: "pending",
         });
       }),
   }),
@@ -114,3 +108,20 @@ export const appRouter = router({
 
 // export type definition of API
 export type AppRouter = typeof appRouter;
+
+export function getBaseUrl() {
+  if (typeof window !== "undefined")
+    // browser should use relative path
+    return "";
+
+  if (process.env.VERCEL_URL)
+    // reference for vercel.com
+    return `https://${process.env.VERCEL_URL}`;
+
+  if (process.env.RENDER_INTERNAL_HOSTNAME)
+    // reference for render.com
+    return `http://${process.env.RENDER_INTERNAL_HOSTNAME}:${process.env.PORT}`;
+
+  // assume localhost
+  return `http://localhost:${process.env.PORT ?? 3000}`;
+}

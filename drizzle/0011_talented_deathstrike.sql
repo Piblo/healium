@@ -1,0 +1,1 @@
+ALTER TABLE `users_to_health_entities` MODIFY COLUMN `status` enum('pending','accepted') NOT NULL;

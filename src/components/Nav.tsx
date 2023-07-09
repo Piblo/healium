@@ -12,13 +12,13 @@ import {
 import { UserButton, useUser } from "@clerk/nextjs";
 
 import Link from "next/link";
+import { getCookie } from "cookies-next";
 import { trpc } from "@/utils/trpc";
 
 export const Nav = () => {
   const { user, isSignedIn } = useUser();
   const { data } = trpc.user.healthEntities.useQuery();
-
-  console.log(data);
+  const selectedHealthEntityId = getCookie("healthEntityId") as string;
 
   return (
     <NavigationMenu className="px-4 h-16 max-w-none border-b border-solid border-slate-300 flex items-center">
@@ -31,6 +31,13 @@ export const Nav = () => {
                 <Link href="/health-entity/create" legacyBehavior passHref>
                   <NavigationMenuLink className={navigationMenuTriggerStyle()}>
                     Crear entidad sanitaria
+                  </NavigationMenuLink>
+                </Link>
+              )}
+              {selectedHealthEntityId && (
+                <Link href="/health-entity/manage" legacyBehavior passHref>
+                  <NavigationMenuLink className={navigationMenuTriggerStyle()}>
+                    Administrar entidad sanitaria
                   </NavigationMenuLink>
                 </Link>
               )}

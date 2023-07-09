@@ -1,4 +1,11 @@
-import { date, mysqlTable, primaryKey, varchar } from "drizzle-orm/mysql-core";
+import {
+  date,
+  datetime,
+  mysqlEnum,
+  mysqlTable,
+  primaryKey,
+  varchar,
+} from "drizzle-orm/mysql-core";
 
 import { InferModel } from "drizzle-orm";
 
@@ -17,15 +24,22 @@ export type NewHealthEntity = InferModel<typeof healthEntities, "insert">; // in
 export const healthEntityUsers = mysqlTable(
   "users_to_health_entities",
   {
-    userId: varchar("user_id", {
+    email: varchar("email", {
       length: 256,
     }).notNull(),
     healthEntityId: varchar("health_entity_id", {
       length: 36,
     }).notNull(),
-    createdDate: date("created_date").notNull(),
+    invitedDate: datetime("invited_date").notNull(),
+    acceptedDate: datetime("accepted_date"),
+    status: mysqlEnum("status", ["pending", "accepted"]).notNull(),
+    userId: varchar("user_id", {
+      length: 256,
+    }),
   },
   (table) => ({
-    pk: primaryKey(table.healthEntityId, table.userId),
+    pk: primaryKey(table.healthEntityId, table.email),
   })
 );
+
+export type HealthEntityUser = InferModel<typeof healthEntityUsers>;
