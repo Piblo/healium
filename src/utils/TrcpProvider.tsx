@@ -8,7 +8,16 @@ import { getFetch, httpBatchLink, loggerLink } from "@trpc/client";
 import SuperJSON from "superjson";
 
 export const TrpcProvider = ({ children }: PropsWithChildren) => {
-  const [queryClient] = useState(() => new QueryClient());
+  const [queryClient] = useState(
+    () =>
+      new QueryClient({
+        defaultOptions: {
+          queries: {
+            refetchOnWindowFocus: false,
+          },
+        },
+      })
+  );
   const [trpcClient] = useState(() =>
     trpc.createClient({
       transformer: SuperJSON,

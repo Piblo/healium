@@ -1,13 +1,15 @@
+import { and, eq } from "drizzle-orm";
 import {
   createHealthEntity,
   getHealthEntity,
   getHealthEntityMembers,
+  removeMember,
 } from "../database/healthEntityRepository";
 import { healthEntities, healthEntityUsers } from "../database/schema";
 import { protectedProcedure, router } from "../trpc";
 
 import { clerkClient } from "@clerk/nextjs";
-import { eq } from "drizzle-orm";
+import { getPrimaryEmailAddress } from "../utils/user";
 import { z } from "zod";
 
 export const appRouter = router({
@@ -55,11 +57,20 @@ export const appRouter = router({
           emailAddress: members.map((x) => x.email),
         });
 
-        return users.map((user) => ({
-          firstName: user.firstName,
-          lastName: user.lastName,
-          email: user.emailAddresses[0].emailAddress,
-        }));
+        return members.map((member) => {
+          const user = users.find((x) =>
+            x.emailAddresses.map((x) => x.emailAddress).includes(member.email)
+          );
+
+          return {
+            firstName: user?.firstName,
+            lastName: user?.lastName,
+            email: member.email,
+            status: member.status,
+            invitedDate: member.invitedDate,
+            userId: member.userId,
+          };
+        });
       }),
     inviteMember: protectedProcedure
       .input(
@@ -74,9 +85,6 @@ export const appRouter = router({
           redirectUrl: `${getBaseUrl()}/health-entity/${
             input.healthEntityId
           }/join`,
-          publicMetadata: {
-            healthEntityId: input.healthEntityId,
-          },
         });
 
         await ctx.db.insert(healthEntityUsers).values({
@@ -86,10 +94,44 @@ export const appRouter = router({
           status: "pending",
         });
       }),
+    acceptInvitation: protectedProcedure
+      .input(
+        z.object({
+          healthEntityId: z.string(),
+        })
+      )
+      .mutation(async ({ ctx, input }) => {
+        const user = await clerkClient.users.getUser(ctx.auth.userId);
+        const emailAddress = getPrimaryEmailAddress(user);
+
+        await ctx.db
+          .update(healthEntityUsers)
+          .set({
+            status: "accepted",
+            acceptedDate: new Date(),
+            userId: ctx.auth.userId,
+          })
+          .where(
+            and(
+              eq(healthEntityUsers.healthEntityId, input.healthEntityId),
+              eq(healthEntityUsers.email, emailAddress?.emailAddress!)
+            )
+          );
+      }),
+    removeMember: protectedProcedure
+      .input(
+        z.object({
+          healthEntityId: z.string(),
+          userId: z.string(),
+        })
+      )
+      .mutation(async ({ input }) => {
+        await removeMember(input);
+      }),
   }),
   user: router({
     healthEntities: protectedProcedure.query(async ({ ctx }) => {
-      const h = await ctx.db
+      return await ctx.db
         .select({
           id: healthEntities.id,
           name: healthEntities.name,
@@ -100,8 +142,6 @@ export const appRouter = router({
           eq(healthEntities.id, healthEntityUsers.healthEntityId)
         )
         .where(eq(healthEntityUsers.userId, ctx.auth.userId));
-
-      return h;
     }),
   }),
 });

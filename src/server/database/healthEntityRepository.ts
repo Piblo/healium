@@ -4,9 +4,9 @@ import {
   healthEntities,
   healthEntityUsers,
 } from "./schema";
+import { and, eq } from "drizzle-orm";
 
 import { db } from "./connection";
-import { eq } from "drizzle-orm";
 import { ulid } from "ulid";
 
 type CreateHealthEntityRequest = {
@@ -69,4 +69,20 @@ export async function getHealthEntityMembers(
     .where(eq(healthEntities.id, healthEntityId));
 
   return result.map((x) => x.users_to_health_entities);
+}
+
+type RemoveMemberRequest = {
+  healthEntityId: string;
+  userId: string;
+};
+
+export async function removeMember(request: RemoveMemberRequest) {
+  await db
+    .delete(healthEntityUsers)
+    .where(
+      and(
+        eq(healthEntityUsers.healthEntityId, request.healthEntityId),
+        eq(healthEntityUsers.userId, request.userId)
+      )
+    );
 }
