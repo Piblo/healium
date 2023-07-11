@@ -4,18 +4,12 @@ import { Card, CardHeader } from "@/components/ui/card";
 
 import Link from "next/link";
 import { Users2 } from "lucide-react";
-import { getCookie } from "cookies-next";
+import { getSelectedHealthEntityId } from "@/utils/healthEntity";
 import { trpc } from "@/utils/trpc";
-
-type Props = {
-  params: {
-    id: string;
-  };
-};
 
 export default function ManageHealthEntity() {
   const { data } = trpc.healthEntity.get.useQuery({
-    healthEntityId: getCookie("healthEntityId") as string,
+    healthEntityId: getSelectedHealthEntityId()!,
   });
 
   return (

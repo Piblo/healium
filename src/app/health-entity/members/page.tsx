@@ -21,56 +21,36 @@ import {
 import { Button } from "@/components/ui/button";
 import { DialogClose } from "@radix-ui/react-dialog";
 import { Input } from "@/components/ui/input";
-import { getCookie } from "cookies-next";
+import { InviteMember } from "@/components/InviteMember";
+import { getSelectedHealthEntityId } from "@/utils/healthEntity";
 import { trpc } from "@/utils/trpc";
 import { useState } from "react";
 
 export default function Members() {
-  const healthEntityId = getCookie("healthEntityId") as string;
+  const healthEntityId = getSelectedHealthEntityId();
   const { data, refetch } = trpc.healthEntity.members.useQuery({
-    healthEntityId: healthEntityId,
+    healthEntityId: healthEntityId!,
   });
 
-  const { mutate } = trpc.healthEntity.inviteMember.useMutation();
-  const { mutate: removeMember, isLoading: removeMemberLoading } =
-    trpc.healthEntity.removeMember.useMutation({
-      onSuccess: () => {
-        setDeleteModalOpen(false);
-        refetch();
-      },
-    });
-  const [emailAddress, setEmailAddress] = useState<string>();
+  const { mutate: removeMember } = trpc.healthEntity.removeMember.useMutation({
+    onSuccess: () => {
+      setDeleteModalOpen(false);
+      refetch();
+    },
+  });
+
   const [deleteModalOpen, setDeleteModalOpen] = useState<boolean>(false);
 
   return (
     <div className="container py-4">
       <h1 className="text-2xl mb-4">Miembros</h1>
-      <div className="flex gap-4">
-        <Input
-          value={emailAddress}
-          onChange={(e) => setEmailAddress(e.target.value)}
-          placeholder="nombre.apellido@email.com"
-          className="max-w-md"
-        />
-        <Button
-          className="mb-4"
-          onClick={() =>
-            mutate({
-              emailAddress: emailAddress!,
-              healthEntityId: healthEntityId,
-            })
-          }
-          loading
-        >
-          Invitar miembro
-        </Button>
-      </div>
-      <Table>
+
+      <Table className="mb-4">
         <TableHeader>
           <TableRow>
             <TableHead>Nombre</TableHead>
             <TableHead>Email</TableHead>
-            <TableHead>Estado</TableHead>
+            <TableHead>Estado de invitación</TableHead>
             <TableHead>Fecha de invitación</TableHead>
           </TableRow>
         </TableHeader>
@@ -125,6 +105,7 @@ export default function Members() {
           ))}
         </TableBody>
       </Table>
+      <InviteMember />
     </div>
   );
 }

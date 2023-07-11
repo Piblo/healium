@@ -2,9 +2,7 @@
 
 import { Card, CardHeader } from "@/components/ui/card";
 
-import { Button } from "@/components/ui/button";
-import Link from "next/link";
-import { setCookie } from "cookies-next";
+import { setSelectedHealthEntityId } from "@/utils/healthEntity";
 import { trpc } from "@/utils/trpc";
 import { useRouter } from "next/navigation";
 
@@ -18,10 +16,9 @@ export default function ChooseHealthEntity() {
       <ul>
         {data?.map((x) => (
           <li key={x.id}>
-            {/* <Link href={`/health-entity/${x.id}/manage`}> */}
             <button
               onClick={() => {
-                setCookie("healthEntityId", x.id);
+                setSelectedHealthEntityId(x.id);
                 router.push("/health-entity/manage");
               }}
             >
@@ -29,7 +26,6 @@ export default function ChooseHealthEntity() {
                 <CardHeader>{x.name}</CardHeader>
               </Card>
             </button>
-            {/* </Link> */}
           </li>
         ))}
       </ul>

@@ -1,0 +1,99 @@
+import {
+  Dialog,
+  DialogContent,
+  DialogDescription,
+  DialogFooter,
+  DialogHeader,
+  DialogTitle,
+  DialogTrigger,
+} from "./ui/dialog";
+import {
+  Form,
+  FormControl,
+  FormField,
+  FormItem,
+  FormLabel,
+  FormMessage,
+} from "./ui/form";
+
+import { Button } from "./ui/button";
+import { DialogClose } from "@radix-ui/react-dialog";
+import { Input } from "./ui/input";
+import { getSelectedHealthEntityId } from "@/utils/healthEntity";
+import { trpc } from "@/utils/trpc";
+import { useForm } from "react-hook-form";
+import { useState } from "react";
+import { useToast } from "./ui/use-toast";
+import { z } from "zod";
+import { zodResolver } from "@hookform/resolvers/zod";
+
+export const InviteMember = () => {
+  const [dialogOpen, setDialogOpen] = useState<boolean>(false);
+  const mutation = trpc.healthEntity.inviteMember.useMutation();
+  const form = useForm<FormValues>({
+    resolver: zodResolver(schema),
+  });
+
+  const { toast } = useToast();
+
+  async function onSubmit(values: FormValues) {
+    await mutation.mutateAsync({
+      healthEntityId: getSelectedHealthEntityId()!,
+      emailAddress: values.email,
+    });
+
+    toast({
+      title: "Invitación enviada correctamente",
+    });
+
+    setDialogOpen(false);
+  }
+
+  return (
+    <Dialog open={dialogOpen} onOpenChange={setDialogOpen}>
+      <DialogTrigger>
+        <Button>Invitar miembro</Button>
+      </DialogTrigger>
+      <DialogContent>
+        <DialogTitle>Invitar miembro</DialogTitle>
+        <DialogDescription>
+          Introduce una dirección de correo para invitar a un nuevo miembro
+        </DialogDescription>
+        <Form {...form}>
+          <form onSubmit={form.handleSubmit(onSubmit)} className="">
+            <FormField
+              control={form.control}
+              name="email"
+              render={({ field }) => (
+                <FormItem className="mb-4">
+                  <FormLabel>Email</FormLabel>
+                  <FormControl>
+                    <Input placeholder="nombre.apellido@email.com" {...field} />
+                  </FormControl>
+                  <FormMessage />
+                </FormItem>
+              )}
+            />
+            <DialogFooter>
+              <Button type="submit" loading={mutation.isLoading}>
+                Enviar invitación
+              </Button>
+              <DialogClose>
+                <Button variant="outline">Cancelar</Button>
+              </DialogClose>
+            </DialogFooter>
+          </form>
+        </Form>
+      </DialogContent>
+    </Dialog>
+  );
+};
+
+const schema = z.object({
+  email: z
+    .string()
+    .min(1, "Introduce un email")
+    .email("Introduce un email válido"),
+});
+
+type FormValues = z.infer<typeof schema>;

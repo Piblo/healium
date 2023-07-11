@@ -12,13 +12,13 @@ import {
 import { UserButton, useUser } from "@clerk/nextjs";
 
 import Link from "next/link";
-import { getCookie } from "cookies-next";
+import { getSelectedHealthEntityId } from "@/utils/healthEntity";
 import { trpc } from "@/utils/trpc";
 
 export const Nav = () => {
   const { user, isSignedIn } = useUser();
   const { data } = trpc.user.healthEntities.useQuery();
-  const selectedHealthEntityId = getCookie("healthEntityId") as string;
+  const selectedHealthEntityId = getSelectedHealthEntityId();
 
   return (
     <NavigationMenu className="px-4 h-16 max-w-none border-b border-solid border-slate-300 flex items-center">
