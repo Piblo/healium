@@ -3,6 +3,7 @@ import "./globals.css";
 import { ClerkProvider } from "@clerk/nextjs";
 import { Inter } from "next/font/google";
 import { Nav } from "@/components/Nav";
+import { ThemeProvider } from "@/components/ThemeProvider";
 import { Toaster } from "@/components/ui/toaster";
 import { TrpcProvider } from "@/utils/TrcpProvider";
 import { esES } from "@clerk/localizations";
@@ -24,9 +25,11 @@ export default function RootLayout({
       <ClerkProvider localization={esES}>
         <html lang="es">
           <body className={inter.className}>
-            <Nav />
-            {children}
-            <Toaster />
+            <ThemeProvider attribute="class" defaultTheme="system" enableSystem>
+              <Nav />
+              {children}
+              <Toaster />
+            </ThemeProvider>
           </body>
         </html>
       </ClerkProvider>

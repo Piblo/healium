@@ -20,14 +20,13 @@ import {
 
 import { Button } from "@/components/ui/button";
 import { DialogClose } from "@radix-ui/react-dialog";
-import { Input } from "@/components/ui/input";
 import { InviteMember } from "@/components/InviteMember";
 import { getSelectedHealthEntityId } from "@/utils/healthEntity";
 import { trpc } from "@/utils/trpc";
 import { useState } from "react";
 
 export default function Members() {
-  const healthEntityId = getSelectedHealthEntityId();
+  const healthEntityId = getSelectedHealthEntityId()!;
   const { data, refetch } = trpc.healthEntity.members.useQuery({
     healthEntityId: healthEntityId!,
   });
@@ -68,7 +67,7 @@ export default function Members() {
                   open={deleteModalOpen}
                   onOpenChange={setDeleteModalOpen}
                 >
-                  <DialogTrigger>
+                  <DialogTrigger asChild>
                     <Button variant="outline">Eliminar miembro</Button>
                   </DialogTrigger>
                   <DialogContent>
@@ -94,7 +93,7 @@ export default function Members() {
                       >
                         Eliminar miembro
                       </Button>
-                      <DialogClose>
+                      <DialogClose asChild>
                         <Button variant="outline">Cancelar</Button>
                       </DialogClose>
                     </DialogFooter>

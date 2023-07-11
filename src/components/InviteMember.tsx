@@ -51,7 +51,7 @@ export const InviteMember = () => {
 
   return (
     <Dialog open={dialogOpen} onOpenChange={setDialogOpen}>
-      <DialogTrigger>
+      <DialogTrigger asChild>
         <Button>Invitar miembro</Button>
       </DialogTrigger>
       <DialogContent>
@@ -78,7 +78,7 @@ export const InviteMember = () => {
               <Button type="submit" loading={mutation.isLoading}>
                 Enviar invitación
               </Button>
-              <DialogClose>
+              <DialogClose asChild>
                 <Button variant="outline">Cancelar</Button>
               </DialogClose>
             </DialogFooter>
