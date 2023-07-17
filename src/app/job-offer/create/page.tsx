@@ -5,6 +5,7 @@ import {
   FormControl,
   FormField,
   FormItem,
+  FormLabel,
   FormMessage,
 } from "@/components/ui/form";
 import {
@@ -17,8 +18,9 @@ import {
 
 import { BackButton } from "@/components/BackButton";
 import { Button } from "@/components/ui/button";
+import { DateRange } from "react-day-picker";
 import { Input } from "@/components/ui/input";
-import { Label } from "@/components/ui/label";
+import { RangeDatePicker } from "@/components/RangeDatepicker";
 import RegionSearch from "@/components/RegionSearch";
 import { Textarea } from "@/components/ui/textarea";
 import { useForm } from "react-hook-form";
@@ -30,7 +32,18 @@ export default function CreateJobOffer() {
     resolver: zodResolver(schema),
   });
 
-  function onSubmit() {}
+  const contractType = form.watch("contract.type");
+
+  function handleDateChanged(dateRange: DateRange | undefined) {
+    form.setValue("contract.startDate", dateRange?.from, {
+      shouldValidate: true,
+    });
+    form.setValue("contract.endDate", dateRange?.to, { shouldValidate: true });
+  }
+
+  function onSubmit(values: FormValues) {
+    console.log(values);
+  }
 
   return (
     <div className="container py-4 max-w-lg">
@@ -46,7 +59,7 @@ export default function CreateJobOffer() {
             control={form.control}
             render={({ field }) => (
               <FormItem>
-                <Label>Título</Label>
+                <FormLabel>Título</FormLabel>
                 <FormControl>
                   <Input {...field} />
                 </FormControl>
@@ -59,9 +72,27 @@ export default function CreateJobOffer() {
             control={form.control}
             render={({ field }) => (
               <FormItem>
-                <Label>Descripción</Label>
+                <FormLabel>Descripción</FormLabel>
                 <FormControl>
                   <Textarea {...field} />
+                </FormControl>
+                <FormMessage />
+              </FormItem>
+            )}
+          />
+          <FormField
+            name="region"
+            control={form.control}
+            render={({ field }) => (
+              <FormItem>
+                <FormLabel>Provincia</FormLabel>
+                <FormControl>
+                  <RegionSearch
+                    onSelect={(value) =>
+                      form.setValue("region", value, { shouldValidate: true })
+                    }
+                    value={field.value}
+                  />
                 </FormControl>
                 <FormMessage />
               </FormItem>
@@ -72,7 +103,7 @@ export default function CreateJobOffer() {
             control={form.control}
             render={({ field }) => (
               <FormItem>
-                <Label>Ciudad</Label>
+                <FormLabel>Ciudad</FormLabel>
                 <FormControl>
                   <Input {...field} />
                 </FormControl>
@@ -81,15 +112,15 @@ export default function CreateJobOffer() {
             )}
           />
           <FormField
-            name="contractType"
+            name="contract.type"
             control={form.control}
             render={({ field }) => (
               <FormItem>
-                <Label>Tipo de contrato</Label>
+                <FormLabel>Tipo de contrato</FormLabel>
                 <FormControl>
                   <Select
                     onValueChange={(value) =>
-                      field.onChange(value as FormValues["contractType"])
+                      field.onChange(value as FormValues["contract"]["type"])
                     }
                     defaultValue={field.value}
                   >
@@ -107,6 +138,25 @@ export default function CreateJobOffer() {
               </FormItem>
             )}
           />
+          {contractType === "fixed-term" && (
+            <FormField
+              name="contract.startDate"
+              control={form.control}
+              render={() => (
+                <FormItem>
+                  <FormControl>
+                    <RangeDatePicker
+                      onSelect={handleDateChanged}
+                      from={form.watch("contract.startDate")}
+                      to={form.watch("contract.endDate")}
+                    />
+                  </FormControl>
+                  <FormMessage />
+                </FormItem>
+              )}
+            />
+          )}
+
           <Button className="mt-4" type="submit">
             Crear oferta
           </Button>
@@ -117,10 +167,31 @@ export default function CreateJobOffer() {
 }
 
 const schema = z.object({
-  title: z.string().min(1, "Introduce un título"),
-  description: z.string().min(1, "Introduce una descripción"),
+  title: z.string({
+    required_error: "Introduce un título",
+  }),
+  description: z.string({
+    required_error: "Introduce una descripción",
+  }),
+  region: z.string({
+    required_error: "Elige una provincia",
+  }),
   city: z.string(),
-  contractType: z.enum(["full-time", "part-time", "fixed-term"]),
+  contract: z
+    .object({
+      type: z.enum(["full-time", "part-time", "fixed-term"], {
+        required_error: "Especifica el tipo de contrato",
+      }),
+      startDate: z.date().optional(),
+      endDate: z.date().optional(),
+    })
+    .refine(
+      (schema) =>
+        schema.type === "fixed-term" && schema.startDate && schema.endDate,
+      {
+        path: ["startDate"],
+        message: "Introduce una fecha",
+      }
+    ),
 });
-
 type FormValues = z.infer<typeof schema>;

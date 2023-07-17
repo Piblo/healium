@@ -1,70 +1,124 @@
-import { Command, CommandInput, CommandItem, CommandList } from "./ui/command";
-import { Feature, searchCity } from "../api/mapbox";
-import React, { useState } from "react";
-import { UseComboboxStateChange, useCombobox } from "downshift";
+import { Check, ChevronsUpDown } from "lucide-react";
+import {
+  Command,
+  CommandEmpty,
+  CommandGroup,
+  CommandInput,
+  CommandItem,
+} from "./ui/command";
+import { Popover, PopoverContent, PopoverTrigger } from "./ui/popover";
 
-import { Input } from "./ui/input";
-import { useDebounce } from "@/hooks/useDebounce";
-import { useQuery } from "@tanstack/react-query";
+import { Button } from "./ui/button";
+import React from "react";
+import { cn } from "@/lib/utils";
 
-interface Place {
-  name: string;
-  context: string[];
-}
+type RegionSearchProps = {
+  id?: string;
+  value: string;
+  onSelect: (value: string) => void;
+};
 
-interface RegionSearchProps {
-  onSelected: (value: Place) => void;
-}
-
-const RegionSearch: React.FC<RegionSearchProps> = ({ onSelected }) => {
-  const [searchTerm, setSearchTerm] = useState<string | undefined>();
-  const debouncedSearchTerm = useDebounce(searchTerm);
-
-  const { data, isLoading } = useQuery(
-    ["region-search", debouncedSearchTerm],
-    () => searchCity(debouncedSearchTerm!),
-    {
-      enabled: debouncedSearchTerm !== null,
-    }
-  );
-
-  const onSelectedItemChange = (feature: Feature) => {
-    const selectedItem: Place = {
-      context: feature.context?.map((x) => x.text) ?? [],
-      name: feature.text ?? "",
-    };
-
-    onSelected(selectedItem);
-  };
-
-  //   const {
-  //     getMenuProps,
-  //     getItemProps,
-  //     getInputProps,
-  //     highlightedIndex,
-  //     isOpen,
-  //   } = useCombobox({
-  //     items: data?.features ?? [],
-  //     itemToString: (item) => item?.text ?? "",
-  //     onInputValueChange: (e) => setSearchTerm(e.inputValue),
-  //     onSelectedItemChange,
-  //   });
+const RegionSearch: React.FC<RegionSearchProps> = ({ value, id, onSelect }) => {
+  const [open, setOpen] = React.useState(false);
 
   return (
-    <Command>
-      <CommandInput placeholder="Madrid" onValueChange={setSearchTerm} />
-      <CommandList>
-        {/* <CommandItem>Madrid</CommandItem>
-        <CommandItem>asdasd</CommandItem> */}
-
-        {data?.features.map((x) => (
-          <CommandItem key={x.id} onSelect={() => onSelectedItemChange(x)}>
-            {x.text}
-          </CommandItem>
-        ))}
-      </CommandList>
-    </Command>
+    <Popover open={open} onOpenChange={setOpen}>
+      <PopoverTrigger asChild id={id}>
+        <Button
+          variant="outline"
+          role="combobox"
+          aria-expanded={open}
+          className="justify-between w-full px-3 font-normal"
+        >
+          {value
+            ? regions.find((region) => region === value)
+            : "Elige una provincia..."}
+          <ChevronsUpDown className="ml-2 h-4 w-4 shrink-0 opacity-50" />
+        </Button>
+      </PopoverTrigger>
+      <PopoverContent className="p-0 ">
+        <Command className="max-h-80">
+          <CommandInput placeholder="Search framework..." />
+          <CommandEmpty>Provincia no encontrada</CommandEmpty>
+          <CommandGroup className="overflow-auto">
+            {regions.map((region) => (
+              <CommandItem
+                key={region}
+                onSelect={(currentValue) => {
+                  const value = regions.find(
+                    (x) => x.toLowerCase() === currentValue
+                  );
+                  onSelect(value!);
+                  setOpen(false);
+                }}
+              >
+                <Check
+                  className={cn(
+                    "mr-2 h-4 w-4",
+                    value === region ? "opacity-100" : "opacity-0"
+                  )}
+                />
+                {region}
+              </CommandItem>
+            ))}
+          </CommandGroup>
+        </Command>
+      </PopoverContent>
+    </Popover>
   );
 };
 
 export default RegionSearch;
+
+const regions = [
+  "Álava",
+  "Albacete",
+  "Alicante",
+  "Almería",
+  "Asturias",
+  "Ávila",
+  "Badajoz",
+  "Barcelona",
+  "Burgos",
+  "Cáceres",
+  "Cádiz",
+  "Cantabria",
+  "Castellón",
+  "Ciudad Real",
+  "Córdoba",
+  "Cuenca",
+  "Gerona",
+  "Granada",
+  "Guadalajara",
+  "Guipúzcoa",
+  "Huelva",
+  "Huesca",
+  "Islas Baleares",
+  "Jaén",
+  "La Coruña",
+  "La Rioja",
+  "Las Palmas",
+  "León",
+  "Lérida",
+  "Lugo",
+  "Madrid",
+  "Málaga",
+  "Murcia",
+  "Navarra",
+  "Orense",
+  "Palencia",
+  "Pontevedra",
+  "Salamanca",
+  "Santa Cruz de Tenerife",
+  "Segovia",
+  "Sevilla",
+  "Soria",
+  "Tarragona",
+  "Teruel",
+  "Toledo",
+  "Valencia",
+  "Valladolid",
+  "Vizcaya",
+  "Zamora",
+  "Zaragoza",
+];
