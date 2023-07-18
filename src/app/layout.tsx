@@ -25,7 +25,7 @@ export default function RootLayout({
       <ClerkProvider localization={esES}>
         <html lang="es" suppressHydrationWarning>
           <body className={inter.className}>
-            <ThemeProvider attribute="class" defaultTheme="system" enableSystem>
+            <ThemeProvider attribute="class" enableSystem>
               <Nav />
               {children}
               <Toaster />
