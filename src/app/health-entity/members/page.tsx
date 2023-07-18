@@ -18,6 +18,7 @@ import {
   TableRow,
 } from "@/components/ui/table";
 
+import { BackButton } from "@/components/BackButton";
 import { Button } from "@/components/ui/button";
 import { DialogClose } from "@radix-ui/react-dialog";
 import { InviteMember } from "@/components/InviteMember";
@@ -42,6 +43,7 @@ export default function Members() {
 
   return (
     <div className="container py-4">
+      <BackButton href="/health-entity/manage" className="mb-4" />
       <h1 className="text-2xl mb-4">Miembros</h1>
 
       <Table className="mb-4">

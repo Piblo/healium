@@ -71,6 +71,7 @@ const RegionSearch: React.FC<RegionSearchProps> = ({ value, id, onSelect }) => {
 export default RegionSearch;
 
 const regions = [
+  "Toda España",
   "Álava",
   "Albacete",
   "Alicante",

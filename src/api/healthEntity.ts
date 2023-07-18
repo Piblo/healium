@@ -1,4 +1,5 @@
 import { getBaseUrl } from "@/utils/getBaseUrl";
+import { makeRequest } from "./makeRequest";
 
 type HealthEntity = {
   id: string;
@@ -10,16 +11,5 @@ const baseUrl = getBaseUrl();
 export async function getHealthEntity(
   healthEntityId: string
 ): Promise<HealthEntity> {
-  const response = await fetch(
-    `${baseUrl}/api/health-entity/${healthEntityId}`,
-    {
-      credentials: "include",
-    }
-  );
-
-  if (!response.ok) {
-    throw new Error("Failed to fetch health entity");
-  }
-
-  return await response.json();
+  return await makeRequest(`${baseUrl}/api/health-entity/${healthEntityId}`);
 }

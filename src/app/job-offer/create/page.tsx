@@ -23,13 +23,28 @@ import { Input } from "@/components/ui/input";
 import { RangeDatePicker } from "@/components/RangeDatepicker";
 import RegionSearch from "@/components/RegionSearch";
 import { Textarea } from "@/components/ui/textarea";
+import { getSelectedHealthEntityId } from "@/utils/healthEntity";
+import { trpc } from "@/utils/trpc";
 import { useForm } from "react-hook-form";
+import { useToast } from "@/components/ui/use-toast";
 import { z } from "zod";
 import { zodResolver } from "@hookform/resolvers/zod";
 
 export default function CreateJobOffer() {
+  const healthEntityId = getSelectedHealthEntityId()!;
   const form = useForm<FormValues>({
     resolver: zodResolver(schema),
+    mode: "all",
+  });
+
+  const { toast } = useToast();
+
+  const mutation = trpc.jobOffer.create.useMutation({
+    onSuccess: () => {
+      toast({
+        title: "Oferta de trabajo creada correctamente",
+      });
+    },
   });
 
   const contractType = form.watch("contract.type");
@@ -42,8 +57,19 @@ export default function CreateJobOffer() {
   }
 
   function onSubmit(values: FormValues) {
-    console.log(values);
+    mutation.mutate({
+      city: values.city,
+      contractType: values.contract.type,
+      description: values.description,
+      healthEntityId: healthEntityId,
+      region: values.region,
+      title: values.title,
+      endDate: values.contract.endDate,
+      startDate: values.contract.startDate,
+    });
   }
+
+  console.log(form.formState.errors);
 
   return (
     <div className="container py-4 max-w-lg">
@@ -157,7 +183,7 @@ export default function CreateJobOffer() {
             />
           )}
 
-          <Button className="mt-4" type="submit">
+          <Button className="mt-4" type="submit" loading={mutation.isLoading}>
             Crear oferta
           </Button>
         </form>
@@ -187,7 +213,8 @@ const schema = z.object({
     })
     .refine(
       (schema) =>
-        schema.type === "fixed-term" && schema.startDate && schema.endDate,
+        schema.type !== "fixed-term" ||
+        (schema.type === "fixed-term" && schema.startDate && schema.endDate),
       {
         path: ["startDate"],
         message: "Introduce una fecha",
