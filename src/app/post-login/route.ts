@@ -9,6 +9,8 @@ export async function GET(req: NextRequest) {
 
   const result = await caller.user.healthEntities();
 
+  cookies().delete("healthEntityId");
+
   if (result.length === 1) {
     cookies().set("healthEntityId", result[0].id);
     return redirect(`/health-entity/manage`);
