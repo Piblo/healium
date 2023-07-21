@@ -117,6 +117,12 @@ export const healthEntityRouter = router({
             eq(healthEntityUsers.email, emailAddress?.emailAddress!)
           )
         );
+
+      await clerkClient.users.updateUserMetadata(user.id, {
+        publicMetadata: {
+          healthEntityAdmin: true,
+        },
+      });
     }),
   removeMember: protectedProcedure
     .input(
