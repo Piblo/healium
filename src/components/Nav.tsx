@@ -25,6 +25,13 @@ export const Nav = () => {
       <div className="flex flex-1">
         <NavigationMenuList>
           <NavigationMenuItem>
+            <Link href="/" legacyBehavior passHref>
+              <NavigationMenuLink className={navigationMenuTriggerStyle()}>
+                Healium
+              </NavigationMenuLink>
+            </Link>
+          </NavigationMenuItem>
+          <NavigationMenuItem>
             <NavigationMenuTrigger>Menu</NavigationMenuTrigger>
             <NavigationMenuContent className="flex flex-col">
               {!!user?.publicMetadata.healiumAdmin && (

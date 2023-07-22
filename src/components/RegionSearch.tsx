@@ -14,7 +14,7 @@ import { cn } from "@/lib/utils";
 
 type RegionSearchProps = {
   id?: string;
-  value: string;
+  value?: string;
   onSelect: (value: string) => void;
 };
 
@@ -38,7 +38,7 @@ const RegionSearch: React.FC<RegionSearchProps> = ({ value, id, onSelect }) => {
       </PopoverTrigger>
       <PopoverContent className="p-0 ">
         <Command className="max-h-80">
-          <CommandInput placeholder="Search framework..." />
+          <CommandInput placeholder="Busca una provincia..." />
           <CommandEmpty>Provincia no encontrada</CommandEmpty>
           <CommandGroup className="overflow-auto">
             {regions.map((region) => (

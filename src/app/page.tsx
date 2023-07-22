@@ -1,7 +1,28 @@
+import Image from "next/image";
+import { SearchOfferForm } from "@/components/SearchOfferForm";
+
 export default function Home() {
   return (
     <>
-      <main></main>
+      <main>
+        <div className="relative h-[40dvh] w-full overflow-hidden flex flex-col justify-center">
+          <Image
+            src="/hero.jpg"
+            alt=""
+            fill
+            objectFit="cover"
+            className="opacity-60 -z-10"
+          />
+          <div className="container">
+            <h1 className="text-2xl lg:text-4xl text-center mb-6">
+              Encuentra tu trabajo ideal en enfermería
+            </h1>
+            <div>
+              <SearchOfferForm className="max-w-md" />
+            </div>
+          </div>
+        </div>
+      </main>
     </>
   );
 }
