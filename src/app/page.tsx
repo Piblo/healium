@@ -5,13 +5,14 @@ export default function Home() {
   return (
     <>
       <main>
-        <div className="relative h-[40dvh] w-full overflow-hidden flex flex-col justify-center">
+        <div className="relative min-h-[40dvh] w-full overflow-hidden flex flex-col justify-center">
           <Image
             src="/hero.jpg"
             alt=""
             fill
             objectFit="cover"
             className="opacity-60 -z-10"
+            priority
           />
           <div className="container">
             <h1 className="text-2xl lg:text-4xl text-center mb-6">
