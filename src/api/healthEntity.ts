@@ -4,6 +4,7 @@ import { makeRequest } from "./makeRequest";
 type HealthEntity = {
   id: string;
   name: string;
+  logoUrl: string;
 };
 
 const baseUrl = getBaseUrl();
