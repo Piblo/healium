@@ -1,5 +1,7 @@
 "use client";
 
+import { trpc } from "@/utils/trpc";
+
 type SearchJobOfferProps = {
   searchParams: {
     search?: string;
@@ -8,5 +10,9 @@ type SearchJobOfferProps = {
 };
 
 export default function SearchJobOffer({ searchParams }: SearchJobOfferProps) {
-  return <div>asd</div>;
+  const { data } = trpc.jobOffer.search.useQuery({
+    region: searchParams.region,
+    search: searchParams.search,
+  });
+  return <div>{JSON.stringify(data)}</div>;
 }

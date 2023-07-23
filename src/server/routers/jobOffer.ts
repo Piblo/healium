@@ -1,6 +1,9 @@
-import { protectedProcedure, router } from "../trpc";
+import {
+  createJobOffer,
+  searchJobOffers,
+} from "../database/jobOfferRepository";
+import { procedure, protectedProcedure, router } from "../trpc";
 
-import { createJobOffer } from "../database/jobOfferRepository";
 import { z } from "zod";
 
 const createInput = z.object({
@@ -22,4 +25,14 @@ export const jobOfferRouter = router({
       endDate: input.endDate ?? null,
     });
   }),
+  search: procedure
+    .input(
+      z.object({
+        search: z.string().optional(),
+        region: z.string().optional(),
+      })
+    )
+    .query(({ input }) => {
+      return searchJobOffers(input);
+    }),
 });

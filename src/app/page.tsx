@@ -5,7 +5,7 @@ export default function Home() {
   return (
     <>
       <main>
-        <div className="relative min-h-[40dvh] w-full overflow-hidden flex flex-col justify-center">
+        <div className="relative min-h-[40dvh] py-8 w-full overflow-hidden flex flex-col justify-center">
           <Image
             src="/hero.jpg"
             alt=""
