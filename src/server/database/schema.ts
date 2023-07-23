@@ -16,6 +16,7 @@ export const healthEntities = mysqlTable("health_entities", {
   name: varchar("name", {
     length: 100,
   }).notNull(),
+  logoUrl: text("logo_url"),
 });
 
 export type HealthEntity = InferModel<typeof healthEntities>;

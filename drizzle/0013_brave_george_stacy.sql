@@ -1,0 +1,1 @@
+ALTER TABLE `health_entities` ADD `logo_url` text;

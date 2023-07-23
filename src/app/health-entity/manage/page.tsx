@@ -1,5 +1,5 @@
 import { Card, CardHeader } from "@/components/ui/card";
-import { FilePlus, Users2 } from "lucide-react";
+import { FilePlus, Pencil, Users2 } from "lucide-react";
 
 import Link from "next/link";
 import { cookies } from "next/headers";
@@ -26,6 +26,14 @@ export default async function ManageHealthEntity() {
             <CardHeader className="flex flex-row gap-4">
               <Users2 />
               Miembros
+            </CardHeader>
+          </Card>
+        </Link>
+        <Link href="edit">
+          <Card>
+            <CardHeader className="flex flex-row gap-4">
+              <Pencil />
+              Editar entidad sanitaria
             </CardHeader>
           </Card>
         </Link>

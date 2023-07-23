@@ -4,6 +4,7 @@ import {
   getHealthEntity,
   getHealthEntityMembers,
   removeMember,
+  updateHealthEntity,
 } from "../database/healthEntityRepository";
 import { protectedProcedure, router } from "../trpc";
 
@@ -13,19 +14,25 @@ import { getPrimaryEmailAddress } from "../utils/user";
 import { healthEntityUsers } from "../database/schema";
 import { z } from "zod";
 
+const createHealthEntityInput = z.object({
+  name: z.string(),
+  logoUrl: z.string().nullable().default(null),
+});
+
+const updateHealthEntityInput = createHealthEntityInput.extend({
+  id: z.string(),
+});
+
 export const healthEntityRouter = router({
   create: protectedProcedure
-    .input(
-      z.object({
-        name: z.string(),
-      })
-    )
+    .input(createHealthEntityInput)
     .mutation(async ({ ctx, input }) => {
       const user = await clerkClient.users.getUser(ctx.auth.userId);
 
-      return await createHealthEntity({
+      return createHealthEntity({
         healthEntity: {
           name: input.name,
+          logoUrl: input.logoUrl,
         },
         user: {
           email: user.emailAddresses.find(
@@ -35,6 +42,11 @@ export const healthEntityRouter = router({
         },
       });
     }),
+  update: protectedProcedure
+    .input(updateHealthEntityInput)
+    .mutation(({ input }) => {
+      return updateHealthEntity(input);
+    }),
   get: protectedProcedure
     .input(
       z.object({
@@ -42,7 +54,7 @@ export const healthEntityRouter = router({
       })
     )
     .query(async ({ ctx, input }) => {
-      return await getHealthEntity(input.healthEntityId);
+      return getHealthEntity(input.healthEntityId);
     }),
   members: protectedProcedure
     .input(

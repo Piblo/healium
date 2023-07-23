@@ -41,6 +41,20 @@ export async function createHealthEntity(
   });
 }
 
+export async function updateHealthEntity(
+  healthEntity: HealthEntity
+): Promise<HealthEntity> {
+  await db
+    .update(healthEntities)
+    .set({
+      logoUrl: healthEntity.logoUrl,
+      name: healthEntity.name,
+    })
+    .where(eq(healthEntities.id, healthEntity.id));
+
+  return healthEntity;
+}
+
 export async function getHealthEntity(
   healthEntityId: string
 ): Promise<HealthEntity | null> {
