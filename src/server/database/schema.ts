@@ -64,6 +64,7 @@ export const jobOffers = mysqlTable("job_offers", {
   ]),
   startDate: date("start_date"),
   endDate: date("end_date"),
+  createdDate: datetime("created_date").notNull(),
 });
 
 export type JobOffer = InferModel<typeof jobOffers>;

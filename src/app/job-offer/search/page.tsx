@@ -2,6 +2,8 @@
 
 import { Card } from "@/components/ui/card";
 import Image from "next/image";
+import es from "date-fns/locale/es";
+import formatDistanceToNow from "date-fns/formatDistanceToNow";
 import { trpc } from "@/utils/trpc";
 
 type SearchJobOfferProps = {
@@ -17,7 +19,8 @@ export default function SearchJobOffer({ searchParams }: SearchJobOfferProps) {
     search: searchParams.search,
   });
   return (
-    <div className="container">
+    <div className="container py-4">
+      <h1>Ofertas de trabajo</h1>
       <ul className="space-y-4">
         {data?.map((x) => (
           <li key={x.id}>
@@ -28,13 +31,18 @@ export default function SearchJobOffer({ searchParams }: SearchJobOfferProps) {
                   alt=""
                   width="80"
                   height="80"
-                  className="rounded"
+                  className="rounded self-start"
                 />
               )}
               <div>
                 <div className="text-xl">{x.title}</div>
-                <div>{x.healthEntity!.name}</div>
-                <div>{x.region}</div>
+                <div className="mb-2">{x.healthEntity!.name}</div>
+                <div className="mb-4 text-sm">
+                  {x.region} |{" "}
+                  {formatDistanceToNow(x.createdDate, {
+                    locale: es,
+                  })}
+                </div>
                 <div>{x.description}</div>
               </div>
             </Card>
