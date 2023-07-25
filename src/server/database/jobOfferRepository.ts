@@ -4,7 +4,9 @@ import { SQL, and, eq, like } from "drizzle-orm";
 import { db } from "./connection";
 import { ulid } from "ulid";
 
-export async function createJobOffer(request: CreateJobOffer) {
+type CreateJobOfferRequest = Omit<CreateJobOffer, "id">;
+
+export async function createJobOffer(request: CreateJobOfferRequest) {
   const jobOffer: CreateJobOffer = {
     ...request,
     id: ulid(),

@@ -25,7 +25,7 @@ export default function SearchJobOffer({ searchParams }: SearchJobOfferProps) {
 
   return (
     <div className="container py-4">
-      <h1>Ofertas de trabajo</h1>
+      <h1 className="text-2xl mb-6">Ofertas de trabajo</h1>
       <ul className="space-y-4">
         {data?.map((x) => (
           <li key={x.id}>
