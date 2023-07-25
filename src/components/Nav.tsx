@@ -17,7 +17,9 @@ import { trpc } from "@/utils/trpc";
 
 export const Nav = () => {
   const { user, isSignedIn } = useUser();
-  const { data } = trpc.user.healthEntities.useQuery();
+  const { data } = trpc.user.healthEntities.useQuery(null, {
+    enabled: isSignedIn,
+  });
   const selectedHealthEntityId = getSelectedHealthEntityId();
 
   return (
@@ -65,7 +67,7 @@ export const Nav = () => {
             <Link href="/sign-in">Iniciar sesión</Link>
           </NavigationMenuItem>
         )}
-        {isSignedIn && <UserButton />}
+        {isSignedIn && <UserButton afterSignOutUrl="/" />}
       </NavigationMenuList>
     </NavigationMenu>
   );
