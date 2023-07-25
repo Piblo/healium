@@ -2,9 +2,13 @@
 
 import { Card } from "@/components/ui/card";
 import Image from "next/image";
-import es from "date-fns/locale/es";
-import formatDistanceToNowStrict from "date-fns/formatDistanceToNowStrict";
+import dayjs from "dayjs";
+import es from "dayjs/locale/es";
+import relativeTime from "dayjs/plugin/relativeTime";
 import { trpc } from "@/utils/trpc";
+
+dayjs.locale(es);
+dayjs.extend(relativeTime);
 
 type SearchJobOfferProps = {
   searchParams: {
@@ -39,11 +43,7 @@ export default function SearchJobOffer({ searchParams }: SearchJobOfferProps) {
                 <div className="text-xl">{x.title}</div>
                 <div className="mb-2">{x.healthEntity!.name}</div>
                 <div className="mb-4 text-sm">
-                  {x.region} |{" "}
-                  {formatDistanceToNowStrict(x.createdDate, {
-                    locale: es,
-                    addSuffix: true,
-                  })}
+                  {x.region} | {dayjs(x.createdDate).fromNow()}
                 </div>
                 <div>{x.description}</div>
               </div>
