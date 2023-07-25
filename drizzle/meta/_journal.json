@@ -120,6 +120,13 @@
       "when": 1690223805370,
       "tag": "0016_unique_jubilee",
       "breakpoints": true
+    },
+    {
+      "idx": 17,
+      "version": "5",
+      "when": 1690306241740,
+      "tag": "0017_little_sentinel",
+      "breakpoints": true
     }
   ]
 }

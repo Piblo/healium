@@ -1,16 +1,13 @@
-import { JobOffer, jobOffers } from "./schema";
+import { CreateJobOffer, JobOffer, jobOffers } from "./schema";
 import { SQL, and, eq, like } from "drizzle-orm";
 
 import { db } from "./connection";
 import { ulid } from "ulid";
 
-type CreateJobOfferRequest = Omit<JobOffer, "id" | "createdDate">;
-
-export async function createJobOffer(request: CreateJobOfferRequest) {
-  const jobOffer: JobOffer = {
+export async function createJobOffer(request: CreateJobOffer) {
+  const jobOffer: CreateJobOffer = {
     ...request,
     id: ulid(),
-    createdDate: new Date(),
   };
 
   await db.insert(jobOffers).values(jobOffer);

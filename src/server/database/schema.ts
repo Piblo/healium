@@ -6,6 +6,7 @@ import {
   mysqlTable,
   primaryKey,
   text,
+  timestamp,
   varchar,
 } from "drizzle-orm/mysql-core";
 
@@ -64,10 +65,11 @@ export const jobOffers = mysqlTable("job_offers", {
   ]),
   startDate: date("start_date"),
   endDate: date("end_date"),
-  createdDate: datetime("created_date").notNull(),
+  createdDate: timestamp("created_date").notNull().defaultNow(),
 });
 
 export type JobOffer = InferModel<typeof jobOffers>;
+export type CreateJobOffer = InferModel<typeof jobOffers, "insert">;
 
 export const jobOffersRelations = relations(jobOffers, ({ one }) => ({
   healthEntity: one(healthEntities, {

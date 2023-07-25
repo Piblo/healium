@@ -4,11 +4,17 @@ import { FilePlus, Pencil, Users2 } from "lucide-react";
 import Image from "next/image";
 import Link from "next/link";
 import { cookies } from "next/headers";
-import { getHealthEntity } from "@/api/healthEntity";
+import { trpcServer } from "@/utils/trpcServer";
 
 export default async function ManageHealthEntity() {
   const healthEntityId = cookies().get("healthEntityId")?.value!;
-  const healthEntity = await getHealthEntity(healthEntityId);
+  const healthEntity = await trpcServer.healthEntity.get.query({
+    healthEntityId,
+  });
+
+  if (!healthEntity) {
+    return null;
+  }
 
   return (
     <div className="container py-4">
