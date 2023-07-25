@@ -17,7 +17,7 @@ import { trpc } from "@/utils/trpc";
 
 export const Nav = () => {
   const { user, isSignedIn } = useUser();
-  const { data } = trpc.user.healthEntities.useQuery(null, {
+  const { data } = trpc.user.healthEntities.useQuery(undefined, {
     enabled: isSignedIn,
   });
   const selectedHealthEntityId = getSelectedHealthEntityId();
