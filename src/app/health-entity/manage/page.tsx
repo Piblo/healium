@@ -1,5 +1,5 @@
 import { Card, CardHeader } from "@/components/ui/card";
-import { FilePlus, Pencil, Users2 } from "lucide-react";
+import { FilePlus, FilePlus2, FileSearch, Pencil, Users2 } from "lucide-react";
 
 import Image from "next/image";
 import Link from "next/link";
@@ -34,8 +34,16 @@ export default async function ManageHealthEntity() {
         <Link href="/job-offer/create">
           <Card>
             <CardHeader className="flex flex-row gap-4">
-              <FilePlus />
+              <FilePlus2 />
               Crear oferta
+            </CardHeader>
+          </Card>
+        </Link>
+        <Link href="/job-offer/list">
+          <Card>
+            <CardHeader className="flex flex-row gap-4">
+              <FileSearch />
+              Ver ofertas publicadas
             </CardHeader>
           </Card>
         </Link>

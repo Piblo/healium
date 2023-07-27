@@ -53,7 +53,7 @@ export const jobOffers = mysqlTable("job_offers", {
   id: varchar("id", {
     length: 36,
   }).primaryKey(),
-  healthEntityId: varchar("health_entity_id", { length: 36 }),
+  healthEntityId: varchar("health_entity_id", { length: 36 }).notNull(),
   title: varchar("title", { length: 256 }).notNull(),
   description: text("description"),
   region: varchar("region", { length: 128 }),

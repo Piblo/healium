@@ -1,5 +1,7 @@
 import {
   createJobOffer,
+  deleteJobOffer,
+  getJobOffers,
   searchJobOffers,
 } from "../database/jobOfferRepository";
 import { procedure, protectedProcedure, router } from "../trpc";
@@ -34,5 +36,19 @@ export const jobOfferRouter = router({
     )
     .query(({ input }) => {
       return searchJobOffers(input);
+    }),
+  healthEntityJobOffers: protectedProcedure
+    .input(z.object({ healthEntityId: z.string() }))
+    .query(({ input }) => {
+      return getJobOffers(input.healthEntityId);
+    }),
+  delete: protectedProcedure
+    .input(
+      z.object({
+        jobOfferId: z.string(),
+      })
+    )
+    .mutation(async ({ input }) => {
+      await deleteJobOffer(input.jobOfferId);
     }),
 });

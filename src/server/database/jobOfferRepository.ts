@@ -16,11 +16,13 @@ export async function createJobOffer(request: CreateJobOfferRequest) {
   return jobOffer;
 }
 
-export async function getJobOffers(
-  healthEntityId: string
-): Promise<JobOffer[]> {
+export async function getJobOffers(healthEntityId: string) {
   return db.query.jobOffers.findMany({
     where: eq(jobOffers.healthEntityId, healthEntityId),
+    with: {
+      healthEntity: true,
+    },
+    orderBy: (jobOffer, { desc }) => desc(jobOffer.createdDate),
   });
 }
 
@@ -46,7 +48,12 @@ export async function searchJobOffers(request: SearchJobOffersRequest) {
     with: {
       healthEntity: true,
     },
+    orderBy: (jobOffer, { desc }) => desc(jobOffer.createdDate),
   });
 
   return result;
+}
+
+export async function deleteJobOffer(jobOfferId: string) {
+  await db.delete(jobOffers).where(eq(jobOffers.id, jobOfferId));
 }

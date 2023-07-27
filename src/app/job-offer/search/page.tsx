@@ -1,19 +1,9 @@
 "use client";
 
-import { Loader2, MapPin } from "lucide-react";
-
-import { Button } from "@/components/ui/button";
-import { Card } from "@/components/ui/card";
-import Image from "next/image";
+import { JobOfferSummary } from "@/components/JobOfferSummary";
+import { Loader2 } from "lucide-react";
 import { SearchOfferForm } from "@/components/SearchOfferForm";
-import dayjs from "dayjs";
-import es from "dayjs/locale/es";
-import { getContractTypeLabel } from "@/utils/contractType";
-import relativeTime from "dayjs/plugin/relativeTime";
 import { trpc } from "@/utils/trpc";
-
-dayjs.locale(es);
-dayjs.extend(relativeTime);
 
 type SearchJobOfferProps = {
   searchParams: {
@@ -42,30 +32,16 @@ export default function SearchJobOffer({ searchParams }: SearchJobOfferProps) {
       <ul className="space-y-4">
         {data?.map((x) => (
           <li key={x.id}>
-            <Card className="p-4 flex space-x-4">
-              {x.healthEntity?.logoUrl && (
-                <Image
-                  src={x.healthEntity?.logoUrl}
-                  alt=""
-                  width="80"
-                  height="80"
-                  className="rounded self-start w-[60px] h-[60px] md:w-[80px] md:h-[80px]"
-                />
-              )}
-              <div className="flex-1">
-                <div className="text-xl font-bold">{x.healthEntity?.name}</div>
-                <div className="mb-4 text-sm">
-                  {dayjs(x.createdDate).fromNow()} &#8729;{" "}
-                  {x.contractType ? getContractTypeLabel(x.contractType) : null}
-                </div>
-                <div className="text-neutral-500 mb-4 max-h-[120px] overflow-hidden from-current to-transparent">
-                  {x.description}
-                </div>
-                <div className="text-neutral-500 flex items-center text-sm">
-                  <MapPin size={16} className="mr-1" /> {x.city} ({x.region})
-                </div>
-              </div>
-            </Card>
+            <JobOfferSummary
+              city={x.city ?? ""}
+              contractType={x.contractType ?? "full-time"}
+              createdDate={x.createdDate}
+              description={x.description ?? ""}
+              healthEntityName={x.healthEntity.name}
+              region={x.region ?? ""}
+              title={x.title}
+              logo={x.healthEntity.logoUrl}
+            />
           </li>
         ))}
       </ul>
