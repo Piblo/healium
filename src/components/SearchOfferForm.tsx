@@ -1,12 +1,13 @@
 "use client";
 
 import { Form, FormControl, FormField, FormItem, FormLabel } from "./ui/form";
+import { useRouter, useSearchParams } from "next/navigation";
 
 import { Button } from "./ui/button";
 import { Input } from "./ui/input";
 import RegionSearch from "./RegionSearch";
+import { cn } from "@/lib/utils";
 import { useForm } from "react-hook-form";
-import { useRouter } from "next/navigation";
 import { z } from "zod";
 
 type SearchOfferFormProps = {
@@ -14,7 +15,13 @@ type SearchOfferFormProps = {
 };
 
 export const SearchOfferForm = ({ className }: SearchOfferFormProps) => {
-  const form = useForm<FormValues>();
+  const searchParams = useSearchParams();
+  const form = useForm<FormValues>({
+    defaultValues: {
+      region: searchParams.get("region") ?? "",
+      search: searchParams.get("search") ?? "",
+    },
+  });
   const router = useRouter();
 
   function onSubmit(values: FormValues) {
@@ -28,7 +35,10 @@ export const SearchOfferForm = ({ className }: SearchOfferFormProps) => {
   return (
     <Form {...form}>
       <form
-        className="flex flex-col md:flex-row justify-end w-full gap-4"
+        className={cn(
+          "flex flex-col md:flex-row justify-end w-full gap-4",
+          className
+        )}
         onSubmit={form.handleSubmit(onSubmit)}
       >
         <FormField

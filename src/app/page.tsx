@@ -19,7 +19,7 @@ export default function Home() {
               Encuentra tu trabajo ideal en enfermería
             </h1>
             <div>
-              <SearchOfferForm className="max-w-md" />
+              <SearchOfferForm className="mx-auto max-w-4xl" />
             </div>
           </div>
         </div>

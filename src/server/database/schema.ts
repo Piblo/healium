@@ -71,9 +71,28 @@ export const jobOffers = mysqlTable("job_offers", {
 export type JobOffer = InferModel<typeof jobOffers>;
 export type CreateJobOffer = InferModel<typeof jobOffers, "insert">;
 
-export const jobOffersRelations = relations(jobOffers, ({ one }) => ({
+export const jobOffersRelations = relations(jobOffers, ({ one, many }) => ({
   healthEntity: one(healthEntities, {
     fields: [jobOffers.healthEntityId],
     references: [healthEntities.id],
+  }),
+  applications: many(jobOffers),
+}));
+
+export const jobApplication = mysqlTable("job_application", {
+  id: varchar("id", {
+    length: 36,
+  }).primaryKey(),
+  jobOfferId: varchar("job_offer_id", { length: 36 }),
+  userId: varchar("user_id", {
+    length: 36,
+  }),
+  createdDate: timestamp("created_date").notNull().defaultNow(),
+});
+
+export const jobApplicationRelations = relations(jobApplication, ({ one }) => ({
+  jobOffer: one(jobOffers, {
+    fields: [jobApplication.jobOfferId],
+    references: [jobOffers.id],
   }),
 }));

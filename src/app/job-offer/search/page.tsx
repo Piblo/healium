@@ -1,9 +1,14 @@
 "use client";
 
+import { Loader2, MapPin } from "lucide-react";
+
+import { Button } from "@/components/ui/button";
 import { Card } from "@/components/ui/card";
 import Image from "next/image";
+import { SearchOfferForm } from "@/components/SearchOfferForm";
 import dayjs from "dayjs";
 import es from "dayjs/locale/es";
+import { getContractTypeLabel } from "@/utils/contractType";
 import relativeTime from "dayjs/plugin/relativeTime";
 import { trpc } from "@/utils/trpc";
 
@@ -18,14 +23,22 @@ type SearchJobOfferProps = {
 };
 
 export default function SearchJobOffer({ searchParams }: SearchJobOfferProps) {
-  const { data } = trpc.jobOffer.search.useQuery({
+  const { data, isLoading, isFetched } = trpc.jobOffer.search.useQuery({
     region: searchParams.region,
     search: searchParams.search,
   });
 
   return (
-    <div className="container py-4">
-      <h1 className="text-2xl mb-6">Ofertas de trabajo</h1>
+    <div className="container max-w-4xl py-6">
+      <SearchOfferForm className="mb-6" />
+      <h1 className="text-2xl mb-4">Ofertas de trabajo</h1>
+      {isFetched && !data?.length ? (
+        <p>
+          😅 Vaya, no hemos encontrado ninguna oferta de trabajo, prueba a
+          realizar una búsqueda diferente
+        </p>
+      ) : null}
+      {isLoading && <Loader2 className="animate-spin" />}
       <ul className="space-y-4">
         {data?.map((x) => (
           <li key={x.id}>
@@ -39,13 +52,19 @@ export default function SearchJobOffer({ searchParams }: SearchJobOfferProps) {
                   className="rounded self-start"
                 />
               )}
-              <div>
-                <div className="text-xl">{x.title}</div>
-                <div className="mb-2">{x.healthEntity!.name}</div>
+              <div className="flex-1">
+                <div className="text-xl font-bold">{x.healthEntity?.name}</div>
                 <div className="mb-4 text-sm">
-                  {x.region} | {dayjs(x.createdDate).fromNow()}
+                  {dayjs(x.createdDate).fromNow()} &#8729;{" "}
+                  {x.contractType ? getContractTypeLabel(x.contractType) : null}
                 </div>
-                <div>{x.description}</div>
+                <div className="text-neutral-500 mb-4">{x.description}</div>
+                <div className="flex items-center text-sm">
+                  <MapPin size={16} className="mr-1" /> {x.city} ({x.region})
+                </div>
+              </div>
+              <div>
+                <Button variant="secondary">Solicitar</Button>
               </div>
             </Card>
           </li>

@@ -23,6 +23,7 @@ import { Input } from "@/components/ui/input";
 import { RangeDatePicker } from "@/components/RangeDatepicker";
 import RegionSearch from "@/components/RegionSearch";
 import { Textarea } from "@/components/ui/textarea";
+import { getContractTypeLabel } from "@/utils/contractType";
 import { getSelectedHealthEntityId } from "@/utils/healthEntity";
 import { trpc } from "@/utils/trpc";
 import { useForm } from "react-hook-form";
@@ -154,9 +155,15 @@ export default function CreateJobOffer() {
                       <SelectValue placeholder="Elige un tipo de contrato" />
                     </SelectTrigger>
                     <SelectContent>
-                      <SelectItem value="full-time">Indefinido</SelectItem>
-                      <SelectItem value="part-time">Tiempo parcial</SelectItem>
-                      <SelectItem value="fixed-term">Temporal</SelectItem>
+                      <SelectItem value="full-time">
+                        {getContractTypeLabel("full-time")}
+                      </SelectItem>
+                      <SelectItem value="part-time">
+                        {getContractTypeLabel("part-time")}
+                      </SelectItem>
+                      <SelectItem value="fixed-term">
+                        {getContractTypeLabel("fixed-term")}
+                      </SelectItem>
                     </SelectContent>
                   </Select>
                 </FormControl>
@@ -222,3 +229,5 @@ const schema = z.object({
     ),
 });
 type FormValues = z.infer<typeof schema>;
+
+export type ContractType = FormValues["contract"]["type"];
