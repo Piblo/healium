@@ -49,7 +49,7 @@ export default function SearchJobOffer({ searchParams }: SearchJobOfferProps) {
                   alt=""
                   width="80"
                   height="80"
-                  className="rounded self-start"
+                  className="rounded self-start w-[60px] h-[60px] md:w-[80px] md:h-[80px]"
                 />
               )}
               <div className="flex-1">
@@ -58,13 +58,12 @@ export default function SearchJobOffer({ searchParams }: SearchJobOfferProps) {
                   {dayjs(x.createdDate).fromNow()} &#8729;{" "}
                   {x.contractType ? getContractTypeLabel(x.contractType) : null}
                 </div>
-                <div className="text-neutral-500 mb-4">{x.description}</div>
-                <div className="flex items-center text-sm">
+                <div className="text-neutral-500 mb-4 max-h-[120px] overflow-hidden from-current to-transparent">
+                  {x.description}
+                </div>
+                <div className="text-neutral-500 flex items-center text-sm">
                   <MapPin size={16} className="mr-1" /> {x.city} ({x.region})
                 </div>
-              </div>
-              <div>
-                <Button variant="secondary">Solicitar</Button>
               </div>
             </Card>
           </li>

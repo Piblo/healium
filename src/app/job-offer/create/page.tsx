@@ -119,6 +119,7 @@ export default function CreateJobOffer() {
                       form.setValue("region", value, { shouldValidate: true })
                     }
                     value={field.value}
+                    allowAnyRegion={false}
                   />
                 </FormControl>
                 <FormMessage />

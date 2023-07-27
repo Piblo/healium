@@ -16,10 +16,18 @@ type RegionSearchProps = {
   id?: string;
   value?: string;
   onSelect: (value: string) => void;
+  allowAnyRegion?: boolean;
 };
 
-const RegionSearch: React.FC<RegionSearchProps> = ({ value, id, onSelect }) => {
+const RegionSearch: React.FC<RegionSearchProps> = ({
+  value,
+  id,
+  onSelect,
+  allowAnyRegion,
+}) => {
   const [open, setOpen] = React.useState(false);
+
+  const _regions = allowAnyRegion ? [ANY_REGION, ...regions] : regions;
 
   return (
     <Popover open={open} onOpenChange={setOpen}>
@@ -31,7 +39,7 @@ const RegionSearch: React.FC<RegionSearchProps> = ({ value, id, onSelect }) => {
           className="justify-between w-full px-3 font-normal"
         >
           {value
-            ? regions.find((region) => region === value)
+            ? _regions.find((region) => region === value)
             : "Elige una provincia..."}
           <ChevronsUpDown className="ml-2 h-4 w-4 shrink-0 opacity-50" />
         </Button>
@@ -41,11 +49,11 @@ const RegionSearch: React.FC<RegionSearchProps> = ({ value, id, onSelect }) => {
           <CommandInput placeholder="Busca una provincia..." />
           <CommandEmpty>Provincia no encontrada</CommandEmpty>
           <CommandGroup className="overflow-auto">
-            {regions.map((region) => (
+            {_regions.map((region) => (
               <CommandItem
                 key={region}
                 onSelect={(currentValue) => {
-                  const value = regions.find(
+                  const value = _regions.find(
                     (x) => x.toLowerCase() === currentValue
                   );
                   onSelect(value!);
@@ -70,8 +78,9 @@ const RegionSearch: React.FC<RegionSearchProps> = ({ value, id, onSelect }) => {
 
 export default RegionSearch;
 
+const ANY_REGION = "Toda España";
+
 const regions = [
-  "Toda España",
   "Álava",
   "Albacete",
   "Alicante",

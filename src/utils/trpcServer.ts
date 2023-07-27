@@ -13,7 +13,7 @@ export const trpcServer = createTRPCProxyClient<AppRouter>({
       async headers() {
         const { getToken } = auth();
         const token = await getToken();
-        console.log(token);
+
         return {
           authorization: `Bearer ${token}`,
         };

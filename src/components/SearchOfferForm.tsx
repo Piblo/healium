@@ -65,6 +65,7 @@ export const SearchOfferForm = ({ className }: SearchOfferFormProps) => {
                     form.setValue("region", value, { shouldValidate: true })
                   }
                   value={field.value}
+                  allowAnyRegion
                 />
               </FormControl>
             </FormItem>
