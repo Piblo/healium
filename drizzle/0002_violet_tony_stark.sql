@@ -1,1 +1,0 @@
-ALTER TABLE `users_to_health_entities` DROP FOREIGN KEY `users_to_health_entities_health_entity_id_health_entities_id_fk`;

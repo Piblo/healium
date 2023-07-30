@@ -1,1 +1,0 @@
-ALTER TABLE `users_to_health_entities` MODIFY COLUMN `created_date` date NOT NULL;

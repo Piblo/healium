@@ -1,1 +1,0 @@
-ALTER TABLE `job_offers` MODIFY COLUMN `created_date` timestamp NOT NULL DEFAULT (now());

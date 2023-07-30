@@ -1,1 +1,0 @@
-ALTER TABLE `job_offers` ADD `created_date` date;

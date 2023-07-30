@@ -1,1 +1,0 @@
-ALTER TABLE `users_to_health_entities` ADD `user_id` varchar(256);

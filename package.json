@@ -9,8 +9,10 @@
     "lint": "next lint",
     "db:generate": "drizzle-kit generate:mysql",
     "db:introspect": "drizzle-kit introspect:mysql",
+    "db:pull": "drizzle-kit introspect:mysql",
     "db:push": "drizzle-kit push:mysql",
-    "db:studio": "drizzle-kit studio"
+    "db:studio": "drizzle-kit studio",
+    "db:migrate": "tsx scripts/migrate"
   },
   "dependencies": {
     "@clerk/localizations": "^1.23.0",
@@ -44,6 +46,7 @@
     "eslint": "8.44.0",
     "eslint-config-next": "13.4.8",
     "lucide-react": "^0.258.0",
+    "mysql2": "^3.5.2",
     "next": "^13.4.10",
     "next-themes": "^0.2.1",
     "postcss": "8.4.24",
@@ -63,6 +66,7 @@
     "zod": "^3.21.4"
   },
   "devDependencies": {
-    "drizzle-kit": "^0.19.8"
+    "drizzle-kit": "^0.19.8",
+    "tsx": "^3.12.7"
   }
 }

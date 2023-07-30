@@ -18,6 +18,9 @@ export const healthEntities = mysqlTable("health_entities", {
     length: 100,
   }).notNull(),
   logoUrl: text("logo_url"),
+  address: text("address"),
+  phoneNumber: varchar("phone_number", { length: 20 }),
+  email: varchar("email", { length: 255 }),
 });
 
 export type HealthEntity = InferModel<typeof healthEntities>;
@@ -76,17 +79,17 @@ export const jobOffersRelations = relations(jobOffers, ({ one, many }) => ({
     fields: [jobOffers.healthEntityId],
     references: [healthEntities.id],
   }),
-  applications: many(jobOffers),
+  applications: many(jobApplication),
 }));
 
 export const jobApplication = mysqlTable("job_application", {
   id: varchar("id", {
     length: 36,
   }).primaryKey(),
-  jobOfferId: varchar("job_offer_id", { length: 36 }),
+  jobOfferId: varchar("job_offer_id", { length: 36 }).notNull(),
   userId: varchar("user_id", {
     length: 36,
-  }),
+  }).notNull(),
   createdDate: timestamp("created_date").notNull().defaultNow(),
 });
 

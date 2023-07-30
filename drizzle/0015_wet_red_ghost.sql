@@ -1,1 +1,0 @@
-ALTER TABLE `job_offers` MODIFY COLUMN `created_date` date NOT NULL;
