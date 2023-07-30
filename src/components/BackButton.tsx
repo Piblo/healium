@@ -14,10 +14,8 @@ export const BackButton = ({
   className,
 }: BackButtonProps) => {
   return (
-    // <Button variant="link" asChild>
-    <Link href={href} className={clsx("flex", className)}>
+    <Link href={href} className={clsx("flex text-sm", className)}>
       <ChevronLeft /> {children}
     </Link>
-    // </Button>
   );
 };

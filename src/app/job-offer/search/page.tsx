@@ -32,16 +32,18 @@ export default function SearchJobOffer({ searchParams }: SearchJobOfferProps) {
       <ul className="space-y-4">
         {data?.map((x) => (
           <li key={x.id}>
-            <JobOfferSummary
-              city={x.city ?? ""}
-              contractType={x.contractType ?? "full-time"}
-              createdDate={x.createdDate}
-              description={x.description ?? ""}
-              healthEntityName={x.healthEntity.name}
-              region={x.region ?? ""}
-              title={x.title}
-              logo={x.healthEntity.logoUrl}
-            />
+            <a href={`/job-offer/${x.id}`}>
+              <JobOfferSummary
+                city={x.city ?? ""}
+                contractType={x.contractType ?? "full-time"}
+                createdDate={x.createdDate}
+                description={x.description ?? ""}
+                healthEntityName={x.healthEntity.name}
+                region={x.region ?? ""}
+                title={x.title}
+                logo={x.healthEntity.logoUrl}
+              />
+            </a>
           </li>
         ))}
       </ul>

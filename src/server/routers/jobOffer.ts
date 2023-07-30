@@ -1,6 +1,7 @@
 import {
   createJobOffer,
   deleteJobOffer,
+  getJobOffer,
   getJobOffers,
   searchJobOffers,
 } from "../database/jobOfferRepository";
@@ -20,6 +21,15 @@ const createInput = z.object({
 });
 
 export const jobOfferRouter = router({
+  get: procedure
+    .input(
+      z.object({
+        jobOfferId: z.string(),
+      })
+    )
+    .query(({ input }) => {
+      return getJobOffer(input.jobOfferId);
+    }),
   create: protectedProcedure.input(createInput).mutation(async ({ input }) => {
     await createJobOffer({
       ...input,

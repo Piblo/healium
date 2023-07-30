@@ -16,6 +16,17 @@ export async function createJobOffer(request: CreateJobOfferRequest) {
   return jobOffer;
 }
 
+export async function getJobOffer(jobOfferId: string) {
+  const jobOffer = await db.query.jobOffers.findFirst({
+    with: {
+      healthEntity: true,
+    },
+    where: eq(jobOffers.id, jobOfferId),
+  });
+
+  return jobOffer;
+}
+
 export async function getJobOffers(healthEntityId: string) {
   return db.query.jobOffers.findMany({
     where: eq(jobOffers.healthEntityId, healthEntityId),

@@ -45,7 +45,7 @@ const RegionSearch: React.FC<RegionSearchProps> = ({
         </Button>
       </PopoverTrigger>
       <PopoverContent className="p-0 ">
-        <Command className="max-h-80">
+        <Command className="max-h-52 md:max-h-80">
           <CommandInput placeholder="Busca una provincia..." />
           <CommandEmpty>Provincia no encontrada</CommandEmpty>
           <CommandGroup className="overflow-auto">
