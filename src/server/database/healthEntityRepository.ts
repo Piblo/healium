@@ -44,12 +44,11 @@ export async function createHealthEntity(
 export async function updateHealthEntity(
   healthEntity: HealthEntity
 ): Promise<HealthEntity> {
+  const { id, ...updateValues } = healthEntity;
+
   await db
     .update(healthEntities)
-    .set({
-      logoUrl: healthEntity.logoUrl,
-      name: healthEntity.name,
-    })
+    .set(updateValues)
     .where(eq(healthEntities.id, healthEntity.id));
 
   return healthEntity;

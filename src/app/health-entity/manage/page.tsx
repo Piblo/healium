@@ -1,9 +1,10 @@
 import { Card, CardHeader } from "@/components/ui/card";
-import { FilePlus, FilePlus2, FileSearch, Pencil, Users2 } from "lucide-react";
+import { FilePlus2, FileSearch, Pencil, Users2 } from "lucide-react";
 
 import Image from "next/image";
 import Link from "next/link";
 import { cookies } from "next/headers";
+import { redirect } from "next/navigation";
 import { trpcServer } from "@/utils/trpcServer";
 
 export default async function ManageHealthEntity() {
@@ -13,7 +14,7 @@ export default async function ManageHealthEntity() {
   });
 
   if (!healthEntity) {
-    return null;
+    redirect("/health-entity/choose");
   }
 
   return (

@@ -7,6 +7,8 @@ import {
 } from "../database/jobOfferRepository";
 import { procedure, protectedProcedure, router } from "../trpc";
 
+import { TRPCError } from "@trpc/server";
+import { checkUserIsHealthEntityMember } from "../services/permissionsService";
 import { z } from "zod";
 
 const createInput = z.object({
@@ -31,6 +33,8 @@ export const jobOfferRouter = router({
       return getJobOffer(input.jobOfferId);
     }),
   create: protectedProcedure.input(createInput).mutation(async ({ input }) => {
+    await checkUserIsHealthEntityMember(input.healthEntityId);
+
     await createJobOffer({
       ...input,
       startDate: input.startDate ?? null,
@@ -58,7 +62,16 @@ export const jobOfferRouter = router({
         jobOfferId: z.string(),
       })
     )
-    .mutation(async ({ input }) => {
+    .mutation(async ({ input, ctx }) => {
+      const jobOffer = await getJobOffer(input.jobOfferId);
+      if (!jobOffer) {
+        throw new TRPCError({
+          code: "NOT_FOUND",
+        });
+      }
+
+      await checkUserIsHealthEntityMember(jobOffer.healthEntityId);
+
       await deleteJobOffer(input.jobOfferId);
     }),
 });

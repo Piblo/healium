@@ -6,8 +6,9 @@ import {
   removeMember,
   updateHealthEntity,
 } from "../database/healthEntityRepository";
-import { protectedProcedure, router } from "../trpc";
+import { isHealiumAdmin, procedure, protectedProcedure, router } from "../trpc";
 
+import { checkUserIsHealthEntityMember } from "../services/permissionsService";
 import { clerkClient } from "@clerk/nextjs";
 import { getBaseUrl } from "./_app";
 import { getPrimaryEmailAddress } from "../utils/user";
@@ -17,6 +18,9 @@ import { z } from "zod";
 const createHealthEntityInput = z.object({
   name: z.string(),
   logoUrl: z.string().nullable().default(null),
+  address: z.string(),
+  email: z.string().email(),
+  phoneNumber: z.string(),
 });
 
 const updateHealthEntityInput = createHealthEntityInput.extend({
@@ -25,6 +29,7 @@ const updateHealthEntityInput = createHealthEntityInput.extend({
 
 export const healthEntityRouter = router({
   create: protectedProcedure
+    .use(isHealiumAdmin)
     .input(createHealthEntityInput)
     .mutation(async ({ ctx, input }) => {
       const user = await clerkClient.users.getUser(ctx.auth.userId);
@@ -33,6 +38,9 @@ export const healthEntityRouter = router({
         healthEntity: {
           name: input.name,
           logoUrl: input.logoUrl,
+          address: input.address,
+          email: input.email,
+          phoneNumber: input.phoneNumber,
         },
         user: {
           email: user.emailAddresses.find(
@@ -44,10 +52,11 @@ export const healthEntityRouter = router({
     }),
   update: protectedProcedure
     .input(updateHealthEntityInput)
-    .mutation(({ input }) => {
+    .mutation(async ({ input }) => {
+      await checkUserIsHealthEntityMember(input.id);
       return updateHealthEntity(input);
     }),
-  get: protectedProcedure
+  get: procedure
     .input(
       z.object({
         healthEntityId: z.string(),
@@ -63,6 +72,7 @@ export const healthEntityRouter = router({
       })
     )
     .query(async ({ ctx, input }) => {
+      await checkUserIsHealthEntityMember(input.healthEntityId);
       const members = await getHealthEntityMembers(input.healthEntityId);
 
       const users = await clerkClient.users.getUserList({
@@ -92,7 +102,9 @@ export const healthEntityRouter = router({
       })
     )
     .mutation(async ({ input, ctx }) => {
-      const data = await clerkClient.invitations.createInvitation({
+      await checkUserIsHealthEntityMember(input.healthEntityId);
+
+      await clerkClient.invitations.createInvitation({
         emailAddress: input.emailAddress,
         redirectUrl: `${getBaseUrl()}/health-entity/${
           input.healthEntityId
@@ -144,6 +156,7 @@ export const healthEntityRouter = router({
       })
     )
     .mutation(async ({ input }) => {
+      await checkUserIsHealthEntityMember(input.healthEntityId);
       await removeMember(input);
     }),
 });

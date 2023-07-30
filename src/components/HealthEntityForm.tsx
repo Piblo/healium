@@ -10,6 +10,7 @@ import {
 import { Button } from "./ui/button";
 import Image from "next/image";
 import { Input } from "./ui/input";
+import { Textarea } from "./ui/textarea";
 import { UploadButton } from "./UploadButton";
 import { useForm } from "react-hook-form";
 import { useState } from "react";
@@ -71,6 +72,45 @@ export const HealthEntityForm = ({
             </FormItem>
           )}
         />
+        <FormField
+          control={form.control}
+          name="phoneNumber"
+          render={({ field }) => (
+            <FormItem>
+              <FormLabel>Teléfono de contacto</FormLabel>
+              <FormControl>
+                <Input inputMode="tel" {...field} />
+              </FormControl>
+              <FormMessage />
+            </FormItem>
+          )}
+        />
+        <FormField
+          control={form.control}
+          name="email"
+          render={({ field }) => (
+            <FormItem>
+              <FormLabel>Email</FormLabel>
+              <FormControl>
+                <Input inputMode="email" {...field} />
+              </FormControl>
+              <FormMessage />
+            </FormItem>
+          )}
+        />
+        <FormField
+          control={form.control}
+          name="address"
+          render={({ field }) => (
+            <FormItem>
+              <FormLabel>Dirección</FormLabel>
+              <FormControl>
+                <Textarea {...field} />
+              </FormControl>
+              <FormMessage />
+            </FormItem>
+          )}
+        />
         <FormItem>
           <FormLabel className="block">Logo</FormLabel>
           {logoUrl && <Image width="100" height="100" src={logoUrl} alt="" />}
@@ -95,8 +135,17 @@ export const HealthEntityForm = ({
 
 const schema = z.object({
   name: z.string({
-    required_error: "Introduce un nombre para la entidad sanitaria",
+    required_error: "Introduce un nombre",
   }),
+  address: z.string({
+    required_error: "Introduce una dirección",
+  }),
+  phoneNumber: z.string({ required_error: "Introduce un número de teléfono" }),
+  email: z
+    .string({
+      required_error: "Introduce un email de contacto",
+    })
+    .email("Introduce un email válido"),
 });
 
 type FormValues = z.infer<typeof schema>;

@@ -41,7 +41,13 @@ export default function EditHealthEntity() {
       {data ? (
         <HealthEntityForm
           onSubmit={handleSubmit}
-          values={data}
+          values={{
+            address: data.address ?? "",
+            email: data.email ?? "",
+            name: data.name,
+            phoneNumber: data.phoneNumber ?? "",
+            logoUrl: data.logoUrl,
+          }}
           isSubmitting={mutation.isLoading}
           submitButtonText="Guardar cambios"
         />
