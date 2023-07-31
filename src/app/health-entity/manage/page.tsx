@@ -5,11 +5,11 @@ import Image from "next/image";
 import Link from "next/link";
 import { cookies } from "next/headers";
 import { redirect } from "next/navigation";
-import { trpcServer } from "@/utils/trpcServer";
+import { trpc } from "@/trpc/server";
 
 export default async function ManageHealthEntity() {
   const healthEntityId = cookies().get("healthEntityId")?.value!;
-  const healthEntity = await trpcServer.healthEntity.get.query({
+  const healthEntity = await trpc.healthEntity.get.query({
     healthEntityId,
   });
 

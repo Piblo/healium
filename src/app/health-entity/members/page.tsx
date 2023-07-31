@@ -23,7 +23,7 @@ import { Button } from "@/components/ui/button";
 import { DialogClose } from "@radix-ui/react-dialog";
 import { InviteMember } from "@/components/InviteMember";
 import { getSelectedHealthEntityId } from "@/utils/healthEntity";
-import { trpc } from "@/utils/trpc";
+import { trpc } from "@/trpc/client";
 import { useState } from "react";
 
 export default function Members() {

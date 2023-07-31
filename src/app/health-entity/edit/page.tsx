@@ -8,7 +8,7 @@ import {
 import { BackButton } from "@/components/BackButton";
 import { Loader2 } from "lucide-react";
 import { getSelectedHealthEntityId } from "@/utils/healthEntity";
-import { trpc } from "@/utils/trpc";
+import { trpc } from "@/trpc/client";
 import { useToast } from "@/components/ui/use-toast";
 
 export default function EditHealthEntity() {

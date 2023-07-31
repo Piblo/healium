@@ -25,7 +25,7 @@ import RegionSearch from "@/components/RegionSearch";
 import { Textarea } from "@/components/ui/textarea";
 import { getContractTypeLabel } from "@/utils/contractType";
 import { getSelectedHealthEntityId } from "@/utils/healthEntity";
-import { trpc } from "@/utils/trpc";
+import { trpc } from "@/trpc/client";
 import { useForm } from "react-hook-form";
 import { useToast } from "@/components/ui/use-toast";
 import { z } from "zod";

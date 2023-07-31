@@ -3,7 +3,7 @@
 import { JobOfferSummary } from "@/components/JobOfferSummary";
 import { Loader2 } from "lucide-react";
 import { SearchOfferForm } from "@/components/SearchOfferForm";
-import { trpc } from "@/utils/trpc";
+import { trpc } from "@/trpc/client";
 
 type SearchJobOfferProps = {
   searchParams: {

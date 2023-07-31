@@ -3,7 +3,6 @@ import {
   DialogContent,
   DialogDescription,
   DialogFooter,
-  DialogHeader,
   DialogTitle,
   DialogTrigger,
 } from "./ui/dialog";
@@ -20,7 +19,7 @@ import { Button } from "./ui/button";
 import { DialogClose } from "@radix-ui/react-dialog";
 import { Input } from "./ui/input";
 import { getSelectedHealthEntityId } from "@/utils/healthEntity";
-import { trpc } from "@/utils/trpc";
+import { trpc } from "@/trpc/client";
 import { useForm } from "react-hook-form";
 import { useState } from "react";
 import { useToast } from "./ui/use-toast";

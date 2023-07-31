@@ -5,7 +5,7 @@ import { Inter } from "next/font/google";
 import { Nav } from "@/components/Nav";
 import { ThemeProvider } from "@/components/ThemeProvider";
 import { Toaster } from "@/components/ui/toaster";
-import { TrpcProvider } from "@/utils/TrcpProvider";
+import { TrpcProvider } from "@/trpc/TrcpProvider";
 import { esES } from "@clerk/localizations";
 
 const inter = Inter({ subsets: ["latin"] });

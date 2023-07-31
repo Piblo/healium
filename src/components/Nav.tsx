@@ -13,7 +13,7 @@ import { UserButton, useUser } from "@clerk/nextjs";
 
 import Link from "next/link";
 import { getSelectedHealthEntityId } from "@/utils/healthEntity";
-import { trpc } from "@/utils/trpc";
+import { trpc } from "@/trpc/client";
 
 export const Nav = () => {
   const { user, isSignedIn } = useUser();

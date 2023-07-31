@@ -2,7 +2,7 @@
 
 import { Button } from "@/components/ui/button";
 import { setCookie } from "cookies-next";
-import { trpc } from "@/utils/trpc";
+import { trpc } from "@/trpc/client";
 import { useRouter } from "next/navigation";
 
 type Props = {

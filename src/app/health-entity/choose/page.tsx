@@ -1,10 +1,9 @@
 "use client";
 
-import { Card, CardContent, CardHeader } from "@/components/ui/card";
-
+import { Card } from "@/components/ui/card";
 import Image from "next/image";
 import { setSelectedHealthEntityId } from "@/utils/healthEntity";
-import { trpc } from "@/utils/trpc";
+import { trpc } from "@/trpc/client";
 import { useRouter } from "next/navigation";
 
 export default function ChooseHealthEntity() {

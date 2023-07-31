@@ -5,7 +5,7 @@ import {
   HealthEntityFormValues,
 } from "@/components/HealthEntityForm";
 
-import { trpc } from "@/utils/trpc";
+import { trpc } from "@/trpc/client";
 import { useToast } from "@/components/ui/use-toast";
 
 export default function CreateHealthEntity() {

@@ -3,12 +3,13 @@ import { Clock, Mail, MapPin, Phone } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import Image from "next/image";
 import { Link } from "@/components/Link";
+import NextLink from "next/link";
 import { getContractTypeLabel } from "@/utils/contractType";
 import { notFound } from "next/navigation";
-import { trpcServer } from "@/utils/trpcServer";
+import { trpc } from "@/trpc/server";
 
 export default async function JobOffer({ params }: { params: { id: string } }) {
-  const jobOffer = await trpcServer.jobOffer.get.query({
+  const jobOffer = await trpc.jobOffer.get.query({
     jobOfferId: params.id,
   });
 
@@ -61,7 +62,11 @@ export default async function JobOffer({ params }: { params: { id: string } }) {
         </li>
       </ul>
       <p>{jobOffer.description}</p>
-      <Button>Solicitar puesto</Button>
+      <Button asChild>
+        <NextLink href={`/job-offer/${params.id}/apply`}>
+          Solicitar puesto
+        </NextLink>
+      </Button>
     </div>
   );
 }

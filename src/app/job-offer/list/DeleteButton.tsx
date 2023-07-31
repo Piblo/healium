@@ -12,7 +12,7 @@ import {
 
 import { Button } from "@/components/ui/button";
 import { DialogClose } from "@radix-ui/react-dialog";
-import { trpc } from "@/utils/trpc";
+import { trpc } from "@/trpc/client";
 
 export const DeleteButton = ({ jobOfferId }: { jobOfferId: string }) => {
   const mutation = trpc.jobOffer.delete.useMutation();

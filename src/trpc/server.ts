@@ -1,11 +1,11 @@
-import { auth, currentUser } from "@clerk/nextjs";
 import { createTRPCProxyClient, httpBatchLink } from "@trpc/client";
 
 import { AppRouter } from "@/server/routers/_app";
 import SuperJSON from "superjson";
-import { getBaseUrl } from "./getBaseUrl";
+import { auth } from "@clerk/nextjs";
+import { getBaseUrl } from "@/utils/getBaseUrl";
 
-export const trpcServer = createTRPCProxyClient<AppRouter>({
+export const trpc = createTRPCProxyClient<AppRouter>({
   links: [
     httpBatchLink({
       url: `${getBaseUrl()}/api/trpc`,

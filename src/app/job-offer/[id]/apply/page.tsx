@@ -1,3 +1,39 @@
-export default function Apply() {
-  return <div className="container"></div>;
+import { Button } from "@/components/ui/button";
+import { JobOfferSummary } from "@/components/JobOfferSummary";
+import { notFound } from "next/navigation";
+import { trpc } from "@/trpc/server";
+
+export default async function Apply({ params }: { params: { id: string } }) {
+  const jobOffer = await trpc.jobOffer.get.query({
+    jobOfferId: params.id,
+  });
+
+  if (!jobOffer) {
+    notFound();
+  }
+
+  return (
+    <div className="container py-6 max-w-xl space-y-6">
+      <h1 className="text-xl">Confirmar solicitud de empleo</h1>
+      <JobOfferSummary
+        city={jobOffer.city ?? ""}
+        contractType={jobOffer.contractType ?? "full-time"}
+        createdDate={jobOffer.createdDate}
+        description={jobOffer.description ?? ""}
+        healthEntityName={jobOffer.healthEntity.name}
+        region={jobOffer.region ?? ""}
+        title={jobOffer.title}
+        logo={jobOffer.healthEntity.logoUrl}
+      />
+      <p>
+        ¿Estás seguro de que deseas solicitar este puesto de trabajo? Una vez
+        que envíes tu solicitud, el centro de salud recibirá tu perfil y se
+        considerará como una postulación oficial.
+      </p>
+      <div className="flex flex-col sm:flex-row gap-4 justify-between">
+        <Button variant="secondary">Volver a la oferta de trabajo</Button>
+        <Button>Confirmar solicitud</Button>
+      </div>
+    </div>
+  );
 }

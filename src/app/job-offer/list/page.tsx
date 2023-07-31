@@ -2,12 +2,12 @@ import { BackButton } from "@/components/BackButton";
 import { DeleteButton } from "./DeleteButton";
 import { JobOfferSummary } from "@/components/JobOfferSummary";
 import { cookies } from "next/headers";
-import { trpcServer } from "@/utils/trpcServer";
+import { trpc } from "@/trpc/server";
 
 export default async function ListJobOffers() {
   const healthEntityId = cookies().get("healthEntityId")?.value!;
 
-  const jobOffers = await trpcServer.jobOffer.healthEntityJobOffers.query({
+  const jobOffers = await trpc.jobOffer.healthEntityJobOffers.query({
     healthEntityId: healthEntityId,
   });
 
