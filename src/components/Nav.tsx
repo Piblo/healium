@@ -33,32 +33,40 @@ export const Nav = () => {
               </NavigationMenuLink>
             </Link>
           </NavigationMenuItem>
-          <NavigationMenuItem>
-            <NavigationMenuTrigger>Menu</NavigationMenuTrigger>
-            <NavigationMenuContent className="flex flex-col">
-              {!!user?.publicMetadata.healiumAdmin && (
-                <Link href="/health-entity/create" legacyBehavior passHref>
-                  <NavigationMenuLink className={navigationMenuTriggerStyle()}>
-                    Crear entidad sanitaria
-                  </NavigationMenuLink>
-                </Link>
-              )}
-              {selectedHealthEntityId && (
-                <Link href="/health-entity/manage" legacyBehavior passHref>
-                  <NavigationMenuLink className={navigationMenuTriggerStyle()}>
-                    Administrar entidad sanitaria
-                  </NavigationMenuLink>
-                </Link>
-              )}
-              {data?.length && data.length > 1 ? (
-                <Link href="/health-entity/choose" legacyBehavior passHref>
-                  <NavigationMenuLink className={navigationMenuTriggerStyle()}>
-                    Elegir entidad sanitaria
-                  </NavigationMenuLink>
-                </Link>
-              ) : null}
-            </NavigationMenuContent>
-          </NavigationMenuItem>
+          {isSignedIn && (
+            <NavigationMenuItem>
+              <NavigationMenuTrigger>Menu</NavigationMenuTrigger>
+              <NavigationMenuContent className="flex flex-col">
+                {!!user?.publicMetadata.healiumAdmin && (
+                  <Link href="/health-entity/create" legacyBehavior passHref>
+                    <NavigationMenuLink
+                      className={navigationMenuTriggerStyle()}
+                    >
+                      Crear entidad sanitaria
+                    </NavigationMenuLink>
+                  </Link>
+                )}
+                {selectedHealthEntityId && (
+                  <Link href="/health-entity/manage" legacyBehavior passHref>
+                    <NavigationMenuLink
+                      className={navigationMenuTriggerStyle()}
+                    >
+                      Administrar entidad sanitaria
+                    </NavigationMenuLink>
+                  </Link>
+                )}
+                {data?.length && data.length > 1 ? (
+                  <Link href="/health-entity/choose" legacyBehavior passHref>
+                    <NavigationMenuLink
+                      className={navigationMenuTriggerStyle()}
+                    >
+                      Elegir entidad sanitaria
+                    </NavigationMenuLink>
+                  </Link>
+                ) : null}
+              </NavigationMenuContent>
+            </NavigationMenuItem>
+          )}
         </NavigationMenuList>
       </div>
       <NavigationMenuList>

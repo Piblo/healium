@@ -9,6 +9,7 @@ export const userRouter = router({
       .select({
         id: healthEntities.id,
         name: healthEntities.name,
+        logoUrl: healthEntities.logoUrl,
       })
       .from(healthEntities)
       .innerJoin(
