@@ -9,6 +9,8 @@ import { procedure, protectedProcedure, router } from "../trpc";
 
 import { TRPCError } from "@trpc/server";
 import { checkUserIsHealthEntityMember } from "../services/permissionsService";
+import { createJobApplication } from "../database/jobApplicationRepository";
+import { currentUser } from "@clerk/nextjs";
 import { z } from "zod";
 
 const createInput = z.object({
@@ -73,5 +75,17 @@ export const jobOfferRouter = router({
       await checkUserIsHealthEntityMember(jobOffer.healthEntityId);
 
       await deleteJobOffer(input.jobOfferId);
+    }),
+  apply: protectedProcedure
+    .input(
+      z.object({
+        jobOfferId: z.string(),
+      })
+    )
+    .mutation(async ({ input, ctx }) => {
+      await createJobApplication({
+        jobOfferId: input.jobOfferId,
+        userId: ctx.auth.userId,
+      });
     }),
 });

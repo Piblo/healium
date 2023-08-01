@@ -1,3 +1,4 @@
+import { ApplyButton } from "./ApplyButton";
 import { Button } from "@/components/ui/button";
 import { JobOfferSummary } from "@/components/JobOfferSummary";
 import { notFound } from "next/navigation";
@@ -32,7 +33,7 @@ export default async function Apply({ params }: { params: { id: string } }) {
       </p>
       <div className="flex flex-col sm:flex-row gap-4 justify-between">
         <Button variant="secondary">Volver a la oferta de trabajo</Button>
-        <Button>Confirmar solicitud</Button>
+        <ApplyButton jobOfferId={params.id} />
       </div>
     </div>
   );

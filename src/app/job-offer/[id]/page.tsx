@@ -18,7 +18,7 @@ export default async function JobOffer({ params }: { params: { id: string } }) {
   }
 
   return (
-    <div className="container py-4 space-y-4">
+    <div className="container py-4 space-y-4 max-w-4xl">
       {jobOffer.healthEntity.logoUrl && (
         <Image
           src={jobOffer.healthEntity.logoUrl}

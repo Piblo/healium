@@ -79,23 +79,34 @@ export const jobOffersRelations = relations(jobOffers, ({ one, many }) => ({
     fields: [jobOffers.healthEntityId],
     references: [healthEntities.id],
   }),
-  applications: many(jobApplication),
+  applications: many(jobApplications),
 }));
 
-export const jobApplication = mysqlTable("job_application", {
-  id: varchar("id", {
-    length: 36,
-  }).primaryKey(),
-  jobOfferId: varchar("job_offer_id", { length: 36 }).notNull(),
-  userId: varchar("user_id", {
-    length: 36,
-  }).notNull(),
-  createdDate: timestamp("created_date").notNull().defaultNow(),
-});
+export const jobApplications = mysqlTable(
+  "job_applications",
+  {
+    jobOfferId: varchar("job_offer_id", { length: 36 }).notNull(),
+    userId: varchar("user_id", {
+      length: 36,
+    }).notNull(),
+    createdDate: timestamp("created_date").notNull().defaultNow(),
+  },
+  (table) => {
+    return {
+      pk: primaryKey(table.userId, table.jobOfferId),
+    };
+  }
+);
 
-export const jobApplicationRelations = relations(jobApplication, ({ one }) => ({
-  jobOffer: one(jobOffers, {
-    fields: [jobApplication.jobOfferId],
-    references: [jobOffers.id],
-  }),
-}));
+export type JobApplication = InferModel<typeof jobApplications>;
+export type CreateJobApplication = InferModel<typeof jobApplications, "insert">;
+
+export const jobApplicationRelations = relations(
+  jobApplications,
+  ({ one }) => ({
+    jobOffer: one(jobOffers, {
+      fields: [jobApplications.jobOfferId],
+      references: [jobOffers.id],
+    }),
+  })
+);
