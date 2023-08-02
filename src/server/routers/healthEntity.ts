@@ -11,6 +11,7 @@ import { isHealiumAdmin, procedure, protectedProcedure, router } from "../trpc";
 import { checkUserIsHealthEntityMember } from "../services/permissionsService";
 import { clerkClient } from "@clerk/nextjs";
 import { getBaseUrl } from "./_app";
+import { getJobApplicationsForHealthEntity } from "../database/jobApplicationRepository";
 import { getPrimaryEmailAddress } from "../utils/user";
 import { healthEntityUsers } from "../database/schema";
 import { z } from "zod";
@@ -158,5 +159,38 @@ export const healthEntityRouter = router({
     .mutation(async ({ input }) => {
       await checkUserIsHealthEntityMember(input.healthEntityId);
       await removeMember(input);
+    }),
+  jobApplications: protectedProcedure
+    .input(z.object({ healthEntityId: z.string() }))
+    .query(async ({ input }) => {
+      await checkUserIsHealthEntityMember(input.healthEntityId);
+
+      const applications = await getJobApplicationsForHealthEntity(
+        input.healthEntityId
+      );
+      const userIds = applications.map((x) => x.jobApplication.userId);
+
+      const users = await clerkClient.users.getUserList({
+        userId: userIds,
+      });
+
+      return applications.map((application) => {
+        const user = users.find(
+          (user) => user.id === application.jobApplication.userId
+        );
+
+        return {
+          user: {
+            name: `${user?.firstName} ${user?.lastName}`,
+            email: user?.emailAddresses.find(
+              (x) => x.id === user.primaryEmailAddressId
+            )?.emailAddress,
+            phoneNumber: user?.phoneNumbers.find(
+              (x) => x.id === user.primaryPhoneNumberId
+            )?.phoneNumber,
+          },
+          jobOffer: application.jobOffer,
+        };
+      });
     }),
 });
