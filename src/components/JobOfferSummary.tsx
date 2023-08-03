@@ -1,7 +1,8 @@
+import { Briefcase, MapPin } from "lucide-react";
+
 import { Card } from "./ui/card";
 import { ContractType } from "@/app/job-offer/create/page";
 import Image from "next/image";
-import { MapPin } from "lucide-react";
 import { PropsWithChildren } from "react";
 import dayjs from "dayjs";
 import es from "dayjs/locale/es";
@@ -35,32 +36,39 @@ export const JobOfferSummary = ({
 }: JobOfferSummary) => {
   return (
     <Card className="p-4">
-      <div className="flex space-x-4">
-        {logo && (
-          <Image
-            src={logo}
-            alt=""
-            width="80"
-            height="80"
-            className="rounded self-start w-[60px] h-[60px] md:w-[80px] md:h-[80px]"
-          />
-        )}
-        <div className="flex-1">
-          <div className="text-xl font-bold">{healthEntityName}</div>
-          <div className="mb-4 text-sm space-x-2">
-            <span>{dayjs(createdDate).fromNow()}</span>
-            <span> &#8226;</span>
-            <span>
-              {contractType ? getContractTypeLabel(contractType) : null}
-            </span>
+      <div className="space-y-4">
+        <div className="flex gap-4">
+          {logo && (
+            <Image
+              src={logo}
+              alt=""
+              width="80"
+              height="80"
+              className="rounded self-start w-[60px] h-[60px] md:w-[80px] md:h-[80px]"
+            />
+          )}
+          <div className="flex-1">
+            <p className="text-xl font-bold">{healthEntityName}</p>
+            <p>{title}</p>
           </div>
-          <div className="text-neutral-500 mb-4 line-clamp-3">
-            {description}
-          </div>
-          <div className="dark:text-neutral-300 flex items-center text-sm">
-            <MapPin size={16} className="mr-1" /> {city} ({region})
+          <div className="hidden md:inline text-sm text-neutral-500">
+            <span className="hidden md:inline">Publicado</span>{" "}
+            {dayjs(createdDate).fromNow()}
           </div>
         </div>
+        <div className="md:hidden text-sm text-neutral-500">
+          {dayjs(createdDate).fromNow()}
+        </div>
+        <p className="text-neutral-500 mb-4 line-clamp-3">{description}</p>
+        <ul className="dark:text-neutral-300 text-sm flex gap-8">
+          <li className="flex items-center">
+            <MapPin size={16} className="mr-1" /> {city} ({region})
+          </li>
+          <li className="flex items-center">
+            <Briefcase size={16} className="mr-1" />{" "}
+            {getContractTypeLabel(contractType)}
+          </li>
+        </ul>
       </div>
       {children}
     </Card>
