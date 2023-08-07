@@ -1,6 +1,7 @@
 import { ApplyButton } from "./ApplyButton";
 import { Button } from "@/components/ui/button";
 import { JobOfferSummary } from "@/components/JobOfferSummary";
+import Link from "next/link";
 import { notFound } from "next/navigation";
 import { trpc } from "@/trpc/server";
 
@@ -32,7 +33,11 @@ export default async function Apply({ params }: { params: { id: string } }) {
         considerará como una postulación oficial.
       </p>
       <div className="flex flex-col sm:flex-row gap-4 justify-between">
-        <Button variant="secondary">Volver a la oferta de trabajo</Button>
+        <Button variant="secondary" asChild>
+          <Link href={`/job-offer/${params.id}`}>
+            Volver a la oferta de trabajo
+          </Link>
+        </Button>
         <ApplyButton jobOfferId={params.id} />
       </div>
     </div>
