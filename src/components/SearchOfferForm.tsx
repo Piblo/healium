@@ -25,10 +25,10 @@ export const SearchOfferForm = ({ className }: SearchOfferFormProps) => {
   const router = useRouter();
 
   function onSubmit(values: FormValues) {
+    const region = values.region === "Toda España" ? "" : values.region;
+
     router.push(
-      `/job-offer/search?search=${values.search ?? ""}&region=${
-        values.region ?? ""
-      }`
+      `/job-offer/search?search=${values.search ?? ""}&region=${region ?? ""}`
     );
   }
 
