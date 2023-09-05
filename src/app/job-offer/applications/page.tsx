@@ -1,0 +1,26 @@
+import { JobOfferSummary } from "@/components/JobOfferSummary";
+import { getContractTypeLabel } from "@/utils/contractType";
+import { trpc } from "@/trpc/server";
+
+export default async function Applications() {
+  const jobApplications = await trpc.user.applications.query();
+
+  return (
+    <div className="container py-4">
+      <h1 className="text-xl mb-4">Solicitudes de empleo</h1>
+      {jobApplications.map((x) => (
+        <JobOfferSummary
+          key={x.jobOfferId}
+          city={x.jobOffer.city ?? ""}
+          contractType={x.jobOffer.contractType ?? "full-time"}
+          createdDate={x.jobOffer.createdDate}
+          description={x.jobOffer.description ?? ""}
+          healthEntityName={x.jobOffer.healthEntity.name}
+          region={x.jobOffer.region ?? ""}
+          title={x.jobOffer.title}
+          logo={x.jobOffer.healthEntity.logoUrl}
+        />
+      ))}
+    </div>
+  );
+}

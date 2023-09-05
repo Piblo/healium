@@ -11,12 +11,13 @@ export default function ChooseHealthEntity() {
   const router = useRouter();
 
   return (
-    <div className="container py-6">
+    <div className="container py-4 max-w-lg">
       <h1 className="text-xl mb-4">Elige una entidad sanitaria</h1>
-      <ul className="space-y-2">
+      <ul className="space-y-2 flex flex-col gap-2">
         {data?.map((x) => (
           <li key={x.id}>
             <button
+              className="w-full"
               onClick={() => {
                 setSelectedHealthEntityId(x.id);
                 router.push("/health-entity/manage");

@@ -2,6 +2,7 @@ import { healthEntities, healthEntityUsers } from "../database/schema";
 import { protectedProcedure, router } from "../trpc";
 
 import { eq } from "drizzle-orm";
+import { getJobApplicationsForUser } from "../database/jobApplicationRepository";
 
 export const userRouter = router({
   healthEntities: protectedProcedure.query(async ({ ctx }) => {
@@ -17,5 +18,8 @@ export const userRouter = router({
         eq(healthEntities.id, healthEntityUsers.healthEntityId)
       )
       .where(eq(healthEntityUsers.userId, ctx.auth.userId));
+  }),
+  applications: protectedProcedure.query(async ({ ctx }) => {
+    return await getJobApplicationsForUser(ctx.auth.userId);
   }),
 });

@@ -21,6 +21,9 @@ export const healthEntities = mysqlTable("health_entities", {
   address: text("address"),
   phoneNumber: varchar("phone_number", { length: 20 }),
   email: varchar("email", { length: 255 }),
+  registrationNumber: varchar("registration_number", {
+    length: 100,
+  }),
 });
 
 export type HealthEntity = InferModel<typeof healthEntities>;

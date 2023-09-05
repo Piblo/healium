@@ -20,6 +20,8 @@ export const Nav = () => {
   const { data } = trpc.user.healthEntities.useQuery(undefined, {
     enabled: isSignedIn,
   });
+
+  const isHealthEntityAdmin = Boolean(user?.publicMetadata.healthEntityAdmin);
   const selectedHealthEntityId = getSelectedHealthEntityId();
 
   return (
@@ -37,6 +39,11 @@ export const Nav = () => {
             <NavigationMenuItem>
               <NavigationMenuTrigger>Menu</NavigationMenuTrigger>
               <NavigationMenuContent className="flex flex-col">
+                <Link href="/job-offer/applications" legacyBehavior passHref>
+                  <NavigationMenuLink className={navigationMenuTriggerStyle()}>
+                    Mis solicitudes
+                  </NavigationMenuLink>
+                </Link>
                 {!!user?.publicMetadata.healiumAdmin && (
                   <Link href="/health-entity/create" legacyBehavior passHref>
                     <NavigationMenuLink
@@ -46,7 +53,7 @@ export const Nav = () => {
                     </NavigationMenuLink>
                   </Link>
                 )}
-                {selectedHealthEntityId && (
+                {isHealthEntityAdmin && selectedHealthEntityId && (
                   <Link href="/health-entity/manage" legacyBehavior passHref>
                     <NavigationMenuLink
                       className={navigationMenuTriggerStyle()}

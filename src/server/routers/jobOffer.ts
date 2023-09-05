@@ -55,7 +55,8 @@ export const jobOfferRouter = router({
     }),
   healthEntityJobOffers: protectedProcedure
     .input(z.object({ healthEntityId: z.string() }))
-    .query(({ input }) => {
+    .query(async ({ input }) => {
+      await checkUserIsHealthEntityMember(input.healthEntityId);
       return getJobOffers(input.healthEntityId);
     }),
   delete: protectedProcedure

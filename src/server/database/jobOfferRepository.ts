@@ -1,5 +1,11 @@
-import { CreateJobOffer, JobOffer, jobOffers } from "./schema";
-import { SQL, and, eq, like } from "drizzle-orm";
+import {
+  CreateJobOffer,
+  JobOffer,
+  healthEntities,
+  jobApplications,
+  jobOffers,
+} from "./schema";
+import { SQL, and, eq, like, sql } from "drizzle-orm";
 
 import { db } from "./connection";
 import { ulid } from "ulid";
@@ -28,13 +34,18 @@ export async function getJobOffer(jobOfferId: string) {
 }
 
 export async function getJobOffers(healthEntityId: string) {
-  return db.query.jobOffers.findMany({
-    where: eq(jobOffers.healthEntityId, healthEntityId),
-    with: {
-      healthEntity: true,
-    },
-    orderBy: (jobOffer, { desc }) => desc(jobOffer.createdDate),
-  });
+  const results = await db
+    .select({
+      jobOffer: jobOffers,
+      applicationsCount: sql<number>`count(${jobApplications.userId})`,
+    })
+    .from(jobOffers)
+    .innerJoin(healthEntities, eq(healthEntities.id, jobOffers.healthEntityId))
+    .leftJoin(jobApplications, eq(jobApplications.jobOfferId, jobOffers.id))
+    .groupBy(jobApplications.jobOfferId, jobOffers.id)
+    .where(eq(healthEntities.id, healthEntityId));
+
+  return results;
 }
 
 type SearchJobOffersRequest = {

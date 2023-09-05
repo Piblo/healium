@@ -31,3 +31,19 @@ export async function getJobApplicationsForHealthEntity(
 
   return offers;
 }
+
+export async function getJobApplicationsForUser(userId: string) {
+  const offers = await db.query.jobApplications.findMany({
+    where: eq(jobApplications.userId, userId),
+    with: {
+      jobOffer: {
+        with: {
+          healthEntity: true,
+        },
+      },
+    },
+    limit: 10,
+  });
+
+  return offers;
+}
