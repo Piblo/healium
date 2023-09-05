@@ -13,7 +13,7 @@ export default function CreateHealthEntity() {
   const { toast } = useToast();
 
   async function handleSubmit(values: HealthEntityFormValues) {
-    await mutation.mutateAsync(values);
+    await mutation.mutateAsync({ ...values, registrationNumber: "" });
     toast({
       title: "Entidad sanitaria creada correctamente",
     });

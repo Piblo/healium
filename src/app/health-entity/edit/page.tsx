@@ -30,6 +30,7 @@ export default function EditHealthEntity() {
   function handleSubmit(values: HealthEntityFormValues) {
     mutation.mutate({
       id: healthEntityId,
+      registrationNumber: "",
       ...values,
     });
   }

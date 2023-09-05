@@ -22,6 +22,7 @@ const createHealthEntityInput = z.object({
   address: z.string(),
   email: z.string().email(),
   phoneNumber: z.string(),
+  registrationNumber: z.string(),
 });
 
 const updateHealthEntityInput = createHealthEntityInput.extend({
@@ -42,6 +43,7 @@ export const healthEntityRouter = router({
           address: input.address,
           email: input.email,
           phoneNumber: input.phoneNumber,
+          registrationNumber: "",
         },
         user: {
           email: user.emailAddresses.find(
