@@ -54,8 +54,11 @@ export const jobOfferRouter = router({
         region: z.string().optional(),
       })
     )
-    .query(({ input }) => {
-      return searchJobOffers(input);
+    .query(({ input, ctx }) => {
+      return searchJobOffers({
+        ...input,
+        userId: ctx.auth.userId,
+      });
     }),
   healthEntityJobOffers: protectedProcedure
     .input(z.object({ healthEntityId: z.string() }))

@@ -27,8 +27,12 @@ export async function updateJobOffer(request: UpdateJobOfferRequest) {
   await db
     .update(jobOffers)
     .set(request)
-    .where(eq(jobOffers.id, request.id))
-    .where(eq(jobOffers.healthEntityId, request.healthEntityId));
+    .where(
+      and(
+        eq(jobOffers.id, request.id),
+        eq(jobOffers.healthEntityId, request.healthEntityId)
+      )
+    );
 }
 
 export async function getJobOffer(jobOfferId: string) {
@@ -60,6 +64,7 @@ export async function getJobOffers(healthEntityId: string) {
 type SearchJobOffersRequest = {
   search?: string;
   region?: string;
+  userId?: string | null;
 };
 
 export async function searchJobOffers(request: SearchJobOffersRequest) {
@@ -78,6 +83,12 @@ export async function searchJobOffers(request: SearchJobOffersRequest) {
     limit: 10,
     with: {
       healthEntity: true,
+      applications: request.userId
+        ? {
+            limit: 1,
+            where: eq(jobApplications.userId, request.userId),
+          }
+        : undefined,
     },
     orderBy: (jobOffer, { desc }) => desc(jobOffer.createdDate),
   });

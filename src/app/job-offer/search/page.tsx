@@ -42,6 +42,7 @@ export default function SearchJobOffer({ searchParams }: SearchJobOfferProps) {
                 region={x.region ?? ""}
                 title={x.title}
                 logo={x.healthEntity.logoUrl}
+                hasApplied={x.applications?.length > 0}
               />
             </a>
           </li>

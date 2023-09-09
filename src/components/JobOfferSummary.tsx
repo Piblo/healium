@@ -1,6 +1,7 @@
 import { Briefcase, MapPin } from "lucide-react";
 import { ContractType, getContractTypeLabel } from "@/utils/contractType";
 
+import { Badge } from "./ui/badge";
 import { Card } from "./ui/card";
 import Image from "next/image";
 import { PropsWithChildren } from "react";
@@ -20,6 +21,7 @@ type JobOfferSummary = {
   contractType: ContractType;
   city: string;
   region: string;
+  hasApplied?: boolean;
 } & PropsWithChildren;
 
 export const JobOfferSummary = ({
@@ -32,6 +34,7 @@ export const JobOfferSummary = ({
   city,
   region,
   children,
+  hasApplied,
 }: JobOfferSummary) => {
   return (
     <Card className="p-4">
@@ -50,15 +53,15 @@ export const JobOfferSummary = ({
             <p className="text-xl font-bold">{healthEntityName}</p>
             <p>{title}</p>
           </div>
-          <div className="hidden md:inline text-sm text-neutral-500">
+          <div className="hidden md:inline text-sm text-muted-foreground">
             <span className="hidden md:inline">Publicado</span>{" "}
             {dayjs(createdDate).fromNow()}
           </div>
         </div>
-        <div className="md:hidden text-sm text-neutral-500">
+        <div className="md:hidden text-sm text-muted-foreground">
           {dayjs(createdDate).fromNow()}
         </div>
-        <p className="text-neutral-500 mb-4 line-clamp-3">{description}</p>
+        <p className="text-muted-foreground mb-4 line-clamp-3">{description}</p>
         <ul className="dark:text-neutral-300 text-sm flex gap-8">
           <li className="flex items-center">
             <MapPin size={16} className="mr-1" /> {city} ({region})
@@ -67,6 +70,11 @@ export const JobOfferSummary = ({
             <Briefcase size={16} className="mr-1" />{" "}
             {getContractTypeLabel(contractType)}
           </li>
+          {hasApplied && (
+            <li>
+              <Badge>Puesto solicitado</Badge>
+            </li>
+          )}
         </ul>
       </div>
       {children}
