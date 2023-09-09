@@ -38,7 +38,11 @@ export default function CreateJobOffer() {
     <div className="container py-4 max-w-lg">
       <BackButton href="/health-entity/manage" className="mb-4" />
       <h1 className="text-2xl mb-8">Crear nueva oferta</h1>
-      <JobOfferForm onSubmit={onSubmit} isSubmitting={mutation.isLoading} />
+      <JobOfferForm
+        onSubmit={onSubmit}
+        isSubmitting={mutation.isLoading}
+        submitButtonLabel="Crear oferta de trabajo"
+      />
     </div>
   );
 }

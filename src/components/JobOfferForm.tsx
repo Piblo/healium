@@ -29,12 +29,14 @@ type JobOfferFormProps = {
   onSubmit: (values: JobOfferFormValues) => void;
   isSubmitting?: boolean;
   values?: JobOfferFormValues;
+  submitButtonLabel: string;
 };
 
 export const JobOfferForm = ({
   onSubmit,
   isSubmitting,
   values,
+  submitButtonLabel,
 }: JobOfferFormProps) => {
   const form = useForm<JobOfferFormValues>({
     resolver: zodResolver(schema),
@@ -170,7 +172,7 @@ export const JobOfferForm = ({
         )}
 
         <Button className="mt-4" type="submit" loading={isSubmitting}>
-          Crear oferta
+          {submitButtonLabel}
         </Button>
       </form>
     </Form>

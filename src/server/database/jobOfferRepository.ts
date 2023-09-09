@@ -24,7 +24,11 @@ export async function createJobOffer(request: CreateJobOfferRequest) {
 }
 
 export async function updateJobOffer(request: UpdateJobOfferRequest) {
-  await db.update(jobOffers).set(request).where(eq(jobOffers.id, request.id));
+  await db
+    .update(jobOffers)
+    .set(request)
+    .where(eq(jobOffers.id, request.id))
+    .where(eq(jobOffers.healthEntityId, request.healthEntityId));
 }
 
 export async function getJobOffer(jobOfferId: string) {

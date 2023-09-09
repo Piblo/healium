@@ -61,6 +61,7 @@ export default function EditJobOffer({ params }: Props) {
             region: data.region ?? "",
             title: data.title,
           }}
+          submitButtonLabel="Editar oferta de trabajo"
         />
       )}
     </div>
