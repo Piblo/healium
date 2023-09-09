@@ -19,9 +19,7 @@ export const DeleteButton = ({ jobOfferId }: { jobOfferId: string }) => {
 
   return (
     <Dialog>
-      <DialogTrigger asChild>
-        <Button variant="outline">Borrar</Button>
-      </DialogTrigger>
+      <DialogTrigger>Borrar</DialogTrigger>
       <DialogContent>
         <DialogHeader>
           <DialogTitle>¿Borrar oferta de trabajo?</DialogTitle>

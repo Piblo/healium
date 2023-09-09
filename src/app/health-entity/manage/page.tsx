@@ -32,11 +32,11 @@ export default async function ManageHealthEntity() {
         <h1 className="text-2xl">{healthEntity.name}</h1>
       </div>
       <div className="grid gap-4 grid-cols-1 sm:grid-cols-2 md:grid-cols-3">
-        <Link href={`/health-entity/applications`}>
+        <Link href="/job-offer/list">
           <Card>
             <CardHeader className="flex flex-row gap-4">
-              <FilePlus2 />
-              Ver solicitudes de empleo
+              <FileSearch />
+              Ver ofertas publicadas
             </CardHeader>
           </Card>
         </Link>
@@ -45,14 +45,6 @@ export default async function ManageHealthEntity() {
             <CardHeader className="flex flex-row gap-4">
               <FilePlus2 />
               Crear oferta
-            </CardHeader>
-          </Card>
-        </Link>
-        <Link href="/job-offer/list">
-          <Card>
-            <CardHeader className="flex flex-row gap-4">
-              <FileSearch />
-              Ver ofertas publicadas
             </CardHeader>
           </Card>
         </Link>
