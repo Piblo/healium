@@ -1,11 +1,10 @@
 import { Briefcase, MapPin } from "lucide-react";
+import { ContractType, getContractTypeLabel } from "@/utils/contractType";
 
 import { BackButton } from "@/components/BackButton";
-import { ContractType } from "@/components/JobOfferForm";
 import { JobOfferDropdownMenu } from "./JobOfferDropdownMenu";
 import { cookies } from "next/headers";
 import dayjs from "dayjs";
-import { getContractTypeLabel } from "@/utils/contractType";
 import { trpc } from "@/trpc/server";
 
 export default async function ListJobOffers() {

@@ -210,4 +210,3 @@ const schema = z.object({
 });
 
 export type JobOfferFormValues = z.infer<typeof schema>;
-export type ContractType = JobOfferFormValues["contract"]["type"];

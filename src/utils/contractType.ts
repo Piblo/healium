@@ -1,4 +1,4 @@
-import { ContractType } from "@/app/job-offer/create/page";
+export type ContractType = "full-time" | "part-time" | "fixed-term";
 
 const contractTypeMap: Record<ContractType, string> = {
   "fixed-term": "Temporal",

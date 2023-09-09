@@ -1,12 +1,11 @@
 import { Briefcase, MapPin } from "lucide-react";
+import { ContractType, getContractTypeLabel } from "@/utils/contractType";
 
 import { Card } from "./ui/card";
-import { ContractType } from "@/app/job-offer/create/page";
 import Image from "next/image";
 import { PropsWithChildren } from "react";
 import dayjs from "dayjs";
 import es from "dayjs/locale/es";
-import { getContractTypeLabel } from "@/utils/contractType";
 import relativeTime from "dayjs/plugin/relativeTime";
 
 dayjs.locale(es);
