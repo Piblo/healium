@@ -1,4 +1,4 @@
-import { InferModel, relations } from "drizzle-orm";
+import { InferInsertModel, InferSelectModel, relations } from "drizzle-orm";
 import {
   date,
   datetime,
@@ -26,7 +26,7 @@ export const healthEntities = mysqlTable("health_entities", {
   }),
 });
 
-export type HealthEntity = InferModel<typeof healthEntities>;
+export type HealthEntity = InferSelectModel<typeof healthEntities>;
 
 export const healthEntityRelations = relations(healthEntities, ({ many }) => ({
   jobOffers: many(jobOffers),
@@ -53,7 +53,7 @@ export const healthEntityUsers = mysqlTable(
   })
 );
 
-export type HealthEntityUser = InferModel<typeof healthEntityUsers>;
+export type HealthEntityUser = InferSelectModel<typeof healthEntityUsers>;
 
 export const jobOffers = mysqlTable("job_offers", {
   id: varchar("id", {
@@ -74,8 +74,8 @@ export const jobOffers = mysqlTable("job_offers", {
   createdDate: timestamp("created_date").notNull().defaultNow(),
 });
 
-export type JobOffer = InferModel<typeof jobOffers>;
-export type CreateJobOffer = InferModel<typeof jobOffers, "insert">;
+export type JobOffer = InferSelectModel<typeof jobOffers>;
+export type CreateJobOffer = InferInsertModel<typeof jobOffers>;
 
 export const jobOffersRelations = relations(jobOffers, ({ one, many }) => ({
   healthEntity: one(healthEntities, {
@@ -101,8 +101,8 @@ export const jobApplications = mysqlTable(
   }
 );
 
-export type JobApplication = InferModel<typeof jobApplications>;
-export type CreateJobApplication = InferModel<typeof jobApplications, "insert">;
+export type JobApplication = InferSelectModel<typeof jobApplications>;
+export type CreateJobApplication = InferInsertModel<typeof jobApplications>;
 
 export const jobApplicationRelations = relations(
   jobApplications,

@@ -4,13 +4,13 @@ import {
   getJobOffer,
   getJobOffers,
   searchJobOffers,
+  updateJobOffer,
 } from "../database/jobOfferRepository";
 import { procedure, protectedProcedure, router } from "../trpc";
 
 import { TRPCError } from "@trpc/server";
 import { checkUserIsHealthEntityMember } from "../services/permissionsService";
 import { createJobApplication } from "../database/jobApplicationRepository";
-import { currentUser } from "@clerk/nextjs";
 import { z } from "zod";
 
 const createInput = z.object({
@@ -22,6 +22,10 @@ const createInput = z.object({
   startDate: z.date().optional(),
   endDate: z.date().optional(),
   healthEntityId: z.string(),
+});
+
+const updateInput = createInput.extend({
+  id: z.string(),
 });
 
 export const jobOfferRouter = router({
@@ -87,6 +91,16 @@ export const jobOfferRouter = router({
       await createJobApplication({
         jobOfferId: input.jobOfferId,
         userId: ctx.auth.userId,
+      });
+    }),
+  update: protectedProcedure
+    .input(updateInput)
+    .mutation(async ({ ctx, input }) => {
+      await checkUserIsHealthEntityMember(input.healthEntityId);
+      await updateJobOffer({
+        ...input,
+        startDate: input.startDate ?? null,
+        endDate: input.endDate ?? null,
       });
     }),
 });

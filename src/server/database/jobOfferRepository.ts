@@ -11,6 +11,7 @@ import { db } from "./connection";
 import { ulid } from "ulid";
 
 type CreateJobOfferRequest = Omit<CreateJobOffer, "id">;
+type UpdateJobOfferRequest = Omit<JobOffer, "createdDate">;
 
 export async function createJobOffer(request: CreateJobOfferRequest) {
   const jobOffer: CreateJobOffer = {
@@ -20,6 +21,10 @@ export async function createJobOffer(request: CreateJobOfferRequest) {
 
   await db.insert(jobOffers).values(jobOffer);
   return jobOffer;
+}
+
+export async function updateJobOffer(request: UpdateJobOfferRequest) {
+  await db.update(jobOffers).set(request).where(eq(jobOffers.id, request.id));
 }
 
 export async function getJobOffer(jobOfferId: string) {

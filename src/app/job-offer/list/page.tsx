@@ -1,15 +1,8 @@
-import { Briefcase, MapPin, MoreHorizontal } from "lucide-react";
-import {
-  DropdownMenu,
-  DropdownMenuContent,
-  DropdownMenuItem,
-  DropdownMenuTrigger,
-} from "@/components/ui/dropdown-menu";
+import { Briefcase, MapPin } from "lucide-react";
 
 import { BackButton } from "@/components/BackButton";
-import { Button } from "@/components/ui/button";
-import { ContractType } from "../create/page";
-import { DeleteButton } from "./DeleteButton";
+import { ContractType } from "@/components/JobOfferForm";
+import { JobOfferDropdownMenu } from "./JobOfferDropdownMenu";
 import { cookies } from "next/headers";
 import dayjs from "dayjs";
 import { getContractTypeLabel } from "@/utils/contractType";
@@ -63,29 +56,11 @@ const JobOfferWithApplicationSummary = ({
   applicationCount,
   publishedDate,
 }: JobOfferWithApplicationSummaryProps) => {
-  const notDefined = { a: 1 };
-
-  const x = notDefined?.a;
-
   return (
     <div className="py-2 flex flex-col gap-2">
       <div className="flex justify-between items-end">
         <div className="text-lg">{title}</div>
-        <DropdownMenu>
-          <DropdownMenuTrigger asChild>
-            <Button
-              className="rounded-full h-10 w-10 text-muted-foreground p-0"
-              variant="outline"
-            >
-              <MoreHorizontal size="18" />
-            </Button>
-          </DropdownMenuTrigger>
-          <DropdownMenuContent>
-            <DropdownMenuItem>
-              <DeleteButton jobOfferId={id} />
-            </DropdownMenuItem>
-          </DropdownMenuContent>
-        </DropdownMenu>
+        <JobOfferDropdownMenu jobOfferId={id} />
       </div>
       <div className="text-sm text-muted-foreground">
         Publicada el {dayjs(publishedDate).format("DD/MM/YYYY")}
