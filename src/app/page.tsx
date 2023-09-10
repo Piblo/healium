@@ -10,8 +10,7 @@ export default function Home() {
             src="/hero.jpg"
             alt=""
             fill
-            objectFit="cover"
-            className="opacity-60 -z-10"
+            className="opacity-60 -z-10 object-cover"
             priority
           />
           <div className="container">

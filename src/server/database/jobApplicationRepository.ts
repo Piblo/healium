@@ -47,3 +47,11 @@ export async function getJobApplicationsForUser(userId: string) {
 
   return offers;
 }
+
+export async function getJobApplicationsForJobOffer(jobOfferId: string) {
+  const applications = await db.query.jobApplications.findMany({
+    where: eq(jobApplications.jobOfferId, jobOfferId),
+  });
+
+  return applications;
+}

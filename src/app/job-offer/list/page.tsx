@@ -2,7 +2,9 @@ import { Briefcase, MapPin } from "lucide-react";
 import { ContractType, getContractTypeLabel } from "@/utils/contractType";
 
 import { BackButton } from "@/components/BackButton";
+import { Button } from "@/components/ui/button";
 import { JobOfferDropdownMenu } from "./JobOfferDropdownMenu";
+import Link from "next/link";
 import { cookies } from "next/headers";
 import dayjs from "dayjs";
 import { trpc } from "@/trpc/server";
@@ -78,6 +80,11 @@ const JobOfferWithApplicationSummary = ({
           <dt className="text-muted-foreground">Solicitudes</dt>
           <dd className="text-green-500">{applicationCount}</dd>
         </dl>
+      </div>
+      <div>
+        <Button variant="outline" asChild>
+          <Link href={`/job-offer/${id}/applications`}>Ver solicitudes</Link>
+        </Button>
       </div>
     </div>
   );
