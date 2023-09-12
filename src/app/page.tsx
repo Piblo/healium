@@ -1,16 +1,18 @@
 import Image from "next/image";
 import { SearchOfferForm } from "@/components/SearchOfferForm";
+import image from "../../public/Doctor and Patient Isometric Illustration.svg";
 
 export default function Home() {
   return (
     <>
       <main>
-        <div className="relative min-h-[40dvh] py-8 w-full overflow-hidden flex flex-col justify-center">
+        <section className="min-h-[40dvh] py-8 w-full overflow-hidden flex flex-col justify-center">
           <Image
-            src="/hero.jpg"
+            height={300}
+            width={300}
+            src={image}
             alt=""
-            fill
-            className="opacity-60 -z-10 object-cover"
+            className="object-cover mx-auto mb-4 dark:opacity-70"
             priority
           />
           <div className="container">
@@ -21,7 +23,7 @@ export default function Home() {
               <SearchOfferForm className="mx-auto max-w-4xl" />
             </div>
           </div>
-        </div>
+        </section>
       </main>
     </>
   );

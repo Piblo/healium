@@ -1,4 +1,8 @@
 import {
+  createJobApplication,
+  getJobApplicationsForJobOffer,
+} from "../database/jobApplicationRepository";
+import {
   createJobOffer,
   deleteJobOffer,
   getJobOffer,
@@ -10,7 +14,7 @@ import { procedure, protectedProcedure, router } from "../trpc";
 
 import { TRPCError } from "@trpc/server";
 import { checkUserIsHealthEntityMember } from "../services/permissionsService";
-import { createJobApplication } from "../database/jobApplicationRepository";
+import { clerkClient } from "@clerk/nextjs";
 import { z } from "zod";
 
 const createInput = z.object({
@@ -104,6 +108,41 @@ export const jobOfferRouter = router({
         ...input,
         startDate: input.startDate ?? null,
         endDate: input.endDate ?? null,
+      });
+    }),
+  applications: protectedProcedure
+    .input(
+      z.object({
+        jobOfferId: z.string(),
+      })
+    )
+    .query(async ({ input }) => {
+      const jobOffer = await getJobOffer(input.jobOfferId);
+
+      if (!jobOffer) {
+        throw new TRPCError({
+          code: "NOT_FOUND",
+        });
+      }
+
+      await checkUserIsHealthEntityMember(jobOffer.healthEntityId);
+
+      const applications = await getJobApplicationsForJobOffer(
+        input.jobOfferId
+      );
+      const users = await clerkClient.users.getUserList({
+        userId: applications.map((x) => x.userId),
+      });
+
+      console.log(applications);
+
+      return applications.map((application) => {
+        const user = users.find((x) => x.id === application.userId);
+
+        return {
+          ...application,
+          user,
+        };
       });
     }),
 });

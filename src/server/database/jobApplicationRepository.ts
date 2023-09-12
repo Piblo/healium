@@ -51,6 +51,7 @@ export async function getJobApplicationsForUser(userId: string) {
 export async function getJobApplicationsForJobOffer(jobOfferId: string) {
   const applications = await db.query.jobApplications.findMany({
     where: eq(jobApplications.jobOfferId, jobOfferId),
+    limit: 10,
   });
 
   return applications;
