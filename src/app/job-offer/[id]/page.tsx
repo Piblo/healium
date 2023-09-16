@@ -14,11 +14,14 @@ export default async function JobOffer({ params }: { params: { id: string } }) {
     jobOfferId: params.id,
   });
 
-  const userApplications = await trpc.jobOffer.applications.query({
-    jobOfferId: params.id,
-  });
-
   const user = await currentUser();
+
+  const userApplications = user
+    ? await trpc.jobOffer.applications.query({
+        jobOfferId: params.id,
+      })
+    : [];
+
   const hasUserApplied = Boolean(
     userApplications.find((x) => x.userId === user?.id)
   );
