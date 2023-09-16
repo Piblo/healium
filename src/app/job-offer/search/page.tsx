@@ -43,6 +43,8 @@ export default function SearchJobOffer({ searchParams }: SearchJobOfferProps) {
                 title={x.title}
                 logo={x.healthEntity.logoUrl}
                 hasApplied={x.applications?.length > 0}
+                endDate={x.endDate}
+                startDate={x.startDate}
               />
             </a>
           </li>

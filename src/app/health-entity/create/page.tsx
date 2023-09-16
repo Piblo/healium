@@ -20,7 +20,7 @@ export default function CreateHealthEntity() {
   }
 
   return (
-    <div className="container max-w-sm mx-auto p-4">
+    <div className="max-w-md mx-auto py-6">
       <h1 className="text-xl mb-6">Crear entidad sanitaria</h1>
       <HealthEntityForm
         onSubmit={handleSubmit}

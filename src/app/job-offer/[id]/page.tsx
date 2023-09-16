@@ -4,6 +4,7 @@ import { Button } from "@/components/ui/button";
 import Image from "next/image";
 import { Link } from "@/components/Link";
 import NextLink from "next/link";
+import { currentUser } from "@clerk/nextjs";
 import { getContractTypeLabel } from "@/utils/contractType";
 import { notFound } from "next/navigation";
 import { trpc } from "@/trpc/server";
@@ -13,12 +14,21 @@ export default async function JobOffer({ params }: { params: { id: string } }) {
     jobOfferId: params.id,
   });
 
+  const userApplications = await trpc.jobOffer.applications.query({
+    jobOfferId: params.id,
+  });
+
+  const user = await currentUser();
+  const hasUserApplied = Boolean(
+    userApplications.find((x) => x.userId === user?.id)
+  );
+
   if (!jobOffer) {
     notFound();
   }
 
   return (
-    <div className="container py-4 space-y-4 max-w-4xl">
+    <div className="container py-6 space-y-4 max-w-4xl">
       {jobOffer.healthEntity.logoUrl && (
         <Image
           src={jobOffer.healthEntity.logoUrl}
@@ -62,11 +72,15 @@ export default async function JobOffer({ params }: { params: { id: string } }) {
         </li>
       </ul>
       <p>{jobOffer.description}</p>
-      <Button asChild>
-        <NextLink href={`/job-offer/${params.id}/apply`}>
-          Solicitar puesto
-        </NextLink>
-      </Button>
+      {hasUserApplied ? (
+        <Button disabled>Oferta ya solicitada</Button>
+      ) : (
+        <Button disabled asChild>
+          <NextLink href={`/job-offer/${params.id}/apply`}>
+            Solicitar puesto
+          </NextLink>
+        </Button>
+      )}
     </div>
   );
 }

@@ -1,12 +1,11 @@
 import { JobOfferSummary } from "@/components/JobOfferSummary";
-import { getContractTypeLabel } from "@/utils/contractType";
 import { trpc } from "@/trpc/server";
 
 export default async function Applications() {
   const jobApplications = await trpc.user.applications.query();
 
   return (
-    <div className="container max-w-4xl py-4">
+    <div className="container max-w-4xl py-6">
       <h1 className="text-xl mb-4">Mis solicitudes de empleo</h1>
       {jobApplications.map((x) => (
         <JobOfferSummary
@@ -19,6 +18,7 @@ export default async function Applications() {
           region={x.jobOffer.region ?? ""}
           title={x.jobOffer.title}
           logo={x.jobOffer.healthEntity.logoUrl}
+          applicationStatus={x.status}
         />
       ))}
     </div>

@@ -26,7 +26,7 @@ export default function Page({ params }: Props) {
   });
 
   return (
-    <div className="container py-4">
+    <div className="container py-6">
       <h1 className="text-2xl mb-6">Bienvenido a Healium</h1>
       <p className="mb-4">
         {data?.name} te ha enviado una invitación para unirte a Healium y

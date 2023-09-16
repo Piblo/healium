@@ -18,7 +18,7 @@ export default async function ManageHealthEntity() {
   }
 
   return (
-    <div className="container py-4">
+    <div className="container py-6">
       <div className="mb-6 flex items-center gap-4 flex-col md:flex-row">
         {healthEntity.logoUrl && (
           <Image

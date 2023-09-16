@@ -1,9 +1,10 @@
-import { Briefcase, CheckCircle2, MapPin } from "lucide-react";
+import { Briefcase, Check, MapPin } from "lucide-react";
 import { ContractType, getContractTypeLabel } from "@/utils/contractType";
 
 import { Badge } from "./ui/badge";
 import { Card } from "./ui/card";
 import Image from "next/image";
+import { JobApplicationStatus } from "./JobApplicationStatus";
 import { PropsWithChildren } from "react";
 import dayjs from "dayjs";
 import es from "dayjs/locale/es";
@@ -22,6 +23,9 @@ type JobOfferSummary = {
   city: string;
   region: string;
   hasApplied?: boolean;
+  startDate?: Date | null;
+  endDate?: Date | null;
+  applicationStatus?: "approved" | "rejected" | "pending";
 } & PropsWithChildren;
 
 export const JobOfferSummary = ({
@@ -35,6 +39,9 @@ export const JobOfferSummary = ({
   region,
   children,
   hasApplied,
+  startDate,
+  endDate,
+  applicationStatus,
 }: JobOfferSummary) => {
   return (
     <Card className="p-4">
@@ -63,17 +70,28 @@ export const JobOfferSummary = ({
         </div>
         <p className="text-muted-foreground mb-4 line-clamp-3">{description}</p>
         <ul className="dark:text-neutral-300 text-sm flex gap-x-8 gap-y-2 flex-wrap">
+          {applicationStatus && (
+            <li>
+              <JobApplicationStatus status={applicationStatus} />
+            </li>
+          )}
           <li className="flex items-center">
             <MapPin size={16} className="mr-1" /> {city} ({region})
           </li>
           <li className="flex items-center">
             <Briefcase size={16} className="mr-1" />{" "}
             {getContractTypeLabel(contractType)}
+            {contractType === "fixed-term" && (
+              <span className="ml-1 text-muted-foreground">
+                ({startDate?.toLocaleDateString()}
+                {endDate ? <> {endDate.toLocaleDateString()}</> : null})
+              </span>
+            )}
           </li>
           {hasApplied && (
             <li>
-              <Badge>
-                <CheckCircle2 size={16} className="mr-1" /> Puesto solicitado
+              <Badge className="bg-teal-500 pointer-events-none">
+                <Check size={16} className="mr-1" /> Puesto solicitado
               </Badge>
             </li>
           )}

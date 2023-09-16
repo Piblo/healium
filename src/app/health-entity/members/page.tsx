@@ -42,7 +42,7 @@ export default function Members() {
   const [deleteModalOpen, setDeleteModalOpen] = useState<boolean>(false);
 
   return (
-    <div className="container py-4">
+    <div className="container py-6">
       <BackButton href="/health-entity/manage" className="mb-4" />
       <h1 className="text-2xl mb-4">Miembros</h1>
 

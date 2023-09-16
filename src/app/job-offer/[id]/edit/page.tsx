@@ -42,7 +42,7 @@ export default function EditJobOffer({ params }: Props) {
   }
 
   return (
-    <div className="container max-w-md py-4 flex flex-col gap-4">
+    <div className="container max-w-md py-6 flex flex-col gap-4">
       <BackButton href="/job-offer/list" />
       <h1 className="text-lg">Editar oferta de trabajo</h1>
       {isLoading && <Loader2 className="animate-spin" />}

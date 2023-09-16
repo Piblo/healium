@@ -8,6 +8,7 @@ import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
 import Image from "next/image";
 import { JobApplication } from "@/server/database/schema";
+import { JobApplicationStatus } from "@/components/JobApplicationStatus";
 import { cn } from "@/lib/utils";
 import dayjs from "dayjs";
 import es from "dayjs/locale/es";
@@ -77,7 +78,7 @@ export default function JobOfferApplications({
   }
 
   return (
-    <div className="container py-4">
+    <div className="container py-6">
       <BackButton href="/job-offer/list" className="mb-2" />
       {loading && <Loader2 className="animate-spin" />}
       <h1 className="text-xl mb-4">{jobOffer?.title}</h1>
@@ -109,14 +110,8 @@ export default function JobOfferApplications({
               </div>
             </div>
             <ul className="dark:text-neutral-300 text-sm flex gap-x-8 gap-y-2 flex-wrap">
-              <li className="flex items-center gap-2 text-sm">
-                <div
-                  className={cn(
-                    "rounded-full h-2 w-2",
-                    getStatusColor(x.status)
-                  )}
-                />
-                {getApplicationStatusLabel(x.status)}
+              <li>
+                <JobApplicationStatus status={x.status} />
               </li>
               <li className="flex items-center">
                 <Mail size={16} className="mr-1" />
@@ -149,23 +144,4 @@ export default function JobOfferApplications({
       </ul>
     </div>
   );
-}
-
-function getApplicationStatusLabel(status: JobApplication["status"]) {
-  const map: Record<JobApplication["status"], string> = {
-    approved: "Aprobado",
-    pending: "Pendiente",
-    rejected: "Rechazado",
-  };
-
-  return map[status];
-}
-
-function getStatusColor(status: JobApplication["status"]) {
-  const map: Record<JobApplication["status"], string> = {
-    approved: "bg-green-500",
-    pending: "bg-orange-500",
-    rejected: "bg-red-500",
-  };
-  return map[status];
 }
