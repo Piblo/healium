@@ -12,16 +12,14 @@ export default function Home() {
             width={300}
             src={image}
             alt=""
-            className="object-cover mx-auto mb-4 dark:opacity-70"
+            className="object-cover mx-auto mb-4"
             priority
           />
           <div className="container">
-            <h1 className="text-2xl lg:text-4xl text-center mb-6">
+            <h1 className="text-2xl font-semibold lg:text-4xl text-center mb-6">
               Encuentra tu trabajo ideal en enfermería
             </h1>
-            <div>
-              <SearchOfferForm className="mx-auto max-w-4xl" />
-            </div>
+            <SearchOfferForm className="mx-auto max-w-4xl" />
           </div>
         </section>
       </main>
