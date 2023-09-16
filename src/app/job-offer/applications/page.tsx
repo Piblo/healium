@@ -6,8 +6,8 @@ export default async function Applications() {
   const jobApplications = await trpc.user.applications.query();
 
   return (
-    <div className="container py-4">
-      <h1 className="text-xl mb-4">Solicitudes de empleo</h1>
+    <div className="container max-w-4xl py-4">
+      <h1 className="text-xl mb-4">Mis solicitudes de empleo</h1>
       {jobApplications.map((x) => (
         <JobOfferSummary
           key={x.jobOfferId}
