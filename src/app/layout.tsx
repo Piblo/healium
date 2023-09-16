@@ -1,5 +1,6 @@
 import "./globals.css";
 
+import { Analytics } from "@vercel/analytics/react";
 import { ClerkProvider } from "@clerk/nextjs";
 import { Inter } from "next/font/google";
 import { Nav } from "@/components/Nav";
@@ -30,6 +31,7 @@ export default function RootLayout({
               {children}
               <Toaster />
             </ThemeProvider>
+            <Analytics />
           </body>
         </html>
       </ClerkProvider>
