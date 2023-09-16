@@ -1,4 +1,5 @@
 import { healthEntityRouter } from "./healthEntity";
+import { jobApplicationRouter } from "./jobApplication";
 import { jobOfferRouter } from "./jobOffer";
 import { router } from "../trpc";
 import { userRouter } from "./user";
@@ -7,6 +8,7 @@ export const appRouter = router({
   healthEntity: healthEntityRouter,
   user: userRouter,
   jobOffer: jobOfferRouter,
+  jobApplication: jobApplicationRouter,
 });
 
 // export type definition of API

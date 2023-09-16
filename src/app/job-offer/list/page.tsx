@@ -19,7 +19,7 @@ export default async function ListJobOffers() {
   return (
     <div className="container py-4">
       <BackButton className="mb-2" href="/health-entity/manage" />
-      <h1 className="text-xl mb-6">Ofertas publicadas</h1>
+      <h1 className="text-xl">Ofertas publicadas</h1>
       <ul className="space-y-4 divide-y">
         {jobOffers.map((x) => (
           <li key={x.jobOffer.id}>

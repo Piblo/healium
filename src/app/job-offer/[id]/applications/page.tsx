@@ -1,13 +1,21 @@
-import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
-import { Mail, Phone } from "lucide-react";
+"use client";
 
+import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
+import { Loader2, Mail, Phone } from "lucide-react";
+
+import { BackButton } from "@/components/BackButton";
+import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
 import Image from "next/image";
+import { JobApplication } from "@/server/database/schema";
+import { cn } from "@/lib/utils";
 import dayjs from "dayjs";
 import es from "dayjs/locale/es";
 import { getPrimaryEmailAddress } from "@/server/utils/user";
+import { getQueryKey } from "@trpc/react-query";
 import relativeTime from "dayjs/plugin/relativeTime";
-import { trpc } from "@/trpc/server";
+import { trpc } from "@/trpc/client";
+import { useQueryClient } from "@tanstack/react-query";
 
 dayjs.locale(es);
 dayjs.extend(relativeTime);
@@ -18,22 +26,63 @@ type JobOfferApplicationProps = {
   };
 };
 
-export default async function JobOfferApplications({
+export default function JobOfferApplications({
   params,
 }: JobOfferApplicationProps) {
-  const applications = await trpc.jobOffer.applications.query({
-    jobOfferId: params.id,
+  const { data: applications, isLoading: isApplicationsLoading } =
+    trpc.jobOffer.applications.useQuery({
+      jobOfferId: params.id,
+    });
+
+  const { data: jobOffer, isLoading: isJobOfferLoading } =
+    trpc.jobOffer.get.useQuery({
+      jobOfferId: params.id,
+    });
+
+  const queryClient = useQueryClient();
+  const mutation = trpc.jobApplication.setStatus.useMutation({
+    onSuccess: (data) => {
+      queryClient.setQueryData<typeof applications>(
+        getQueryKey(
+          trpc.jobOffer.applications,
+          { jobOfferId: params.id },
+          "query"
+        ),
+        (oldData) => {
+          const offer = oldData?.find((x) => x.userId === data.userId);
+          if (!offer) {
+            return oldData;
+          }
+
+          offer.status = data.status;
+
+          return oldData;
+        }
+      );
+    },
   });
 
-  const jobOffer = await trpc.jobOffer.get.query({
-    jobOfferId: params.id,
-  });
+  const loading = isApplicationsLoading || isJobOfferLoading;
+
+  function setStatus(userId: string, status: "approved" | "rejected") {
+    if (!jobOffer) {
+      return;
+    }
+
+    mutation.mutate({
+      jobOfferId: jobOffer.id,
+      status,
+      userId: userId,
+    });
+  }
 
   return (
-    <div className="container max-w-lg py-4">
+    <div className="container py-4">
+      <BackButton href="/job-offer/list" className="mb-2" />
+      {loading && <Loader2 className="animate-spin" />}
       <h1 className="text-xl mb-4">{jobOffer?.title}</h1>
       <ul className="divide-y">
-        {applications.map((x) => (
+        {applications?.map((x) => (
           <li key={x.userId} className="flex flex-col gap-4">
             <div className="flex gap-4">
               <Avatar>
@@ -60,6 +109,15 @@ export default async function JobOfferApplications({
               </div>
             </div>
             <ul className="dark:text-neutral-300 text-sm flex gap-x-8 gap-y-2 flex-wrap">
+              <li className="flex items-center gap-2 text-sm">
+                <div
+                  className={cn(
+                    "rounded-full h-2 w-2",
+                    getStatusColor(x.status)
+                  )}
+                />
+                {getApplicationStatusLabel(x.status)}
+              </li>
               <li className="flex items-center">
                 <Mail size={16} className="mr-1" />
                 {getPrimaryEmailAddress(x.user!)?.emailAddress}
@@ -72,12 +130,42 @@ export default async function JobOfferApplications({
               ) : null}
             </ul>
             <div className="flex gap-4">
-              <Button>Aceptar</Button>
-              <Button variant="secondary">Rechazar</Button>
+              <Button
+                loading={mutation.isLoading}
+                onClick={() => setStatus(x.userId, "approved")}
+                disabled={x.status === "approved"}
+              >
+                Aceptar
+              </Button>
+              <Button
+                variant="secondary"
+                onClick={() => setStatus(x.userId, "rejected")}
+              >
+                Rechazar
+              </Button>
             </div>
           </li>
         ))}
       </ul>
     </div>
   );
+}
+
+function getApplicationStatusLabel(status: JobApplication["status"]) {
+  const map: Record<JobApplication["status"], string> = {
+    approved: "Aprobado",
+    pending: "Pendiente",
+    rejected: "Rechazado",
+  };
+
+  return map[status];
+}
+
+function getStatusColor(status: JobApplication["status"]) {
+  const map: Record<JobApplication["status"], string> = {
+    approved: "bg-green-500",
+    pending: "bg-orange-500",
+    rejected: "bg-red-500",
+  };
+  return map[status];
 }

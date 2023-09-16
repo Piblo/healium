@@ -98,6 +98,7 @@ export const jobOfferRouter = router({
       await createJobApplication({
         jobOfferId: input.jobOfferId,
         userId: ctx.auth.userId,
+        status: "pending",
       });
     }),
   update: protectedProcedure
@@ -133,8 +134,6 @@ export const jobOfferRouter = router({
       const users = await clerkClient.users.getUserList({
         userId: applications.map((x) => x.userId),
       });
-
-      console.log(applications);
 
       return applications.map((application) => {
         const user = users.find((x) => x.id === application.userId);

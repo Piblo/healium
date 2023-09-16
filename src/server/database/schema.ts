@@ -1,4 +1,9 @@
-import { InferInsertModel, InferSelectModel, relations } from "drizzle-orm";
+import {
+  InferInsertModel,
+  InferSelectModel,
+  relations,
+  sql,
+} from "drizzle-orm";
 import {
   date,
   datetime,
@@ -92,7 +97,12 @@ export const jobApplications = mysqlTable(
     userId: varchar("user_id", {
       length: 36,
     }).notNull(),
-    createdDate: timestamp("created_date").notNull().defaultNow(),
+    createdDate: timestamp("created_date")
+      .notNull()
+      .default(sql`CURRENT_TIMESTAMP`), //https://stackoverflow.com/questions/76678778/drizzle-timestamp-datenow-invalid-default-value
+    status: mysqlEnum("status", ["pending", "approved", "rejected"])
+      .notNull()
+      .default("pending"),
   },
   (table) => {
     return {

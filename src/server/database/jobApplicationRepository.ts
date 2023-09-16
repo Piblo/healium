@@ -1,7 +1,12 @@
-import { CreateJobApplication, jobApplications, jobOffers } from "./schema";
+import {
+  CreateJobApplication,
+  JobApplication,
+  jobApplications,
+  jobOffers,
+} from "./schema";
+import { and, eq } from "drizzle-orm";
 
 import { db } from "./connection";
-import { eq } from "drizzle-orm";
 
 type CreateJobApplicationRequest = Omit<
   CreateJobApplication,
@@ -55,4 +60,24 @@ export async function getJobApplicationsForJobOffer(jobOfferId: string) {
   });
 
   return applications;
+}
+
+type SetJobApplicationStatusRequest = {
+  jobOfferId: string;
+  userId: string;
+  status: JobApplication["status"];
+};
+
+export async function setJobApplicationStatus(
+  request: SetJobApplicationStatusRequest
+) {
+  await db
+    .update(jobApplications)
+    .set({ status: request.status })
+    .where(
+      and(
+        eq(jobApplications.userId, request.userId),
+        eq(jobApplications.jobOfferId, request.jobOfferId)
+      )
+    );
 }
