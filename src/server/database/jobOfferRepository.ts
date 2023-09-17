@@ -5,8 +5,9 @@ import {
   jobApplications,
   jobOffers,
 } from "./schema";
-import { SQL, and, eq, like, sql } from "drizzle-orm";
+import { SQL, and, eq, like, lte, sql } from "drizzle-orm";
 
+import { PaginatedResult } from "@/models/PaginatedResult";
 import { db } from "./connection";
 import { ulid } from "ulid";
 
@@ -65,10 +66,15 @@ type SearchJobOffersRequest = {
   search?: string;
   region?: string;
   userId?: string | null;
+  limit?: number;
+  cursor?: string;
 };
 
 export async function searchJobOffers(request: SearchJobOffersRequest) {
   const where: SQL[] = [];
+  if (request.limit && request.limit > 50) {
+    throw new Error("Fetching more than 50 items per page is not allowed");
+  }
 
   if (request.search) {
     where.push(like(jobOffers.title, `%${request.search}%`));
@@ -78,9 +84,15 @@ export async function searchJobOffers(request: SearchJobOffersRequest) {
     where.push(eq(jobOffers.region, request.region));
   }
 
+  if (request.cursor) {
+    where.push(lte(jobOffers.id, request.cursor));
+  }
+
+  const limit = request.limit ?? 50;
+
   const result = await db.query.jobOffers.findMany({
     where: and(...where),
-    limit: 10,
+    limit: limit + 1,
     with: {
       healthEntity: true,
       applications: request.userId
@@ -90,10 +102,21 @@ export async function searchJobOffers(request: SearchJobOffersRequest) {
           }
         : undefined,
     },
-    orderBy: (jobOffer, { desc }) => desc(jobOffer.createdDate),
+    orderBy: (jobOffer, { desc }) => [desc(jobOffer.id)],
   });
 
-  return result;
+  let nextCursor;
+
+  if (result.length > limit) {
+    nextCursor = result.pop()?.id;
+  }
+
+  const paginatedResult: PaginatedResult<(typeof result)[number]> = {
+    items: result,
+    nextCursor,
+  };
+
+  return paginatedResult;
 }
 
 export async function deleteJobOffer(jobOfferId: string) {

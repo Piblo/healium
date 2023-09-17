@@ -56,6 +56,8 @@ export const jobOfferRouter = router({
       z.object({
         search: z.string().optional(),
         region: z.string().optional(),
+        limit: z.number().optional(),
+        cursor: z.string().optional(),
       })
     )
     .query(({ input, ctx }) => {
