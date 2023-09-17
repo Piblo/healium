@@ -86,7 +86,7 @@ export async function getHealthEntityMembers(
 
 type RemoveMemberRequest = {
   healthEntityId: string;
-  userId: string;
+  email: string;
 };
 
 export async function removeMember(request: RemoveMemberRequest) {
@@ -95,7 +95,7 @@ export async function removeMember(request: RemoveMemberRequest) {
     .where(
       and(
         eq(healthEntityUsers.healthEntityId, request.healthEntityId),
-        eq(healthEntityUsers.userId, request.userId)
+        eq(healthEntityUsers.email, request.email)
       )
     );
 }

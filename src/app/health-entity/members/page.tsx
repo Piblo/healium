@@ -22,17 +22,19 @@ import { BackButton } from "@/components/BackButton";
 import { Button } from "@/components/ui/button";
 import { DialogClose } from "@radix-ui/react-dialog";
 import { InviteMember } from "@/components/InviteMember";
+import { Loader2 } from "lucide-react";
+import { Status } from "@/components/Status";
 import { getSelectedHealthEntityId } from "@/utils/healthEntity";
 import { trpc } from "@/trpc/client";
 import { useState } from "react";
 
 export default function Members() {
   const healthEntityId = getSelectedHealthEntityId()!;
-  const { data, refetch } = trpc.healthEntity.members.useQuery({
+  const { data, refetch, isLoading } = trpc.healthEntity.members.useQuery({
     healthEntityId: healthEntityId!,
   });
 
-  const { mutate: removeMember } = trpc.healthEntity.removeMember.useMutation({
+  const mutation = trpc.healthEntity.removeMember.useMutation({
     onSuccess: () => {
       setDeleteModalOpen(false);
       refetch();
@@ -45,7 +47,7 @@ export default function Members() {
     <div className="container py-6">
       <BackButton href="/health-entity/manage" className="mb-4" />
       <h1 className="text-2xl mb-4">Miembros</h1>
-
+      {isLoading && <Loader2 className="animate-spin" />}
       <Table className="mb-4">
         <TableHeader>
           <TableRow>
@@ -62,7 +64,14 @@ export default function Members() {
                 {member.firstName} {member.lastName}
               </TableCell>
               <TableCell>{member.email}</TableCell>
-              <TableCell>{member.status}</TableCell>
+              <TableCell>
+                {member.status === "accepted" && (
+                  <Status color="green">Aceptado</Status>
+                )}
+                {member.status === "pending" && (
+                  <Status color="orange">Pendiente</Status>
+                )}
+              </TableCell>
               <TableCell>{member.invitedDate.toLocaleDateString()}</TableCell>
               <TableCell className="text-right">
                 <Dialog
@@ -83,13 +92,14 @@ export default function Members() {
                         de esta entidad sanitaria?
                       </DialogDescription>
                     </DialogHeader>
-                    <DialogFooter>
+                    <DialogFooter className="flex gap-2">
                       <Button
+                        loading={mutation.isLoading}
                         variant="destructive"
                         onClick={() =>
-                          removeMember({
+                          mutation.mutate({
                             healthEntityId,
-                            userId: member.userId!,
+                            email: member.email,
                           })
                         }
                       >

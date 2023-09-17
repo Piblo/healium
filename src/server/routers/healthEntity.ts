@@ -100,19 +100,29 @@ export const healthEntityRouter = router({
   inviteMember: protectedProcedure
     .input(
       z.object({
-        emailAddress: z.string(),
+        emailAddress: z.string().email(),
         healthEntityId: z.string(),
       })
     )
     .mutation(async ({ input, ctx }) => {
       await checkUserIsHealthEntityMember(input.healthEntityId);
 
-      await clerkClient.invitations.createInvitation({
-        emailAddress: input.emailAddress,
-        redirectUrl: `${getBaseUrl()}/health-entity/${
-          input.healthEntityId
-        }/join`,
+      const invitations = await clerkClient.invitations.getInvitationList({
+        status: "pending",
       });
+
+      const invitationExists = Boolean(
+        invitations.find((x) => x.emailAddress === input.emailAddress)
+      );
+
+      if (!invitationExists) {
+        await clerkClient.invitations.createInvitation({
+          emailAddress: input.emailAddress,
+          redirectUrl: `${getBaseUrl()}/health-entity/${
+            input.healthEntityId
+          }/join`,
+        });
+      }
 
       await ctx.db.insert(healthEntityUsers).values({
         email: input.emailAddress,
@@ -155,7 +165,7 @@ export const healthEntityRouter = router({
     .input(
       z.object({
         healthEntityId: z.string(),
-        userId: z.string(),
+        email: z.string(),
       })
     )
     .mutation(async ({ input }) => {

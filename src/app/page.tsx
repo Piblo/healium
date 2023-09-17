@@ -6,7 +6,7 @@ export default function Home() {
   return (
     <>
       <main>
-        <section className="min-h-[40dvh] py-8 w-full overflow-hidden flex flex-col justify-center">
+        <section className="py-8 w-full overflow-hidden flex flex-col justify-center">
           <Image
             height={300}
             width={300}
@@ -16,7 +16,7 @@ export default function Home() {
             priority
           />
           <div className="container">
-            <h1 className="text-2xl font-semibold lg:text-4xl text-center mb-6">
+            <h1 className="text-2xl font-semibold lg:text-4xl text-center mb-8">
               Encuentra tu trabajo ideal en enfermería
             </h1>
             <SearchOfferForm className="mx-auto max-w-4xl" />

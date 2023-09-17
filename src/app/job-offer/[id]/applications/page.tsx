@@ -4,12 +4,9 @@ import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import { Loader2, Mail, Phone } from "lucide-react";
 
 import { BackButton } from "@/components/BackButton";
-import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
 import Image from "next/image";
-import { JobApplication } from "@/server/database/schema";
 import { JobApplicationStatus } from "@/components/JobApplicationStatus";
-import { cn } from "@/lib/utils";
 import dayjs from "dayjs";
 import es from "dayjs/locale/es";
 import { getPrimaryEmailAddress } from "@/server/utils/user";

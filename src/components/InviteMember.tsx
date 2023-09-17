@@ -18,9 +18,11 @@ import {
 import { Button } from "./ui/button";
 import { DialogClose } from "@radix-ui/react-dialog";
 import { Input } from "./ui/input";
+import { getQueryKey } from "@trpc/react-query";
 import { getSelectedHealthEntityId } from "@/utils/healthEntity";
 import { trpc } from "@/trpc/client";
 import { useForm } from "react-hook-form";
+import { useQueryClient } from "@tanstack/react-query";
 import { useState } from "react";
 import { useToast } from "./ui/use-toast";
 import { z } from "zod";
@@ -35,11 +37,18 @@ export const InviteMember = () => {
 
   const { toast } = useToast();
 
+  const queryClient = useQueryClient();
+  const healthEntityId = getSelectedHealthEntityId()!;
+
   async function onSubmit(values: FormValues) {
     await mutation.mutateAsync({
-      healthEntityId: getSelectedHealthEntityId()!,
+      healthEntityId,
       emailAddress: values.email,
     });
+
+    queryClient.refetchQueries(
+      getQueryKey(trpc.healthEntity.members, { healthEntityId }, "query")
+    );
 
     toast({
       title: "Invitación enviada correctamente",
@@ -73,7 +82,7 @@ export const InviteMember = () => {
                 </FormItem>
               )}
             />
-            <DialogFooter>
+            <DialogFooter className="gap-2">
               <Button type="submit" loading={mutation.isLoading}>
                 Enviar invitación
               </Button>
