@@ -1,4 +1,4 @@
-import { Briefcase, Check, MapPin } from "lucide-react";
+import { Briefcase, CalendarClock, Check, MapPin } from "lucide-react";
 import { ContractType, getContractTypeLabel } from "@/utils/contractType";
 
 import { Badge } from "./ui/badge";
@@ -26,6 +26,7 @@ type JobOfferSummary = {
   startDate?: Date | null;
   endDate?: Date | null;
   applicationStatus?: "approved" | "rejected" | "pending";
+  hoursPerWeek?: number | null;
 } & PropsWithChildren;
 
 export const JobOfferSummary = ({
@@ -42,6 +43,7 @@ export const JobOfferSummary = ({
   startDate,
   endDate,
   applicationStatus,
+  hoursPerWeek,
 }: JobOfferSummary) => {
   return (
     <Card className="p-4">
@@ -84,10 +86,16 @@ export const JobOfferSummary = ({
             {contractType === "fixed-term" && (
               <span className="ml-1 text-muted-foreground">
                 ({startDate?.toLocaleDateString()}
-                {endDate ? <> {endDate.toLocaleDateString()}</> : null})
+                {endDate ? <> - {endDate.toLocaleDateString()}</> : null})
               </span>
             )}
           </li>
+          {hoursPerWeek ? (
+            <li className="flex items-center">
+              <CalendarClock size={16} className="mr-1" /> {hoursPerWeek} horas
+              semanales
+            </li>
+          ) : null}
           {hasApplied && (
             <li>
               <Badge className="bg-teal-500 pointer-events-none">

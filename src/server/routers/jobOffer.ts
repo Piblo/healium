@@ -26,6 +26,7 @@ const createInput = z.object({
   startDate: z.date().optional(),
   endDate: z.date().optional(),
   healthEntityId: z.string(),
+  hoursPerWeek: z.number().positive().optional(),
 });
 
 const updateInput = createInput.extend({
@@ -111,6 +112,7 @@ export const jobOfferRouter = router({
         ...input,
         startDate: input.startDate ?? null,
         endDate: input.endDate ?? null,
+        hoursPerWeek: input.hoursPerWeek ?? null,
       });
     }),
   applications: protectedProcedure

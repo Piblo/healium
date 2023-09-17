@@ -22,6 +22,7 @@ export default async function ManageHealthEntity() {
       <div className="mb-6 flex items-center gap-4 flex-col md:flex-row">
         {healthEntity.logoUrl && (
           <Image
+            priority
             src={healthEntity.logoUrl}
             className="rounded"
             alt=""

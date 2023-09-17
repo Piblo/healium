@@ -7,6 +7,7 @@ import {
 import {
   date,
   datetime,
+  double,
   mysqlEnum,
   mysqlTable,
   primaryKey,
@@ -76,7 +77,13 @@ export const jobOffers = mysqlTable("job_offers", {
   ]),
   startDate: date("start_date"),
   endDate: date("end_date"),
-  createdDate: timestamp("created_date").notNull().defaultNow(),
+  createdDate: timestamp("created_date")
+    .notNull()
+    .default(sql`CURRENT_TIMESTAMP`), //https://stackoverflow.com/questions/76678778/drizzle-timestamp-datenow-invalid-default-value
+  hoursPerWeek: double("hours_per_week", {
+    precision: 5,
+    scale: 2,
+  }),
 });
 
 export type JobOffer = InferSelectModel<typeof jobOffers>;

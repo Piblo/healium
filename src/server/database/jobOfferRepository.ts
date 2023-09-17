@@ -71,7 +71,7 @@ type SearchJobOffersRequest = {
 };
 
 export async function searchJobOffers(request: SearchJobOffersRequest) {
-  const where: SQL[] = [];
+  const where: Array<SQL | undefined> = [];
   if (request.limit && request.limit > 50) {
     throw new Error("Fetching more than 50 items per page is not allowed");
   }
@@ -94,7 +94,13 @@ export async function searchJobOffers(request: SearchJobOffersRequest) {
     where: and(...where),
     limit: limit + 1,
     with: {
-      healthEntity: true,
+      healthEntity: {
+        columns: {
+          name: true,
+          id: true,
+          logoUrl: true,
+        },
+      },
       applications: request.userId
         ? {
             limit: 1,

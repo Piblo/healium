@@ -38,6 +38,7 @@ export default function EditJobOffer({ params }: Props) {
       endDate: values.contract.endDate,
       startDate: values.contract.startDate,
       id: params.id,
+      hoursPerWeek: values.hoursPerWeek,
     });
   }
 
@@ -60,8 +61,9 @@ export default function EditJobOffer({ params }: Props) {
             description: data.description ?? "",
             region: data.region ?? "",
             title: data.title,
+            hoursPerWeek: data.hoursPerWeek ?? undefined,
           }}
-          submitButtonLabel="Editar oferta de trabajo"
+          submitButtonLabel="Guardar cambios"
         />
       )}
     </div>

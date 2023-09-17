@@ -171,6 +171,20 @@ export const JobOfferForm = ({
           />
         )}
 
+        <FormField
+          name="hoursPerWeek"
+          control={form.control}
+          render={({ field }) => (
+            <FormItem>
+              <FormLabel>Horas semanales</FormLabel>
+              <FormControl>
+                <Input type="text" inputMode="decimal" min={0} {...field} />
+              </FormControl>
+              <FormMessage />
+            </FormItem>
+          )}
+        />
+
         <Button className="mt-4" type="submit" loading={isSubmitting}>
           {submitButtonLabel}
         </Button>
@@ -190,6 +204,13 @@ const schema = z.object({
     required_error: "Elige una provincia",
   }),
   city: z.string(),
+  hoursPerWeek: z.preprocess(
+    (val) => parseFloat(String(val)),
+    z
+      .number({ invalid_type_error: "Introduce un número" })
+      .positive("Introduce un número positivo")
+      .optional()
+  ),
   contract: z
     .object({
       type: z.enum(["full-time", "part-time", "fixed-term"], {

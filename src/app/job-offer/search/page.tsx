@@ -55,6 +55,7 @@ export default function SearchJobOffer({ searchParams }: SearchJobOfferProps) {
                 hasApplied={x.applications?.length > 0}
                 endDate={x.endDate}
                 startDate={x.startDate}
+                hoursPerWeek={x.hoursPerWeek}
               />
             </a>
           </li>

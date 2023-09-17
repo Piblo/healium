@@ -31,6 +31,7 @@ export default function CreateJobOffer() {
       title: values.title,
       endDate: values.contract.endDate,
       startDate: values.contract.startDate,
+      hoursPerWeek: values.hoursPerWeek,
     });
   }
 
