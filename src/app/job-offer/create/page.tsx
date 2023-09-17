@@ -35,7 +35,7 @@ export default function CreateJobOffer() {
   }
 
   return (
-    <div className="container py-6 max-w-lg">
+    <div className="py-6 max-w-lg mx-auto">
       <BackButton href="/health-entity/manage" className="mb-4" />
       <h1 className="text-2xl mb-8">Crear nueva oferta</h1>
       <JobOfferForm

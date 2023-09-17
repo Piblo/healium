@@ -66,7 +66,7 @@ const JobOfferWithApplicationSummary = ({
       <div className="text-sm text-muted-foreground">
         Publicada el {dayjs(publishedDate).format("DD/MM/YYYY")}
       </div>
-      <div className="flex flex-col md:flex-row gap-2 md:gap-32">
+      <div className="flex flex-col md:flex-row gap-2 md:gap-x-32">
         <ul className="dark:text-neutral-300 text-sm flex gap-8 flex-[2]">
           <li className="flex items-center flex-1">
             <MapPin size={16} className="mr-1" /> {city} ({region})
