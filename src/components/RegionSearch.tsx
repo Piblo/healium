@@ -45,7 +45,14 @@ const RegionSearch: React.FC<RegionSearchProps> = ({
         </Button>
       </PopoverTrigger>
       <PopoverContent className="p-0 ">
-        <Command className="max-h-52 md:max-h-80">
+        <Command
+          className="max-h-52 md:max-h-80"
+          filter={(value, search) => {
+            if (normalizeString(value).includes(normalizeString(search)))
+              return 1;
+            return 0;
+          }}
+        >
           <CommandInput placeholder="Busca una provincia..." />
           <CommandEmpty>Provincia no encontrada</CommandEmpty>
           <CommandGroup className="overflow-auto">
@@ -132,3 +139,10 @@ const regions = [
   "Zamora",
   "Zaragoza",
 ];
+
+const normalizeString = (str: string) => {
+  return str
+    .normalize("NFD")
+    .replace(/[\u0300-\u036f]/g, "")
+    .toLowerCase();
+};
