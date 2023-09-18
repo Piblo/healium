@@ -1,4 +1,4 @@
-import { Briefcase, MapPin } from "lucide-react";
+import { Briefcase, CalendarClock, MapPin, X } from "lucide-react";
 import { ContractType, getContractTypeLabel } from "@/utils/contractType";
 
 import { BackButton } from "@/components/BackButton";
@@ -31,6 +31,7 @@ export default async function ListJobOffers() {
               contractType={x.jobOffer.contractType ?? "fixed-term"}
               applicationCount={x.applicationsCount}
               publishedDate={x.jobOffer.createdDate}
+              hoursPerWeek={x.jobOffer.hoursPerWeek ?? undefined}
             />
           </li>
         ))}
@@ -47,6 +48,7 @@ type JobOfferWithApplicationSummaryProps = {
   contractType: ContractType;
   applicationCount?: number;
   publishedDate: Date;
+  hoursPerWeek?: number;
 };
 const JobOfferWithApplicationSummary = ({
   id,
@@ -56,6 +58,7 @@ const JobOfferWithApplicationSummary = ({
   contractType,
   applicationCount,
   publishedDate,
+  hoursPerWeek,
 }: JobOfferWithApplicationSummaryProps) => {
   return (
     <div className="py-2 flex flex-col gap-2">
@@ -66,15 +69,21 @@ const JobOfferWithApplicationSummary = ({
       <div className="text-sm text-muted-foreground">
         Publicada el {dayjs(publishedDate).format("DD/MM/YYYY")}
       </div>
-      <div className="flex flex-col md:flex-row gap-2 md:gap-x-32">
-        <ul className="dark:text-neutral-300 text-sm flex gap-8 flex-[2]">
-          <li className="flex items-center flex-1">
+      <div className="flex flex-col md:flex-row gap-4 md:gap-x-32">
+        <ul className="dark:text-neutral-300 text-sm grid sm:grid-cols-3 grid-cols-1 gap-2 md:flex-row md:gap-8 flex-[2]">
+          <li className="flex items-center">
             <MapPin size={16} className="mr-1" /> {city} ({region})
           </li>
-          <li className="flex items-center flex-1">
+          <li className="flex items-center">
             <Briefcase size={16} className="mr-1" />{" "}
             {getContractTypeLabel(contractType)}
           </li>
+          {hoursPerWeek ? (
+            <li className="flex items-center">
+              <CalendarClock size={16} className="mr-1" /> {hoursPerWeek} horas
+              semanales
+            </li>
+          ) : null}
         </ul>
         <dl className="text-sm flex-1">
           <dt className="text-muted-foreground">Solicitudes</dt>

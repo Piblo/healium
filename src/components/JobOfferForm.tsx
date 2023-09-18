@@ -176,7 +176,7 @@ export const JobOfferForm = ({
           control={form.control}
           render={({ field }) => (
             <FormItem>
-              <FormLabel>Horas semanales</FormLabel>
+              <FormLabel>Horas semanales (opcional)</FormLabel>
               <FormControl>
                 <Input type="text" inputMode="decimal" min={0} {...field} />
               </FormControl>
