@@ -9,19 +9,19 @@ import {
   NavigationMenuTrigger,
   navigationMenuTriggerStyle,
 } from "./ui/navigation-menu";
-import { UserButton, useUser } from "@clerk/nextjs";
+import { SignedIn, SignedOut, UserButton, useUser } from "@clerk/nextjs";
 
 import Link from "next/link";
 import { getSelectedHealthEntityId } from "@/utils/healthEntity";
 import { trpc } from "@/trpc/client";
 
 export const Nav = () => {
-  const { user, isSignedIn } = useUser();
+  const { user } = useUser();
+  const isHealthEntityAdmin = Boolean(user?.publicMetadata.healthEntityAdmin);
   const { data } = trpc.user.healthEntities.useQuery(undefined, {
-    enabled: isSignedIn,
+    enabled: isHealthEntityAdmin,
   });
 
-  const isHealthEntityAdmin = Boolean(user?.publicMetadata.healthEntityAdmin);
   const selectedHealthEntityId = getSelectedHealthEntityId();
 
   return (
@@ -35,24 +35,25 @@ export const Nav = () => {
               </NavigationMenuLink>
             </Link>
           </NavigationMenuItem>
-          {isSignedIn && (
+          <SignedIn>
+            <NavigationMenuItem>
+              <Link href="/job-offer/applications" legacyBehavior passHref>
+                <NavigationMenuLink className={navigationMenuTriggerStyle()}>
+                  Mis ofertas
+                </NavigationMenuLink>
+              </Link>
+            </NavigationMenuItem>
+            <NavigationMenuItem>
+              <Link href="/profile" legacyBehavior passHref>
+                <NavigationMenuLink className={navigationMenuTriggerStyle()}>
+                  CV
+                </NavigationMenuLink>
+              </Link>
+            </NavigationMenuItem>
             <NavigationMenuItem>
               <NavigationMenuTrigger>Menu</NavigationMenuTrigger>
               <NavigationMenuContent>
                 <ul className="grid w-max gap-3 p-4 grid-cols-1">
-                  <li>
-                    <Link
-                      href="/job-offer/applications"
-                      legacyBehavior
-                      passHref
-                    >
-                      <NavigationMenuLink
-                        className={navigationMenuTriggerStyle()}
-                      >
-                        Mis solicitudes
-                      </NavigationMenuLink>
-                    </Link>
-                  </li>
                   {!!user?.publicMetadata.healiumAdmin && (
                     <li>
                       <Link
@@ -101,17 +102,18 @@ export const Nav = () => {
                 </ul>
               </NavigationMenuContent>
             </NavigationMenuItem>
-          )}
+          </SignedIn>
         </NavigationMenuList>
       </div>
       <NavigationMenuList>
-        {isSignedIn ? (
-          <UserButton afterSignOutUrl="/" />
-        ) : (
+        <SignedIn>
+          <UserButton />
+        </SignedIn>
+        <SignedOut>
           <NavigationMenuItem>
             <Link href="/sign-in">Iniciar sesión</Link>
           </NavigationMenuItem>
-        )}
+        </SignedOut>
       </NavigationMenuList>
     </NavigationMenu>
   );
