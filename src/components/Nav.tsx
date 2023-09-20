@@ -22,6 +22,7 @@ import { SignedIn, SignedOut, UserButton, useUser } from "@clerk/nextjs";
 
 import Link from "next/link";
 import { Menu } from "lucide-react";
+import { Separator } from "./ui/separator";
 import { getSelectedHealthEntityId } from "@/utils/healthEntity";
 import { trpc } from "@/trpc/client";
 
@@ -50,12 +51,51 @@ export const Nav = () => {
                   </SheetHeader>
                   <div className="mt-4 flex flex-col gap-2">
                     <SheetClose asChild>
-                      <Link href="/job-offer/applications">Mis ofertas</Link>
+                      <Link
+                        className="text-muted-foreground"
+                        href="/job-offer/applications"
+                      >
+                        Mis ofertas
+                      </Link>
                     </SheetClose>
                     <SheetClose asChild>
-                      <Link href="/profile">CV</Link>
+                      <Link className="text-muted-foreground" href="/profile">
+                        CV
+                      </Link>
                     </SheetClose>
                   </div>
+                  {!!user?.publicMetadata.healiumAdmin && (
+                    <>
+                      <Separator className="my-6" />
+                      <div className="mt-4 flex flex-col gap-2">
+                        <span className="font-semibold">Entidad sanitaria</span>
+                        <SheetClose asChild>
+                          <Link
+                            className="text-muted-foreground"
+                            href="/health-entity/create"
+                          >
+                            Crear entidad sanitaria
+                          </Link>
+                        </SheetClose>
+                        <SheetClose asChild>
+                          <Link
+                            className="text-muted-foreground"
+                            href="/health-entity/manage"
+                          >
+                            Administrar entidad sanitaria
+                          </Link>
+                        </SheetClose>
+                        <SheetClose asChild>
+                          <Link
+                            className="text-muted-foreground"
+                            href="/health-entity/choose"
+                          >
+                            Elegir entidad sanitaria
+                          </Link>
+                        </SheetClose>
+                      </div>
+                    </>
+                  )}
                 </SheetContent>
               </Sheet>
             </NavigationMenuItem>
@@ -82,7 +122,7 @@ export const Nav = () => {
                 </NavigationMenuLink>
               </Link>
             </NavigationMenuItem>
-            <NavigationMenuItem>
+            <NavigationMenuItem className="hidden md:block">
               <NavigationMenuTrigger>Entidad sanitaria</NavigationMenuTrigger>
               <NavigationMenuContent>
                 <ul className="grid w-max gap-3 p-4 grid-cols-1">
