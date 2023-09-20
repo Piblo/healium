@@ -9,9 +9,18 @@ import {
   NavigationMenuTrigger,
   navigationMenuTriggerStyle,
 } from "./ui/navigation-menu";
+import {
+  Sheet,
+  SheetContent,
+  SheetDescription,
+  SheetHeader,
+  SheetTitle,
+  SheetTrigger,
+} from "./ui/sheet";
 import { SignedIn, SignedOut, UserButton, useUser } from "@clerk/nextjs";
 
 import Link from "next/link";
+import { Menu } from "lucide-react";
 import { getSelectedHealthEntityId } from "@/utils/healthEntity";
 import { trpc } from "@/trpc/client";
 
@@ -28,6 +37,24 @@ export const Nav = () => {
     <NavigationMenu className="px-4 h-16 max-w-none border-b border-solid border-slate-300 justify-start">
       <div className="flex flex-1">
         <NavigationMenuList>
+          <SignedIn>
+            <NavigationMenuItem className="md:hidden">
+              <Sheet>
+                <SheetTrigger>
+                  <Menu />
+                </SheetTrigger>
+                <SheetContent side="left">
+                  <SheetHeader>
+                    <SheetTitle className="text-left">Healium</SheetTitle>
+                  </SheetHeader>
+                  <div className="mt-4 flex flex-col gap-2">
+                    <Link href="/job-offer/applications">Mis ofertas</Link>
+                    <Link href="/profile">CV</Link>
+                  </div>
+                </SheetContent>
+              </Sheet>
+            </NavigationMenuItem>
+          </SignedIn>
           <NavigationMenuItem>
             <Link href="/" legacyBehavior passHref>
               <NavigationMenuLink className={navigationMenuTriggerStyle()}>
@@ -36,14 +63,14 @@ export const Nav = () => {
             </Link>
           </NavigationMenuItem>
           <SignedIn>
-            <NavigationMenuItem>
+            <NavigationMenuItem className="hidden md:block">
               <Link href="/job-offer/applications" legacyBehavior passHref>
                 <NavigationMenuLink className={navigationMenuTriggerStyle()}>
                   Mis ofertas
                 </NavigationMenuLink>
               </Link>
             </NavigationMenuItem>
-            <NavigationMenuItem>
+            <NavigationMenuItem className="hidden md:block">
               <Link href="/profile" legacyBehavior passHref>
                 <NavigationMenuLink className={navigationMenuTriggerStyle()}>
                   CV
@@ -51,7 +78,7 @@ export const Nav = () => {
               </Link>
             </NavigationMenuItem>
             <NavigationMenuItem>
-              <NavigationMenuTrigger>Menu</NavigationMenuTrigger>
+              <NavigationMenuTrigger>Entidad sanitaria</NavigationMenuTrigger>
               <NavigationMenuContent>
                 <ul className="grid w-max gap-3 p-4 grid-cols-1">
                   {!!user?.publicMetadata.healiumAdmin && (
