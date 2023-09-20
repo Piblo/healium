@@ -11,6 +11,7 @@ import {
 } from "./ui/navigation-menu";
 import {
   Sheet,
+  SheetClose,
   SheetContent,
   SheetDescription,
   SheetHeader,
@@ -48,8 +49,12 @@ export const Nav = () => {
                     <SheetTitle className="text-left">Healium</SheetTitle>
                   </SheetHeader>
                   <div className="mt-4 flex flex-col gap-2">
-                    <Link href="/job-offer/applications">Mis ofertas</Link>
-                    <Link href="/profile">CV</Link>
+                    <SheetClose asChild>
+                      <Link href="/job-offer/applications">Mis ofertas</Link>
+                    </SheetClose>
+                    <SheetClose asChild>
+                      <Link href="/profile">CV</Link>
+                    </SheetClose>
                   </div>
                 </SheetContent>
               </Sheet>
