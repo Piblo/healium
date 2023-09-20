@@ -38,7 +38,7 @@ export const Nav = () => {
       <div className="flex flex-1">
         <NavigationMenuList>
           <SignedIn>
-            <NavigationMenuItem className="md:hidden">
+            <NavigationMenuItem className="md:hidden flex items-center">
               <Sheet>
                 <SheetTrigger>
                   <Menu />
