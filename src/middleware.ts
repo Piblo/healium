@@ -10,7 +10,6 @@ export default authMiddleware({
     "/api/trpc/jobOffer.search",
     "/api/trpc/jobOffer.get",
   ],
-  debug: true,
 });
 
 export const config = {
