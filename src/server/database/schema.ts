@@ -130,3 +130,14 @@ export const jobApplicationRelations = relations(
     }),
   })
 );
+
+export const candidateProfiles = mysqlTable("candidate_profiles", {
+  userId: varchar("user_id", {
+    length: 36,
+  }).primaryKey(),
+  curriculumVitaeUrl: text("curriculum_vitae_url"),
+  curriculumVitaeName: text("curriculum_vitae_name"),
+});
+
+export type CandidateProfile = InferSelectModel<typeof candidateProfiles>;
+export type CandidateProfileInsert = InferInsertModel<typeof candidateProfiles>;

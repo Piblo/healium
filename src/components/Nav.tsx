@@ -179,7 +179,7 @@ export const Nav = () => {
       </div>
       <NavigationMenuList>
         <SignedIn>
-          <UserButton />
+          <UserButton afterSignOutUrl="/" />
         </SignedIn>
         <SignedOut>
           <NavigationMenuItem>
