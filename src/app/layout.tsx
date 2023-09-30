@@ -14,6 +14,10 @@ const inter = Inter({ subsets: ["latin"] });
 export const metadata = {
   title: "Healium",
   description: "Encuentra tu trabajo ideal en enfermería",
+  themeColor: [
+    { media: "(prefers-color-scheme: light)", color: "white" },
+    { media: "(prefers-color-scheme: dark)", color: "black" },
+  ],
 };
 
 export default function RootLayout({

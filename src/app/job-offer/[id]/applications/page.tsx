@@ -1,13 +1,15 @@
 "use client";
 
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
+import { Badge, badgeVariants } from "@/components/ui/badge";
+import { File, Loader2, Mail, Phone } from "lucide-react";
 import { JobOfferApplicationsOutput, trpc } from "@/trpc/client";
-import { Loader2, Mail, Phone } from "lucide-react";
 
 import { BackButton } from "@/components/BackButton";
 import { Button } from "@/components/ui/button";
 import Image from "next/image";
 import { JobApplicationStatus } from "@/components/JobApplicationStatus";
+import Link from "next/link";
 import dayjs from "dayjs";
 import es from "dayjs/locale/es";
 import { getPrimaryEmailAddress } from "@/server/utils/user";
@@ -79,7 +81,7 @@ export default function JobOfferApplications({
       <BackButton href="/job-offer/list" className="mb-2" />
       {loading && <Loader2 className="animate-spin" />}
       <h1 className="text-xl mb-4">{jobOffer?.title}</h1>
-      <ul className="divide-y">
+      <ul className="divide-y max-w-screen-md">
         {applications?.map((x) => (
           <li key={x.userId} className="flex flex-col gap-4">
             <div className="flex gap-4">
@@ -97,10 +99,23 @@ export default function JobOfferApplications({
                   {x.user?.lastName?.at(0)}
                 </AvatarFallback>
               </Avatar>
-              <div>
-                <p className="text-lg">
-                  {x.user?.firstName} {x.user?.lastName}
-                </p>
+              <div className="flex-1">
+                <div className="flex gap-2">
+                  <p className="text-lg flex-1">
+                    {x.user?.firstName} {x.user?.lastName}{" "}
+                  </p>
+                  {x.candidateProfile.curriculumVitaeUrl && (
+                    <Link
+                      className={badgeVariants({ variant: "secondary" })}
+                      href={x.candidateProfile.curriculumVitaeUrl}
+                      target="_blank"
+                      rel="noopener noreferrer"
+                    >
+                      <File className="mr-1" size={16} />
+                      Ver CV
+                    </Link>
+                  )}
+                </div>
                 <div className="text-muted-foreground text-sm">
                   Solicitado {dayjs(x.createdDate).fromNow()}
                 </div>

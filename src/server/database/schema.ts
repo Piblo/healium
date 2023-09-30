@@ -128,6 +128,10 @@ export const jobApplicationRelations = relations(
       fields: [jobApplications.jobOfferId],
       references: [jobOffers.id],
     }),
+    candidateProfile: one(candidateProfiles, {
+      fields: [jobApplications.userId],
+      references: [candidateProfiles.userId],
+    }),
   })
 );
 

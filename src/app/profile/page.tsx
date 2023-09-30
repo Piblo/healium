@@ -3,7 +3,6 @@
 import { Download, Loader2 } from "lucide-react";
 
 import { Button } from "@/components/ui/button";
-import { Card } from "@/components/ui/card";
 import { DeleteCv } from "./DeleteCv";
 import { Label } from "@/components/ui/label";
 import Link from "next/link";
