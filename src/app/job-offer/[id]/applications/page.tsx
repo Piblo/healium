@@ -1,6 +1,7 @@
 "use client";
 
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
+import { JobOfferApplicationsOutput, trpc } from "@/trpc/client";
 import { Loader2, Mail, Phone } from "lucide-react";
 
 import { BackButton } from "@/components/BackButton";
@@ -12,7 +13,6 @@ import es from "dayjs/locale/es";
 import { getPrimaryEmailAddress } from "@/server/utils/user";
 import { getQueryKey } from "@trpc/react-query";
 import relativeTime from "dayjs/plugin/relativeTime";
-import { trpc } from "@/trpc/client";
 import { useQueryClient } from "@tanstack/react-query";
 
 dayjs.locale(es);
@@ -40,7 +40,7 @@ export default function JobOfferApplications({
   const queryClient = useQueryClient();
   const mutation = trpc.jobApplication.setStatus.useMutation({
     onSuccess: (data) => {
-      queryClient.setQueryData<typeof applications>(
+      queryClient.setQueryData<JobOfferApplicationsOutput>(
         getQueryKey(
           trpc.jobOffer.applications,
           { jobOfferId: params.id },

@@ -60,7 +60,7 @@ export const JobOfferSummary = ({
           )}
           <div className="flex-1">
             <p className="text-lg font-bold">{healthEntityName}</p>
-            <p>{title}</p>
+            <p className="text-muted-foreground">{title}</p>
           </div>
           <div className="hidden md:inline text-sm text-muted-foreground">
             <span className="hidden md:inline">Publicado</span>{" "}
@@ -70,28 +70,28 @@ export const JobOfferSummary = ({
         <div className="md:hidden text-sm text-muted-foreground">
           {dayjs(createdDate).fromNow()}
         </div>
-        <p className="text-muted-foreground mb-4 line-clamp-3">{description}</p>
+        <p className="mb-4 line-clamp-3">{description}</p>
         <ul className="dark:text-neutral-300 text-sm flex gap-x-8 gap-y-2 flex-wrap">
           {applicationStatus && (
-            <li>
+            <li className="text-muted-foreground">
               <JobApplicationStatus status={applicationStatus} />
             </li>
           )}
-          <li className="flex items-center">
+          <li className="flex items-center text-muted-foreground">
             <MapPin size={16} className="mr-1" /> {city} ({region})
           </li>
-          <li className="flex items-center">
+          <li className="flex items-center text-muted-foreground">
             <Briefcase size={16} className="mr-1" />{" "}
             {getContractTypeLabel(contractType)}
             {contractType === "fixed-term" && (
-              <span className="ml-1 text-muted-foreground">
+              <span className="ml-1">
                 ({startDate?.toLocaleDateString()}
                 {endDate ? <> - {endDate.toLocaleDateString()}</> : null})
               </span>
             )}
           </li>
           {hoursPerWeek ? (
-            <li className="flex items-center">
+            <li className="flex items-center text-muted-foreground">
               <CalendarClock size={16} className="mr-1" /> {hoursPerWeek} horas
               semanales
             </li>

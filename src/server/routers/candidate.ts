@@ -1,9 +1,12 @@
 import {
   createCandidateProfile,
   getCandidateProfile,
+  updateCandidateProfile,
 } from "../database/candidateProfileRepository";
 import { protectedProcedure, router } from "../trpc";
 
+import { TRPCError } from "@trpc/server";
+import { utapi } from "uploadthing/server";
 import { z } from "zod";
 
 export const candidateRouter = router({
@@ -32,4 +35,31 @@ export const candidateRouter = router({
         curriculumVitaeUrl: input.curriculumVitaeUrl,
       });
     }),
+
+  deleteCv: protectedProcedure.mutation(async ({ ctx }) => {
+    const existingProfile = await getCandidateProfile(ctx.auth.userId);
+
+    if (!existingProfile) {
+      throw new TRPCError({
+        code: "NOT_FOUND",
+      });
+    }
+
+    if (!existingProfile.curriculumVitaeUrl) {
+      return;
+    }
+
+    const fileKey = existingProfile.curriculumVitaeUrl.replace(
+      "https://uploadthing.com/f/",
+      ""
+    );
+
+    await utapi.deleteFiles(fileKey);
+
+    await updateCandidateProfile({
+      ...existingProfile,
+      curriculumVitaeUrl: null,
+      curriculumVitaeName: null,
+    });
+  }),
 });
