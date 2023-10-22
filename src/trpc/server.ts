@@ -1,22 +1,21 @@
-import { createTRPCProxyClient, httpBatchLink } from "@trpc/client";
+import {
+  createTRPCProxyClient,
+  unstable_httpBatchStreamLink,
+} from "@trpc/client";
 
 import { AppRouter } from "@/server/routers/_app";
 import SuperJSON from "superjson";
-import { auth } from "@clerk/nextjs";
 import { getBaseUrl } from "@/utils/getBaseUrl";
+import { headers } from "next/headers";
 
 export const trpc = createTRPCProxyClient<AppRouter>({
   links: [
-    httpBatchLink({
+    unstable_httpBatchStreamLink({
       url: `${getBaseUrl()}/api/trpc`,
-      // You can pass any HTTP headers you wish here
-      async headers() {
-        const { getToken } = auth();
-        const token = await getToken();
-
-        return {
-          authorization: `Bearer ${token}`,
-        };
+      headers() {
+        const heads = new Map(headers());
+        heads.set("x-trpc-source", "rsc");
+        return Object.fromEntries(heads);
       },
     }),
   ],
