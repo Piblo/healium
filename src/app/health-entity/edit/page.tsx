@@ -9,18 +9,21 @@ import { BackButton } from "@/components/BackButton";
 import { Loader2 } from "lucide-react";
 import { getSelectedHealthEntityId } from "@/utils/healthEntity";
 import { trpc } from "@/trpc/client";
+import { useRouter } from "next/navigation";
 import { useToast } from "@/components/ui/use-toast";
 
 export default function EditHealthEntity() {
   const healthEntityId = getSelectedHealthEntityId()!;
-  const { data, isLoading } = trpc.healthEntity.get.useQuery({
+  const { data } = trpc.healthEntity.get.useQuery({
     healthEntityId,
   });
 
   const { toast } = useToast();
+  const router = useRouter();
 
   const mutation = trpc.healthEntity.update.useMutation({
     onSuccess: () => {
+      router.refresh();
       toast({
         title: "Entidad sanitaria actualizada correctamente",
       });
