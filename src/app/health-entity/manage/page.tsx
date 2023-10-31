@@ -3,6 +3,8 @@ import { FilePlus2, FileSearch, Pencil, Users2 } from "lucide-react";
 
 import Image from "next/image";
 import Link from "next/link";
+import { Skeleton } from "@/components/ui/skeleton";
+import { Suspense } from "react";
 import { cookies } from "next/headers";
 import { redirect } from "next/navigation";
 import { trpc } from "@/trpc/server";
@@ -20,17 +22,19 @@ export default async function ManageHealthEntity() {
   return (
     <div className="container py-6">
       <div className="mb-6 flex items-center gap-4 flex-col md:flex-row">
-        {healthEntity.logoUrl && (
-          <Image
-            priority
-            src={healthEntity.logoUrl}
-            className="rounded"
-            alt=""
-            width="80"
-            height="80"
-          />
-        )}
-        <h1 className="text-2xl">{healthEntity.name}</h1>
+        <Suspense fallback={<Skeleton className="w-[300px] h-[25px]" />}>
+          {healthEntity.logoUrl && (
+            <Image
+              priority
+              src={healthEntity.logoUrl}
+              className="rounded"
+              alt=""
+              width="80"
+              height="80"
+            />
+          )}
+          <h1 className="text-2xl">{healthEntity.name}</h1>
+        </Suspense>
       </div>
       <div className="grid gap-4 grid-cols-1 sm:grid-cols-2 md:grid-cols-3">
         <Link href="/job-offer/list">
