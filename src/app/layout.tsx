@@ -7,6 +7,7 @@ import { Nav } from "@/components/Nav";
 import { ThemeProvider } from "@/components/ThemeProvider";
 import { Toaster } from "@/components/ui/toaster";
 import { TrpcProvider } from "@/trpc/TrcpProvider";
+import { Viewport } from "next";
 import { esES } from "@clerk/localizations";
 
 const inter = Inter({ subsets: ["latin"] });
@@ -14,6 +15,9 @@ const inter = Inter({ subsets: ["latin"] });
 export const metadata = {
   title: "Healium",
   description: "Encuentra tu trabajo ideal en enfermería",
+};
+
+export const viewport: Viewport = {
   themeColor: [
     { media: "(prefers-color-scheme: light)", color: "white" },
     { media: "(prefers-color-scheme: dark)", color: "black" },

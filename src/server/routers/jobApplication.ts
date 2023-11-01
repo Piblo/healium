@@ -40,7 +40,7 @@ export const jobApplicationRouter = router({
       if (input.status === "approved") {
         const user = await clerkClient.users.getUser(input.userId);
 
-        await resend.sendEmail({
+        await resend.emails.send({
           from: "onboarding@resend.dev",
           to: getPrimaryEmailAddress(user)?.emailAddress!,
           subject: "Tu solicitud ha sido aceptada!",
