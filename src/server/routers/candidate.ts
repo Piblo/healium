@@ -6,8 +6,10 @@ import {
 import { protectedProcedure, router } from "../trpc";
 
 import { TRPCError } from "@trpc/server";
-import { utapi } from "uploadthing/server";
+import { UTApi } from "uploadthing/server";
 import { z } from "zod";
+
+const utapi = new UTApi();
 
 export const candidateRouter = router({
   profile: protectedProcedure.query(async ({ ctx }) => {
