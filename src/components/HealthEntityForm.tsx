@@ -44,7 +44,7 @@ export const HealthEntityForm = ({
     if (logo) {
       const uploadResponse = await startUpload([logo]);
 
-      logoUrl = uploadResponse?.[0].fileUrl;
+      logoUrl = uploadResponse?.[0].url;
     }
 
     onSubmit({
