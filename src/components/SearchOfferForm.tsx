@@ -4,7 +4,6 @@ import { Form, FormControl, FormField, FormItem, FormLabel } from "./ui/form";
 import { useRouter, useSearchParams } from "next/navigation";
 
 import { Button } from "./ui/button";
-import { Input } from "./ui/input";
 import RegionSearch from "./RegionSearch";
 import { cn } from "@/lib/utils";
 import { useForm } from "react-hook-form";
@@ -19,7 +18,6 @@ export const SearchOfferForm = ({ className }: SearchOfferFormProps) => {
   const form = useForm<FormValues>({
     defaultValues: {
       region: searchParams.get("region") ?? "",
-      search: searchParams.get("search") ?? "",
     },
   });
   const router = useRouter();
@@ -27,9 +25,7 @@ export const SearchOfferForm = ({ className }: SearchOfferFormProps) => {
   function onSubmit(values: FormValues) {
     const region = values.region === "Toda España" ? "" : values.region;
 
-    router.push(
-      `/job-offer/search?search=${values.search ?? ""}&region=${region ?? ""}`
-    );
+    router.push(`/job-offer/search?region=${region ?? ""}`);
   }
 
   return (
@@ -41,18 +37,6 @@ export const SearchOfferForm = ({ className }: SearchOfferFormProps) => {
         )}
         onSubmit={form.handleSubmit(onSubmit)}
       >
-        <FormField
-          name="search"
-          control={form.control}
-          render={({ field }) => (
-            <FormItem className="flex-1">
-              <FormLabel>Busco ofertas de...</FormLabel>
-              <FormControl>
-                <Input {...field} />
-              </FormControl>
-            </FormItem>
-          )}
-        />
         <FormField
           name="region"
           control={form.control}
@@ -81,7 +65,6 @@ export const SearchOfferForm = ({ className }: SearchOfferFormProps) => {
 };
 
 const schema = z.object({
-  search: z.string().optional(),
   region: z.string().optional(),
 });
 
