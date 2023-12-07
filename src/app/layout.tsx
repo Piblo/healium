@@ -4,6 +4,7 @@ import { Analytics } from "@vercel/analytics/react";
 import { ClerkProvider } from "@clerk/nextjs";
 import { Inter } from "next/font/google";
 import { Nav } from "@/components/Nav";
+import { SpeedInsights } from "@vercel/speed-insights/next";
 import { ThemeProvider } from "@/components/ThemeProvider";
 import { Toaster } from "@/components/ui/toaster";
 import { TrpcProvider } from "@/trpc/TrcpProvider";
@@ -40,6 +41,7 @@ export default function RootLayout({
               <Toaster />
             </ThemeProvider>
             <Analytics />
+            <SpeedInsights />
           </body>
         </html>
       </ClerkProvider>
