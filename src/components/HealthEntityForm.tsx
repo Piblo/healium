@@ -111,6 +111,19 @@ export const HealthEntityForm = ({
             </FormItem>
           )}
         />
+        <FormField
+          control={form.control}
+          name="description"
+          render={({ field }) => (
+            <FormItem>
+              <FormLabel>Descripción</FormLabel>
+              <FormControl>
+                <Textarea {...field} />
+              </FormControl>
+              <FormMessage />
+            </FormItem>
+          )}
+        />
         <FormItem>
           <FormLabel className="block">Logo</FormLabel>
           {logoUrl && <Image width="100" height="100" src={logoUrl} alt="" />}
@@ -146,6 +159,7 @@ const schema = z.object({
       required_error: "Introduce un email de contacto",
     })
     .email("Introduce un email válido"),
+  description: z.string().optional(),
 });
 
 type FormValues = z.infer<typeof schema>;

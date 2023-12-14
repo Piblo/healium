@@ -30,6 +30,7 @@ export const healthEntities = mysqlTable("health_entities", {
   registrationNumber: varchar("registration_number", {
     length: 100,
   }),
+  description: text("description"),
 });
 
 export type HealthEntity = InferSelectModel<typeof healthEntities>;

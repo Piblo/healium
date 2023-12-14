@@ -35,6 +35,7 @@ export default function EditHealthEntity() {
       id: healthEntityId,
       registrationNumber: "",
       ...values,
+      description: values.description ?? null,
     });
   }
 
@@ -51,6 +52,7 @@ export default function EditHealthEntity() {
             name: data.name,
             phoneNumber: data.phoneNumber ?? "",
             logoUrl: data.logoUrl,
+            description: data.description ?? "",
           }}
           isSubmitting={mutation.isLoading}
           submitButtonText="Guardar cambios"

@@ -10,6 +10,7 @@ export default authMiddleware({
     "/api/trpc/jobOffer.search",
     "/api/trpc/jobOffer.get",
     "/api/uploadthing",
+    "/_vercel/(.*)",
   ],
 });
 
