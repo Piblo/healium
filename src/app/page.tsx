@@ -41,7 +41,7 @@ export default function Home() {
                   <CardHeader>
                     <div className="mb-4 flex gap-4">
                       <CalendarClock className="shrink-0" />
-                      <CardTitle>
+                      <CardTitle className="text-2xl/7">
                         Contratos indefinidos y de corta duración
                       </CardTitle>
                     </div>
@@ -56,7 +56,9 @@ export default function Home() {
                   <CardHeader>
                     <div className="mb-4 flex gap-4">
                       <MapPinned className="shrink-0" />
-                      <CardTitle>Ofertas de trabajo en toda España</CardTitle>
+                      <CardTitle className="text-2xl/7">
+                        Ofertas de trabajo en toda España
+                      </CardTitle>
                     </div>
                     <CardDescription>
                       Accede a una amplia red de entidades privadas en busca de
@@ -69,7 +71,9 @@ export default function Home() {
                   <CardHeader>
                     <div className="mb-4 flex gap-4">
                       <Heart className="shrink-0" />
-                      <CardTitle>Facilidad y Conveniencia</CardTitle>
+                      <CardTitle className="text-2xl/7">
+                        Facilidad y Conveniencia
+                      </CardTitle>
                     </div>
                     <CardDescription>
                       Con nuestra intuitiva plataforma, puedes buscar y aplicar

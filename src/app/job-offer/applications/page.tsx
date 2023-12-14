@@ -6,21 +6,27 @@ export default async function Applications() {
 
   return (
     <div className="container max-w-screen-lg py-6">
-      <h1 className="text-xl mb-4">Mis solicitudes de empleo</h1>
-      {jobApplications.map((x) => (
-        <JobOfferSummary
-          key={x.jobOfferId}
-          city={x.jobOffer.city ?? ""}
-          contractType={x.jobOffer.contractType ?? "full-time"}
-          createdDate={x.jobOffer.createdDate}
-          description={x.jobOffer.description ?? ""}
-          healthEntityName={x.jobOffer.healthEntity.name}
-          region={x.jobOffer.region ?? ""}
-          title={x.jobOffer.title}
-          logo={x.jobOffer.healthEntity.logoUrl}
-          applicationStatus={x.status}
-        />
-      ))}
+      <h1 className="text-2xl mb-6">Mis solicitudes de empleo</h1>
+      <ul className="space-y-4">
+        {jobApplications.map((x) => (
+          <li key={x.jobOfferId}>
+            <JobOfferSummary
+              city={x.jobOffer.city ?? ""}
+              contractType={x.jobOffer.contractType ?? "full-time"}
+              createdDate={x.jobOffer.createdDate}
+              description={x.jobOffer.description ?? ""}
+              healthEntityName={x.jobOffer.healthEntity.name}
+              region={x.jobOffer.region ?? ""}
+              title={x.jobOffer.title}
+              logo={x.jobOffer.healthEntity.logoUrl}
+              applicationStatus={x.status}
+              startDate={x.jobOffer.startDate}
+              endDate={x.jobOffer.endDate}
+              hoursPerWeek={x.jobOffer.hoursPerWeek}
+            />
+          </li>
+        ))}
+      </ul>
     </div>
   );
 }

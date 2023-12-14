@@ -59,7 +59,7 @@ export const JobOfferSummary = ({
             />
           )}
           <div className="flex-1">
-            <p className="text-lg font-bold">{healthEntityName}</p>
+            <p className="text-xl font-bold">{healthEntityName}</p>
             <p className="text-muted-foreground">{title}</p>
           </div>
           <div className="hidden md:inline text-sm text-muted-foreground">
@@ -98,7 +98,7 @@ export const JobOfferSummary = ({
           ) : null}
           {hasApplied && (
             <li>
-              <Badge className="bg-teal-500 pointer-events-none">
+              <Badge className="bg-teal-500 dark:bg-teal-700 pointer-events-none">
                 <Check size={16} className="mr-1" /> Puesto solicitado
               </Badge>
             </li>
