@@ -7,6 +7,7 @@ import {
 import {
   date,
   datetime,
+  decimal,
   double,
   mysqlEnum,
   mysqlTable,
@@ -83,6 +84,10 @@ export const jobOffers = mysqlTable("job_offers", {
     .default(sql`CURRENT_TIMESTAMP`), //https://stackoverflow.com/questions/76678778/drizzle-timestamp-datenow-invalid-default-value
   hoursPerWeek: double("hours_per_week", {
     precision: 5,
+    scale: 2,
+  }),
+  salaryPerHour: decimal("salaryPerHour", {
+    precision: 15,
     scale: 2,
   }),
 });

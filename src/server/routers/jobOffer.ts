@@ -27,6 +27,7 @@ const createInput = z.object({
   endDate: z.date().optional(),
   healthEntityId: z.string(),
   hoursPerWeek: z.number().positive().optional(),
+  salaryPerHour: z.number().nullish(),
 });
 
 const updateInput = createInput.extend({
@@ -40,8 +41,22 @@ export const jobOfferRouter = router({
         jobOfferId: z.string(),
       })
     )
-    .query(({ input }) => {
-      return getJobOffer(input.jobOfferId);
+    .query(async ({ input }) => {
+      const jobOffer = await getJobOffer(input.jobOfferId);
+
+      if (!jobOffer) {
+        throw new TRPCError({
+          code: "NOT_FOUND",
+          message: "Job offer not found",
+        });
+      }
+
+      return {
+        ...jobOffer,
+        salaryPerHour: jobOffer.salaryPerHour
+          ? Number(jobOffer.salaryPerHour)
+          : undefined,
+      };
     }),
   create: protectedProcedure.input(createInput).mutation(async ({ input }) => {
     await checkUserIsHealthEntityMember(input.healthEntityId);
@@ -50,6 +65,7 @@ export const jobOfferRouter = router({
       ...input,
       startDate: input.startDate ?? null,
       endDate: input.endDate ?? null,
+      salaryPerHour: input.salaryPerHour?.toString() ?? null,
     });
   }),
   search: procedure
@@ -113,6 +129,7 @@ export const jobOfferRouter = router({
         startDate: input.startDate ?? null,
         endDate: input.endDate ?? null,
         hoursPerWeek: input.hoursPerWeek ?? null,
+        salaryPerHour: input.salaryPerHour?.toString() ?? null,
       });
     }),
   applications: protectedProcedure

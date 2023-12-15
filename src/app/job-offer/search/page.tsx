@@ -56,6 +56,7 @@ export default function SearchJobOffer({ searchParams }: SearchJobOfferProps) {
                 endDate={x.endDate}
                 startDate={x.startDate}
                 hoursPerWeek={x.hoursPerWeek}
+                salaryPerHour={x.salaryPerHour ? Number(x.salaryPerHour) : null}
               />
             </a>
           </li>

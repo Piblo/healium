@@ -178,7 +178,21 @@ export const JobOfferForm = ({
             <FormItem>
               <FormLabel>Horas semanales (opcional)</FormLabel>
               <FormControl>
-                <Input type="text" inputMode="decimal" min={0} {...field} />
+                <Input type="number" inputMode="decimal" min={0} {...field} />
+              </FormControl>
+              <FormMessage />
+            </FormItem>
+          )}
+        />
+
+        <FormField
+          name="salaryPerHour"
+          control={form.control}
+          render={({ field }) => (
+            <FormItem>
+              <FormLabel>Salario (€/hora)</FormLabel>
+              <FormControl>
+                <Input type="number" inputMode="decimal" min={0} {...field} />
               </FormControl>
               <FormMessage />
             </FormItem>
@@ -228,6 +242,10 @@ const schema = z.object({
         message: "Introduce una fecha",
       }
     ),
+  salaryPerHour: z.preprocess(
+    (x) => parseFloat(String(x)),
+    z.number().optional()
+  ),
 });
 
 export type JobOfferFormValues = z.infer<typeof schema>;
