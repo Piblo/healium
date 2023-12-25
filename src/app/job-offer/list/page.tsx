@@ -1,4 +1,5 @@
 import { Briefcase, CalendarClock, MapPin, X } from "lucide-react";
+import { Card, CardContent, CardHeader } from "@/components/ui/card";
 import { ContractType, getContractTypeLabel } from "@/utils/contractType";
 
 import { BackButton } from "@/components/BackButton";
@@ -19,8 +20,8 @@ export default async function ListJobOffers() {
   return (
     <div className="container py-6">
       <BackButton className="mb-2" href="/health-entity/manage" />
-      <h1 className="text-2xl font-bold">Ofertas publicadas</h1>
-      <ul className="space-y-4 divide-y">
+      <h1 className="text-2xl font-bold mb-4">Ofertas publicadas</h1>
+      <ul className="space-y-4">
         {jobOffers.map((x) => (
           <li key={x.jobOffer.id}>
             <JobOfferWithApplicationSummary
@@ -61,40 +62,42 @@ const JobOfferWithApplicationSummary = ({
   hoursPerWeek,
 }: JobOfferWithApplicationSummaryProps) => {
   return (
-    <div className="py-2 flex flex-col gap-2">
-      <div className="flex justify-between items-end">
+    <Card className="">
+      <CardHeader className="flex flex-row items-center justify-between pt-2">
         <div className="text-lg">{title}</div>
         <JobOfferDropdownMenu jobOfferId={id} />
-      </div>
-      <div className="text-sm text-muted-foreground">
-        Publicada el {dayjs(publishedDate).format("DD/MM/YYYY")}
-      </div>
-      <div className="flex flex-col md:flex-row gap-4 md:gap-x-32">
-        <ul className="dark:text-neutral-300 text-sm grid sm:grid-cols-3 grid-cols-1 gap-2 md:flex-row md:gap-8 flex-[2]">
-          <li className="flex items-center">
-            <MapPin size={16} className="mr-1" /> {city} ({region})
-          </li>
-          <li className="flex items-center">
-            <Briefcase size={16} className="mr-1" />{" "}
-            {getContractTypeLabel(contractType)}
-          </li>
-          {hoursPerWeek ? (
+      </CardHeader>
+      <CardContent className="flex flex-col gap-2">
+        <div className="text-sm text-muted-foreground">
+          Publicada el {dayjs(publishedDate).format("DD/MM/YYYY")}
+        </div>
+        <div className="flex flex-col md:flex-row gap-4 md:gap-x-32">
+          <ul className="dark:text-neutral-300 text-sm grid sm:grid-cols-3 grid-cols-1 gap-2 md:flex-row md:gap-8 flex-[2]">
             <li className="flex items-center">
-              <CalendarClock size={16} className="mr-1" /> {hoursPerWeek} horas
-              semanales
+              <MapPin size={16} className="mr-1" /> {city} ({region})
             </li>
-          ) : null}
-        </ul>
-        <dl className="text-sm flex-1">
-          <dt className="text-muted-foreground">Solicitudes</dt>
-          <dd className="text-green-500">{applicationCount}</dd>
-        </dl>
-      </div>
-      <div>
-        <Button variant="outline" asChild>
-          <Link href={`/job-offer/${id}/applications`}>Ver solicitudes</Link>
-        </Button>
-      </div>
-    </div>
+            <li className="flex items-center">
+              <Briefcase size={16} className="mr-1" />{" "}
+              {getContractTypeLabel(contractType)}
+            </li>
+            {hoursPerWeek ? (
+              <li className="flex items-center">
+                <CalendarClock size={16} className="mr-1" /> {hoursPerWeek}{" "}
+                horas semanales
+              </li>
+            ) : null}
+          </ul>
+          <dl className="text-sm flex-1">
+            <dt className="text-muted-foreground">Solicitudes</dt>
+            <dd className="text-green-500">{applicationCount}</dd>
+          </dl>
+        </div>
+        <div>
+          <Button variant="outline" asChild>
+            <Link href={`/job-offer/${id}/applications`}>Ver solicitudes</Link>
+          </Button>
+        </div>
+      </CardContent>
+    </Card>
   );
 };

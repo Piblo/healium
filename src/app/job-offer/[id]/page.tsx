@@ -32,7 +32,7 @@ export default async function JobOffer({ params }: { params: { id: string } }) {
   }
 
   return (
-    <div className="container py-6 max-w-4xl">
+    <div className="container max-w-4xl py-6">
       {jobOffer.healthEntity.logoUrl && (
         <Image
           src={jobOffer.healthEntity.logoUrl}
@@ -42,11 +42,15 @@ export default async function JobOffer({ params }: { params: { id: string } }) {
           className="rounded mx-auto md:mx-0 mb-4"
         />
       )}
-      <h1 className="text-2xl mb-2">{jobOffer.title}</h1>
+      <h1 className="text-2xl font-semibold">{jobOffer.title}</h1>
       <p className="text-lg mb-4 text-muted-foreground">
         {jobOffer.healthEntity.name}
       </p>
-      <ul className="text-sm space-y-2 mb-4">
+      <h2 className="text-lg font-bold">Descripción</h2>
+      <p className="text-base mb-6 text-muted-foreground">
+        {jobOffer.description}
+      </p>
+      <ul className="text-sm space-y-2 mb-6">
         <li className="flex items-center">
           <MapPin size={16} className="mr-2" /> {jobOffer.city} (
           {jobOffer.region})
@@ -77,11 +81,18 @@ export default async function JobOffer({ params }: { params: { id: string } }) {
           </Link>
         </li>
       </ul>
-      <p className="mb-6">{jobOffer.description}</p>
+      {jobOffer.healthEntity.description && (
+        <>
+          <h2 className="text-lg font-bold">Sobre la entidad sanitaria</h2>
+          <p className="text-muted-foreground mb-6">
+            {jobOffer.healthEntity.description}
+          </p>
+        </>
+      )}
       {hasUserApplied ? (
         <>
           <p className="text-muted-foreground mb-2 text-sm">
-            Ya has solicitado este trabajo
+            Ya has solicitado este puesto
           </p>
           <Button variant="outline" asChild>
             <NextLink href="/job-offer/applications">

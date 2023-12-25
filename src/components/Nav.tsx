@@ -10,6 +10,10 @@ import {
   navigationMenuTriggerStyle,
 } from "./ui/navigation-menu";
 import {
+  NavigationMenuSub,
+  NavigationMenuViewport,
+} from "@radix-ui/react-navigation-menu";
+import {
   Sheet,
   SheetClose,
   SheetContent,
@@ -123,55 +127,61 @@ export const Nav = () => {
               </Link>
             </NavigationMenuItem>
             <NavigationMenuItem className="hidden md:block">
-              <NavigationMenuTrigger>Entidad sanitaria</NavigationMenuTrigger>
+              <NavigationMenuTrigger>
+                <NavigationMenuLink href="/health-entity/manage">
+                  Entidad sanitaria
+                </NavigationMenuLink>
+              </NavigationMenuTrigger>
               <NavigationMenuContent>
-                <ul className="grid w-max gap-3 p-4 grid-cols-1">
-                  {!!user?.publicMetadata.healiumAdmin && (
-                    <li>
-                      <Link
-                        href="/health-entity/create"
-                        legacyBehavior
-                        passHref
-                      >
-                        <NavigationMenuLink
-                          className={navigationMenuTriggerStyle()}
+                <NavigationMenuSub orientation="vertical">
+                  <NavigationMenuList className="grid w-max gap-3 p-4 grid-cols-1">
+                    {!!user?.publicMetadata.healiumAdmin && (
+                      <li>
+                        <Link
+                          href="/health-entity/create"
+                          legacyBehavior
+                          passHref
                         >
-                          Crear entidad sanitaria
-                        </NavigationMenuLink>
-                      </Link>
-                    </li>
-                  )}
-                  {isHealthEntityAdmin && selectedHealthEntityId && (
-                    <li>
-                      <Link
-                        href="/health-entity/manage"
-                        legacyBehavior
-                        passHref
-                      >
-                        <NavigationMenuLink
-                          className={navigationMenuTriggerStyle()}
+                          <NavigationMenuLink
+                            className={navigationMenuTriggerStyle()}
+                          >
+                            Crear entidad sanitaria
+                          </NavigationMenuLink>
+                        </Link>
+                      </li>
+                    )}
+                    {isHealthEntityAdmin && selectedHealthEntityId && (
+                      <li>
+                        <Link
+                          href="/health-entity/manage"
+                          legacyBehavior
+                          passHref
                         >
-                          Administrar entidad sanitaria
-                        </NavigationMenuLink>
-                      </Link>
-                    </li>
-                  )}
-                  {data?.length && data.length > 1 ? (
-                    <li>
-                      <Link
-                        href="/health-entity/choose"
-                        legacyBehavior
-                        passHref
-                      >
-                        <NavigationMenuLink
-                          className={navigationMenuTriggerStyle()}
+                          <NavigationMenuLink
+                            className={navigationMenuTriggerStyle()}
+                          >
+                            Administrar entidad sanitaria
+                          </NavigationMenuLink>
+                        </Link>
+                      </li>
+                    )}
+                    {data?.length && data.length > 1 ? (
+                      <li>
+                        <Link
+                          href="/health-entity/choose"
+                          legacyBehavior
+                          passHref
                         >
-                          Elegir entidad sanitaria
-                        </NavigationMenuLink>
-                      </Link>
-                    </li>
-                  ) : null}
-                </ul>
+                          <NavigationMenuLink
+                            className={navigationMenuTriggerStyle()}
+                          >
+                            Elegir entidad sanitaria
+                          </NavigationMenuLink>
+                        </Link>
+                      </li>
+                    ) : null}
+                  </NavigationMenuList>
+                </NavigationMenuSub>
               </NavigationMenuContent>
             </NavigationMenuItem>
           </SignedIn>
