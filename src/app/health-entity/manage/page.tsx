@@ -5,7 +5,6 @@ import Image from "next/image";
 import Link from "next/link";
 import { Skeleton } from "@/components/ui/skeleton";
 import { Suspense } from "react";
-import { cookies } from "next/headers";
 import { getSelectedHealthEntityId } from "@/utils/healthEntity";
 import { redirect } from "next/navigation";
 import { trpc } from "@/trpc/server";
