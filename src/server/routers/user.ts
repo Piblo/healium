@@ -17,7 +17,8 @@ export const userRouter = router({
         healthEntityUsers,
         eq(healthEntities.id, healthEntityUsers.healthEntityId)
       )
-      .where(eq(healthEntityUsers.userId, ctx.auth.userId));
+      .where(eq(healthEntityUsers.userId, ctx.auth.userId))
+      .limit(10);
   }),
   applications: protectedProcedure.query(async ({ ctx }) => {
     return await getJobApplicationsForUser(ctx.auth.userId);
