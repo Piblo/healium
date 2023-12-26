@@ -9,6 +9,8 @@ import { getSelectedHealthEntityId } from "@/utils/healthEntity";
 import { redirect } from "next/navigation";
 import { trpc } from "@/trpc/server";
 
+export const dynamic = "force-dynamic";
+
 export default async function ManageHealthEntity() {
   const healthEntityId = getSelectedHealthEntityId()!;
   const healthEntity = await trpc.healthEntity.get.query({
