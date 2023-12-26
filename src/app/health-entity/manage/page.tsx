@@ -5,14 +5,15 @@ import Image from "next/image";
 import Link from "next/link";
 import { Skeleton } from "@/components/ui/skeleton";
 import { Suspense } from "react";
-import { getSelectedHealthEntityId } from "@/utils/healthEntity";
+import { cookies } from "next/headers";
 import { redirect } from "next/navigation";
 import { trpc } from "@/trpc/server";
 
 export const dynamic = "force-dynamic";
 
 export default async function ManageHealthEntity() {
-  const healthEntityId = getSelectedHealthEntityId()!;
+  const healthEntityId = cookies().get("healthEntityId")?.value!;
+  console.log("healthEntityId", healthEntityId);
   const healthEntity = await trpc.healthEntity.get.query({
     healthEntityId,
   });
