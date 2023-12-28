@@ -2,7 +2,11 @@
 
 import { PropsWithChildren, useState } from "react";
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
-import { getFetch, httpBatchLink, loggerLink } from "@trpc/client";
+import {
+  getFetch,
+  loggerLink,
+  unstable_httpBatchStreamLink,
+} from "@trpc/client";
 
 import SuperJSON from "superjson";
 import { getBaseUrl } from "../utils/getBaseUrl";
@@ -26,7 +30,7 @@ export const TrpcProvider = ({ children }: PropsWithChildren) => {
         loggerLink({
           enabled: () => true,
         }),
-        httpBatchLink({
+        unstable_httpBatchStreamLink({
           url: `${getBaseUrl()}/api/trpc`,
           fetch: async (input, init?) => {
             const fetch = getFetch();
