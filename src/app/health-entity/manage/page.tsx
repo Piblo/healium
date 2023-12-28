@@ -1,5 +1,13 @@
-import { Card, CardHeader } from "@/components/ui/card";
-import { FilePlus2, FileSearch, Pencil, Users2 } from "lucide-react";
+import { Card, CardContent, CardHeader } from "@/components/ui/card";
+import {
+  File,
+  FileCheck,
+  FilePlus2,
+  FileSearch,
+  Inbox,
+  Pencil,
+  Users2,
+} from "lucide-react";
 
 import Image from "next/image";
 import Link from "next/link";
@@ -13,8 +21,11 @@ export const dynamic = "force-dynamic";
 
 export default async function ManageHealthEntity() {
   const healthEntityId = cookies().get("healthEntityId")?.value!;
-  console.log("healthEntityId", healthEntityId);
   const healthEntity = await trpc.healthEntity.get.query({
+    healthEntityId,
+  });
+
+  const stats = await trpc.healthEntity.stats.query({
     healthEntityId,
   });
 
@@ -38,6 +49,41 @@ export default async function ManageHealthEntity() {
           )}
           <h1 className="text-2xl">{healthEntity.name}</h1>
         </Suspense>
+      </div>
+      <div className="grid grid-cols-4 gap-4 mb-8">
+        <Card>
+          <CardHeader className="pb-2 flex flex-row justify-between text-sm">
+            <span>Solicitudes</span>
+            <Inbox className="mt-0 h-5 w-5 stroke-muted-foreground" />
+          </CardHeader>
+          <CardContent>
+            <span className="text-2xl font-bold">
+              {stats.jobApplicationCount ?? 0}
+            </span>
+          </CardContent>
+        </Card>
+        <Card>
+          <CardHeader className="pb-2 flex flex-row justify-between text-sm">
+            <span>Solicitudes aceptadas</span>
+            <FileCheck className="mt-0 h-5 w-5 stroke-muted-foreground" />
+          </CardHeader>
+          <CardContent>
+            <span className="text-2xl font-bold">
+              {stats.acceptedJobApplicationCount ?? 0}
+            </span>
+          </CardContent>
+        </Card>
+        <Card>
+          <CardHeader className="pb-2 flex flex-row justify-between text-sm">
+            <span>Ofertas publicadas</span>
+            <File className="mt-0 h-5 w-5 stroke-muted-foreground" />
+          </CardHeader>
+          <CardContent>
+            <span className="text-2xl font-bold">
+              {stats.jobOfferCount ?? 0}
+            </span>
+          </CardContent>
+        </Card>
       </div>
       <div className="grid gap-4 grid-cols-1 sm:grid-cols-2 md:grid-cols-3">
         <Link href="/job-offer/list">

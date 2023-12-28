@@ -3,8 +3,10 @@ import {
   HealthEntityUser,
   healthEntities,
   healthEntityUsers,
+  jobApplications,
+  jobOffers,
 } from "./schema";
-import { and, eq } from "drizzle-orm";
+import { and, eq, sql } from "drizzle-orm";
 
 import { db } from "./connection";
 import { ulid } from "ulid";
@@ -98,4 +100,40 @@ export async function removeMember(request: RemoveMemberRequest) {
         eq(healthEntityUsers.email, request.email)
       )
     );
+}
+
+export async function getHealthEntityStats(healthEntityId: string) {
+  const applicationsCount = await db
+    .select({
+      count: sql<number>`count(*)`,
+    })
+    .from(jobApplications)
+    .innerJoin(jobOffers, eq(jobOffers.id, jobApplications.jobOfferId))
+    .where(eq(jobOffers.healthEntityId, healthEntityId));
+
+  const jobOfferCount = await db
+    .select({
+      count: sql<number>`count(*)`,
+    })
+    .from(jobOffers)
+    .where(eq(jobOffers.healthEntityId, healthEntityId));
+
+  const acceptedApplicationCount = await db
+    .select({
+      count: sql<number>`count(*)`,
+    })
+    .from(jobApplications)
+    .innerJoin(jobOffers, eq(jobOffers.id, jobApplications.jobOfferId))
+    .where(
+      and(
+        eq(jobOffers.healthEntityId, healthEntityId),
+        eq(jobApplications.status, "approved")
+      )
+    );
+
+  return {
+    jobApplicationCount: applicationsCount.at(0)?.count,
+    jobOfferCount: jobOfferCount.at(0)?.count,
+    acceptedJobApplicationCount: acceptedApplicationCount.at(0)?.count,
+  };
 }

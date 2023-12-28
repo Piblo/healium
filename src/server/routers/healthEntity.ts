@@ -3,6 +3,7 @@ import {
   createHealthEntity,
   getHealthEntity,
   getHealthEntityMembers,
+  getHealthEntityStats,
   removeMember,
   updateHealthEntity,
 } from "../database/healthEntityRepository";
@@ -206,5 +207,14 @@ export const healthEntityRouter = router({
           jobOffer: application.jobOffer,
         };
       });
+    }),
+  stats: protectedProcedure
+    .input(
+      z.object({
+        healthEntityId: z.string(),
+      })
+    )
+    .query(({ input }) => {
+      return getHealthEntityStats(input.healthEntityId);
     }),
 });

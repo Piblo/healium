@@ -27,6 +27,7 @@ import { SignedIn, SignedOut, UserButton, useUser } from "@clerk/nextjs";
 import Link from "next/link";
 import { Menu } from "lucide-react";
 import { Separator } from "./ui/separator";
+import { ThemeToggle } from "./ThemeToggle";
 import { getSelectedHealthEntityId } from "@/utils/healthEntity";
 import { trpc } from "@/trpc/client";
 
@@ -188,6 +189,7 @@ export const Nav = () => {
         </NavigationMenuList>
       </div>
       <NavigationMenuList>
+        <ThemeToggle className="mr-2" />
         <SignedIn>
           <UserButton afterSignOutUrl="/" />
         </SignedIn>
