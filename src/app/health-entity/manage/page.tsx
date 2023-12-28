@@ -50,7 +50,7 @@ export default async function ManageHealthEntity() {
           <h1 className="text-2xl">{healthEntity.name}</h1>
         </Suspense>
       </div>
-      <div className="grid grid-cols-4 gap-4 mb-8">
+      <div className="grid grid-cols-2 md:grid-cols-4 gap-4 mb-8">
         <Card>
           <CardHeader className="pb-2 flex flex-row justify-between text-sm">
             <span>Solicitudes</span>
