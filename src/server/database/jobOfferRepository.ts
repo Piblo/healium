@@ -5,7 +5,7 @@ import {
   jobApplications,
   jobOffers,
 } from "./schema";
-import { SQL, and, eq, gt, like, lt, lte, sql } from "drizzle-orm";
+import { SQL, and, eq, gte, like, lte, sql } from "drizzle-orm";
 
 import { PaginatedResult } from "@/models/PaginatedResult";
 import { db } from "./connection";
@@ -104,8 +104,9 @@ export async function searchJobOffers(request: SearchJobOffersRequest) {
               .where(
                 and(
                   eq(jobApplications.jobOfferId, jobOffers.id),
-                  request.from && lt(jobApplications.startDate, request.from),
-                  request.to && gt(jobApplications.endDate, request.to)
+                  eq(jobApplications.status, "approved"),
+                  request.from && lte(jobApplications.startDate, request.from),
+                  request.to && gte(jobApplications.endDate, request.to)
                 )
               )
           )
