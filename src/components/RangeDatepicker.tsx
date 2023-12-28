@@ -1,7 +1,5 @@
 "use client";
 
-import * as React from "react";
-
 import {
   Popover,
   PopoverContent,
@@ -38,7 +36,8 @@ export function RangeDatePicker({ from, to, onSelect }: RangeDatePickerProps) {
             {from ? (
               to ? (
                 <>
-                  {from.toLocaleDateString()} - {to.toLocaleDateString()}
+                  {from.toLocaleDateString("es")} -{" "}
+                  {to.toLocaleDateString("es")}
                 </>
               ) : (
                 from.toLocaleDateString()

@@ -1,5 +1,11 @@
 "use client";
 
+import {
+  parseAsIsoDateTime,
+  parseAsString,
+  useQueryStates,
+} from "next-usequerystate";
+
 import { Button } from "@/components/ui/button";
 import { trpc } from "@/trpc/client";
 import { useRouter } from "next/navigation";
@@ -12,6 +18,11 @@ type ApplyButtonProps = {
 export const ApplyButton = ({ jobOfferId }: ApplyButtonProps) => {
   const router = useRouter();
   const { toast } = useToast();
+  const [search, setSearch] = useQueryStates({
+    region: parseAsString,
+    from: parseAsIsoDateTime,
+    to: parseAsIsoDateTime,
+  });
 
   const mutation = trpc.jobOffer.apply.useMutation({
     onSuccess: () => {
@@ -26,7 +37,11 @@ export const ApplyButton = ({ jobOfferId }: ApplyButtonProps) => {
   });
 
   function handleClick() {
-    mutation.mutate({ jobOfferId });
+    mutation.mutate({
+      jobOfferId,
+      endDate: search.to ?? undefined,
+      startDate: search.from ?? undefined,
+    });
   }
 
   return (

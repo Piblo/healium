@@ -5,7 +5,7 @@ import {
   jobApplications,
   jobOffers,
 } from "./schema";
-import { SQL, and, eq, like, lte, sql } from "drizzle-orm";
+import { SQL, and, eq, gt, like, lt, lte, sql } from "drizzle-orm";
 
 import { PaginatedResult } from "@/models/PaginatedResult";
 import { db } from "./connection";
@@ -68,6 +68,8 @@ type SearchJobOffersRequest = {
   userId?: string | null;
   limit?: number;
   cursor?: string;
+  from?: Date;
+  to?: Date;
 };
 
 export async function searchJobOffers(request: SearchJobOffersRequest) {
@@ -91,7 +93,23 @@ export async function searchJobOffers(request: SearchJobOffersRequest) {
   const limit = request.limit ?? 50;
 
   const result = await db.query.jobOffers.findMany({
-    where: and(...where),
+    where: (jobOffers, { notExists }) =>
+      and(
+        ...where,
+        (request.from || request.to) &&
+          notExists(
+            db
+              .select()
+              .from(jobApplications)
+              .where(
+                and(
+                  eq(jobApplications.jobOfferId, jobOffers.id),
+                  request.from && lt(jobApplications.startDate, request.from),
+                  request.to && gt(jobApplications.endDate, request.to)
+                )
+              )
+          )
+      ),
     limit: limit + 1,
     with: {
       healthEntity: {

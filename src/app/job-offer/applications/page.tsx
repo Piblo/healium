@@ -23,6 +23,8 @@ export default async function Applications() {
               startDate={x.jobOffer.startDate}
               endDate={x.jobOffer.endDate}
               hoursPerWeek={x.jobOffer.hoursPerWeek}
+              applicationEndDate={x.endDate}
+              applicationStartDate={x.startDate}
             />
           </li>
         ))}

@@ -116,6 +116,8 @@ export const jobApplications = mysqlTable(
     status: mysqlEnum("status", ["pending", "approved", "rejected"])
       .notNull()
       .default("pending"),
+    startDate: date("start_date"),
+    endDate: date("end_date"),
   },
   (table) => {
     return {

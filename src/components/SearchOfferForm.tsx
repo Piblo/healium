@@ -1,9 +1,12 @@
 "use client";
 
 import { Form, FormControl, FormField, FormItem, FormLabel } from "./ui/form";
+import { parseAsString, useQueryStates } from "next-usequerystate";
 import { useRouter, useSearchParams } from "next/navigation";
 
 import { Button } from "./ui/button";
+import { DateRange } from "react-day-picker";
+import { RangeDatePicker } from "./RangeDatepicker";
 import RegionSearch from "./RegionSearch";
 import { cn } from "@/lib/utils";
 import { useForm } from "react-hook-form";
@@ -14,19 +17,40 @@ type SearchOfferFormProps = {
 };
 
 export const SearchOfferForm = ({ className }: SearchOfferFormProps) => {
-  const searchParams = useSearchParams();
+  const [search, setSearch] = useQueryStates({
+    region: parseAsString,
+    from: parseAsString,
+    to: parseAsString,
+  });
+
   const form = useForm<FormValues>({
     defaultValues: {
-      region: searchParams.get("region") ?? "",
+      region: search.region ?? "",
+      startDate: search.from ? new Date(search.from) : undefined,
+      endDate: search.to ? new Date(search.to) : undefined,
     },
   });
   const router = useRouter();
 
-  function onSubmit(values: FormValues) {
+  async function onSubmit(values: FormValues) {
     const region = values.region === "Toda España" ? "" : values.region;
 
-    router.push(`/job-offer/search?region=${region ?? ""}`);
+    const res = await setSearch({
+      from: values.startDate ? dateFormatter.format(values.startDate) : null,
+      to: values.endDate ? dateFormatter.format(values.endDate) : null,
+      region: region,
+    });
+
+    router.push(`/job-offer/search?${res.toString()}`);
   }
+
+  function handleDateChange(range?: DateRange) {
+    form.setValue("startDate", range?.from);
+    form.setValue("endDate", range?.to);
+  }
+
+  const startDate = form.watch("startDate");
+  const endDate = form.watch("endDate");
 
   return (
     <Form {...form}>
@@ -37,6 +61,22 @@ export const SearchOfferForm = ({ className }: SearchOfferFormProps) => {
         )}
         onSubmit={form.handleSubmit(onSubmit)}
       >
+        <FormField
+          name="startDate"
+          control={form.control}
+          render={({ field }) => (
+            <FormItem className="flex-1">
+              <FormLabel>Duración</FormLabel>
+              <FormControl>
+                <RangeDatePicker
+                  onSelect={handleDateChange}
+                  from={startDate}
+                  to={endDate}
+                />
+              </FormControl>
+            </FormItem>
+          )}
+        />
         <FormField
           name="region"
           control={form.control}
@@ -66,6 +106,14 @@ export const SearchOfferForm = ({ className }: SearchOfferFormProps) => {
 
 const schema = z.object({
   region: z.string().optional(),
+  startDate: z.date().optional(),
+  endDate: z.date().optional(),
 });
 
 type FormValues = z.infer<typeof schema>;
+
+const dateFormatter = Intl.DateTimeFormat("en-US", {
+  year: "numeric",
+  month: "numeric",
+  day: "numeric",
+});

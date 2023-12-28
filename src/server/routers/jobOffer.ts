@@ -75,6 +75,8 @@ export const jobOfferRouter = router({
         region: z.string().optional(),
         limit: z.number().optional(),
         cursor: z.string().optional(),
+        from: z.date().optional(),
+        to: z.date().optional(),
       })
     )
     .query(({ input, ctx }) => {
@@ -111,6 +113,8 @@ export const jobOfferRouter = router({
     .input(
       z.object({
         jobOfferId: z.string(),
+        startDate: z.date().optional(),
+        endDate: z.date().optional(),
       })
     )
     .mutation(async ({ input, ctx }) => {
@@ -118,6 +122,8 @@ export const jobOfferRouter = router({
         jobOfferId: input.jobOfferId,
         userId: ctx.auth.userId,
         status: "pending",
+        endDate: input.endDate,
+        startDate: input.startDate,
       });
     }),
   update: protectedProcedure

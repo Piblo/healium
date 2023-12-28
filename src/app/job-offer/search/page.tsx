@@ -2,24 +2,29 @@
 
 import { Button } from "@/components/ui/button";
 import { JobOfferSummary } from "@/components/JobOfferSummary";
+import Link from "next/link";
 import { Loader2 } from "lucide-react";
 import { SearchOfferForm } from "@/components/SearchOfferForm";
 import { trpc } from "@/trpc/client";
+import { useSearchParams } from "next/navigation";
 
 type SearchJobOfferProps = {
   searchParams: {
-    search?: string;
     region?: string;
+    from?: string;
+    to?: string;
   };
 };
 
 export default function SearchJobOffer({ searchParams }: SearchJobOfferProps) {
+  const search = useSearchParams();
   const { data, isLoading, isFetched, fetchNextPage, hasNextPage } =
     trpc.jobOffer.search.useInfiniteQuery(
       {
         region: searchParams.region,
-        search: searchParams.search,
         limit: 10,
+        from: searchParams.from ? new Date(searchParams.from) : undefined,
+        to: searchParams.to ? new Date(searchParams.to) : undefined,
       },
       {
         getNextPageParam: (lastPage) => lastPage.nextCursor,
@@ -42,7 +47,7 @@ export default function SearchJobOffer({ searchParams }: SearchJobOfferProps) {
       <ul className="space-y-4">
         {items?.map((x) => (
           <li key={x.id}>
-            <a href={`/job-offer/${x.id}`}>
+            <Link href={`/job-offer/${x.id}?${search.toString()}`}>
               <JobOfferSummary
                 city={x.city ?? ""}
                 contractType={x.contractType ?? "full-time"}
@@ -58,7 +63,7 @@ export default function SearchJobOffer({ searchParams }: SearchJobOfferProps) {
                 hoursPerWeek={x.hoursPerWeek}
                 salaryPerHour={x.salaryPerHour ? Number(x.salaryPerHour) : null}
               />
-            </a>
+            </Link>
           </li>
         ))}
       </ul>

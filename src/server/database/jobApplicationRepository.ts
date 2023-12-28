@@ -4,7 +4,7 @@ import {
   jobApplications,
   jobOffers,
 } from "./schema";
-import { and, eq } from "drizzle-orm";
+import { and, desc, eq } from "drizzle-orm";
 
 import { db } from "./connection";
 
@@ -40,6 +40,7 @@ export async function getJobApplicationsForHealthEntity(
 export async function getJobApplicationsForUser(userId: string) {
   const offers = await db.query.jobApplications.findMany({
     where: eq(jobApplications.userId, userId),
+    orderBy: desc(jobApplications.createdDate),
     with: {
       jobOffer: {
         with: {

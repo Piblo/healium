@@ -59,7 +59,7 @@ export const Nav = () => {
                         className="text-muted-foreground"
                         href="/job-offer/applications"
                       >
-                        Mis ofertas
+                        Mis solicitudes
                       </Link>
                     </SheetClose>
                     <SheetClose asChild>
@@ -115,7 +115,7 @@ export const Nav = () => {
             <NavigationMenuItem className="hidden md:block">
               <Link href="/job-offer/applications" legacyBehavior passHref>
                 <NavigationMenuLink className={navigationMenuTriggerStyle()}>
-                  Mis ofertas
+                  Mis solicitudes
                 </NavigationMenuLink>
               </Link>
             </NavigationMenuItem>

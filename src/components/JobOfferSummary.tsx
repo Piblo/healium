@@ -28,6 +28,8 @@ type JobOfferSummary = {
   applicationStatus?: "approved" | "rejected" | "pending";
   hoursPerWeek?: number | null;
   salaryPerHour?: number | null;
+  applicationStartDate?: Date | null;
+  applicationEndDate?: Date | null;
 } & PropsWithChildren;
 
 export const JobOfferSummary = ({
@@ -46,6 +48,8 @@ export const JobOfferSummary = ({
   applicationStatus,
   hoursPerWeek,
   salaryPerHour,
+  applicationEndDate,
+  applicationStartDate,
 }: JobOfferSummary) => {
   return (
     <Card className="p-4">
@@ -63,6 +67,13 @@ export const JobOfferSummary = ({
           <div className="flex-1">
             <p className="text-xl font-bold">{healthEntityName}</p>
             <p className="text-muted-foreground">{title}</p>
+            {applicationEndDate && applicationStartDate && (
+              <p className="text-sm text-muted-foreground mt-4">
+                Duración del empleo:{" "}
+                {applicationStartDate?.toLocaleDateString("es")} -{" "}
+                {applicationEndDate?.toLocaleDateString("es")}
+              </p>
+            )}
           </div>
           <div className="hidden md:inline text-sm text-muted-foreground">
             <span className="hidden md:inline">Publicado</span>{" "}

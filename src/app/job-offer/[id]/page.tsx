@@ -1,4 +1,5 @@
 import { Mail, MapPin, Phone } from "lucide-react";
+import { notFound, useSearchParams } from "next/navigation";
 
 import { Briefcase } from "lucide-react";
 import { Button } from "@/components/ui/button";
@@ -7,10 +8,17 @@ import { Link } from "@/components/Link";
 import NextLink from "next/link";
 import { currentUser } from "@clerk/nextjs";
 import { getContractTypeLabel } from "@/utils/contractType";
-import { notFound } from "next/navigation";
 import { trpc } from "@/trpc/server";
 
-export default async function JobOffer({ params }: { params: { id: string } }) {
+type JobOfferProps = {
+  params: { id: string };
+  searchParams: Record<string, string>;
+};
+
+export default async function JobOffer({
+  params,
+  searchParams,
+}: JobOfferProps) {
   const jobOffer = await trpc.jobOffer.get.query({
     jobOfferId: params.id,
   });
@@ -102,7 +110,11 @@ export default async function JobOffer({ params }: { params: { id: string } }) {
         </>
       ) : (
         <Button disabled asChild>
-          <NextLink href={`/job-offer/${params.id}/apply`}>
+          <NextLink
+            href={`/job-offer/${params.id}/apply?${new URLSearchParams(
+              searchParams
+            ).toString()}`}
+          >
             Solicitar puesto
           </NextLink>
         </Button>

@@ -27,7 +27,7 @@ export default function Home() {
             <h1 className="text-2xl font-semibold lg:text-4xl text-center mb-8">
               Encuentra tu trabajo ideal en enfermería
             </h1>
-            <SearchOfferForm className="mx-auto max-w-lg" />
+            <SearchOfferForm className="mx-auto max-w-xl" />
           </div>
           <div className="py-8 mt-8">
             <div className="container space-y-8">
