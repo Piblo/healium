@@ -52,7 +52,7 @@ export const candidateRouter = router({
     }
 
     const fileKey = existingProfile.curriculumVitaeUrl.replace(
-      "https://uploadthing.com/f/",
+      "https://utfs.io/f/",
       ""
     );
 

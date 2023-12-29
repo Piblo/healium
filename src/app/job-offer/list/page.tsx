@@ -63,7 +63,7 @@ const JobOfferWithApplicationSummary = ({
 }: JobOfferWithApplicationSummaryProps) => {
   return (
     <Card className="">
-      <CardHeader className="flex flex-row items-center justify-between pt-2">
+      <CardHeader className="flex flex-row items-center justify-between pt-2 pb-1">
         <div className="text-lg">{title}</div>
         <JobOfferDropdownMenu jobOfferId={id} />
       </CardHeader>

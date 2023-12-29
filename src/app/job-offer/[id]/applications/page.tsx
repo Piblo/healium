@@ -1,8 +1,7 @@
 "use client";
 
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
-import { Badge, badgeVariants } from "@/components/ui/badge";
-import { File, Loader2, Mail, Phone } from "lucide-react";
+import { Calendar, File, Loader2, Mail, Phone } from "lucide-react";
 import { JobOfferApplicationsOutput, trpc } from "@/trpc/client";
 
 import { BackButton } from "@/components/BackButton";
@@ -10,6 +9,7 @@ import { Button } from "@/components/ui/button";
 import Image from "next/image";
 import { JobApplicationStatus } from "@/components/JobApplicationStatus";
 import Link from "next/link";
+import { badgeVariants } from "@/components/ui/badge";
 import dayjs from "dayjs";
 import es from "dayjs/locale/es";
 import { getPrimaryEmailAddress } from "@/server/utils/user";
@@ -129,6 +129,13 @@ export default function JobOfferApplications({
                 <Mail size={16} className="mr-1" />
                 {getPrimaryEmailAddress(x.user!)?.emailAddress}
               </li>
+              {x.startDate && x.endDate && (
+                <li className="flex items-center">
+                  <Calendar size={16} className="mr-1" />
+                  Duración: {x.startDate.toLocaleDateString("es")} -{" "}
+                  {x.endDate.toLocaleDateString("es")}
+                </li>
+              )}
               {x.user?.phoneNumbers.length ? (
                 <li className="flex items-center">
                   <Phone size={16} className="mr-1" />

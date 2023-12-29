@@ -9,12 +9,15 @@ import {
 } from "../database/healthEntityRepository";
 import { isHealiumAdmin, procedure, protectedProcedure, router } from "../trpc";
 
+import { HealthEntityInviteEmail } from "@/components/HealthEntityInviteEmail";
+import { TRPCError } from "@trpc/server";
 import { checkUserIsHealthEntityMember } from "../services/permissionsService";
 import { clerkClient } from "@clerk/nextjs";
 import { getBaseUrl } from "./_app";
 import { getJobApplicationsForHealthEntity } from "../database/jobApplicationRepository";
 import { getPrimaryEmailAddress } from "../utils/user";
 import { healthEntityUsers } from "../database/schema";
+import { resendClient } from "../clients/resend";
 import { z } from "zod";
 
 const createHealthEntityInput = z.object({
@@ -124,6 +127,24 @@ export const healthEntityRouter = router({
           redirectUrl: `${getBaseUrl()}/health-entity/${
             input.healthEntityId
           }/join`,
+        });
+      } else {
+        const healthEntity = await getHealthEntity(input.healthEntityId);
+        if (!healthEntity) {
+          throw new TRPCError({
+            message: "Health entity not found",
+            code: "NOT_FOUND",
+          });
+        }
+
+        await resendClient.emails.send({
+          from: "onboarding@resend.dev",
+          to: input.emailAddress,
+          subject: "Bienvenido a Healium",
+          react: HealthEntityInviteEmail({
+            healthEntityName: healthEntity.name,
+            healthEntityId: healthEntity.id,
+          }),
         });
       }
 

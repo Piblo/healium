@@ -6,25 +6,19 @@ import { Button } from "@/components/ui/button";
 import { DeleteCv } from "./DeleteCv";
 import { Label } from "@/components/ui/label";
 import Link from "next/link";
+import { Skeleton } from "@/components/ui/skeleton";
 import { UploadCv } from "./UploadCv";
 import { trpc } from "@/trpc/client";
 
 export default function Profile() {
   const { data: profile, isLoading } = trpc.candidate.profile.useQuery();
 
-  if (isLoading) {
-    return (
-      <div className="container py-6">
-        <Loader2 className="animate-spin" />
-      </div>
-    );
-  }
-
   return (
     <div className="container py-6">
       <h1 className="text-xl mb-4">Perfil</h1>
       <div className="flex flex-col gap-2 max-w-md">
         <Label htmlFor="cv">Curriculum Vitae</Label>
+        {isLoading && <Skeleton className="h-[58px] w-[448px]" />}
         {profile?.cvUrl ? (
           <>
             <Button
@@ -45,7 +39,7 @@ export default function Profile() {
             <DeleteCv />
           </>
         ) : (
-          <UploadCv />
+          !isLoading && <UploadCv />
         )}
       </div>
     </div>

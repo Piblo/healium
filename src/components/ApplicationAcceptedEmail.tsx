@@ -1,5 +1,3 @@
-import { JobOfferSummary } from "./JobOfferSummary";
-
 export const ApplicationAcceptedEmail = () => {
   return (
     <div>
