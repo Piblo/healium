@@ -4,7 +4,6 @@ import { Stats, StatsSkeleton } from "./Stats";
 
 import Image from "next/image";
 import Link from "next/link";
-import { Skeleton } from "@/components/ui/skeleton";
 import { Suspense } from "react";
 import { cookies } from "next/headers";
 import { redirect } from "next/navigation";
@@ -23,19 +22,17 @@ export default async function ManageHealthEntity() {
   return (
     <div className="container py-6">
       <div className="mb-6 flex items-center gap-4 flex-col md:flex-row">
-        <Suspense fallback={<Skeleton className="w-[300px] h-[25px]" />}>
-          {healthEntity.logoUrl && (
-            <Image
-              priority
-              src={healthEntity.logoUrl}
-              className="rounded"
-              alt=""
-              width="80"
-              height="80"
-            />
-          )}
-          <h1 className="text-2xl">{healthEntity.name}</h1>
-        </Suspense>
+        {healthEntity.logoUrl && (
+          <Image
+            priority
+            src={healthEntity.logoUrl}
+            className="rounded"
+            alt=""
+            width="80"
+            height="80"
+          />
+        )}
+        <h1 className="text-2xl">{healthEntity.name}</h1>
       </div>
       <Suspense fallback={<StatsSkeleton />}>
         <Stats />

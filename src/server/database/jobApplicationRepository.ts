@@ -31,15 +31,23 @@ export async function getJobApplicationsForHealthEntity(
     })
     .from(jobApplications)
     .innerJoin(jobOffers, eq(jobOffers.id, jobApplications.jobOfferId))
-    .where(eq(jobOffers.healthEntityId, healthEntityId))
+    .where(and(eq(jobOffers.healthEntityId, healthEntityId)))
     .limit(10);
 
   return offers;
 }
 
-export async function getJobApplicationsForUser(userId: string) {
+export async function getJobApplicationsForUser(
+  userId: string,
+  jobOfferId?: string
+) {
   const offers = await db.query.jobApplications.findMany({
-    where: eq(jobApplications.userId, userId),
+    where: and(
+      eq(jobApplications.userId, userId),
+      jobOfferId && jobOfferId != ""
+        ? eq(jobApplications.jobOfferId, jobOfferId)
+        : undefined
+    ),
     orderBy: desc(jobApplications.createdDate),
     with: {
       jobOffer: {
@@ -54,9 +62,19 @@ export async function getJobApplicationsForUser(userId: string) {
   return offers;
 }
 
-export async function getJobApplicationsForJobOffer(jobOfferId: string) {
+type GetJobApplicationsForJobOfferOptions = {
+  status?: JobApplication["status"];
+};
+
+export async function getJobApplicationsForJobOffer(
+  jobOfferId: string,
+  options: GetJobApplicationsForJobOfferOptions = {}
+) {
   const applications = await db.query.jobApplications.findMany({
-    where: eq(jobApplications.jobOfferId, jobOfferId),
+    where: and(
+      eq(jobApplications.jobOfferId, jobOfferId),
+      options.status && eq(jobApplications.status, options.status)
+    ),
     limit: 10,
     with: {
       candidateProfile: true,

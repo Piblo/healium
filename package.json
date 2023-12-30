@@ -50,6 +50,7 @@
     "dayjs": "^1.11.9",
     "dotenv": "^16.3.1",
     "drizzle-orm": "^0.29.2",
+    "drizzle-zod": "^0.5.1",
     "eslint": "8.44.0",
     "eslint-config-next": "^13.5.1",
     "lucide-react": "^0.294.0",

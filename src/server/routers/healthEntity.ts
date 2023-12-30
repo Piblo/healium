@@ -7,6 +7,10 @@ import {
   removeMember,
   updateHealthEntity,
 } from "../database/healthEntityRepository";
+import {
+  healthEntityUsers,
+  selectJobApplicationSchema,
+} from "../database/schema";
 import { isHealiumAdmin, procedure, protectedProcedure, router } from "../trpc";
 
 import { HealthEntityInviteEmail } from "@/components/HealthEntityInviteEmail";
@@ -16,7 +20,6 @@ import { clerkClient } from "@clerk/nextjs";
 import { getBaseUrl } from "./_app";
 import { getJobApplicationsForHealthEntity } from "../database/jobApplicationRepository";
 import { getPrimaryEmailAddress } from "../utils/user";
-import { healthEntityUsers } from "../database/schema";
 import { resendClient } from "../clients/resend";
 import { z } from "zod";
 
@@ -197,7 +200,12 @@ export const healthEntityRouter = router({
       await removeMember(input);
     }),
   jobApplications: protectedProcedure
-    .input(z.object({ healthEntityId: z.string() }))
+    .input(
+      z.object({
+        healthEntityId: z.string(),
+        status: selectJobApplicationSchema.shape.status.optional(),
+      })
+    )
     .query(async ({ input }) => {
       await checkUserIsHealthEntityMember(input.healthEntityId);
 
@@ -225,6 +233,7 @@ export const healthEntityRouter = router({
               (x) => x.id === user.primaryPhoneNumberId
             )?.phoneNumber,
           },
+          application: application.jobApplication,
           jobOffer: application.jobOffer,
         };
       });

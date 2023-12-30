@@ -83,7 +83,7 @@ export default function JobOfferApplications({
       <h1 className="text-xl mb-4">{jobOffer?.title}</h1>
       <ul className="divide-y max-w-screen-md">
         {applications?.map((x) => (
-          <li key={x.userId} className="flex flex-col gap-4">
+          <li key={x.userId} className="flex flex-col gap-4 py-6">
             <div className="flex gap-4">
               <Avatar>
                 <AvatarImage asChild src={x.user?.imageUrl!}>
@@ -104,7 +104,7 @@ export default function JobOfferApplications({
                   <p className="text-lg flex-1">
                     {x.user?.firstName} {x.user?.lastName}{" "}
                   </p>
-                  {x.candidateProfile.curriculumVitaeUrl && (
+                  {x.candidateProfile?.curriculumVitaeUrl && (
                     <Link
                       className={badgeVariants({ variant: "secondary" })}
                       href={x.candidateProfile.curriculumVitaeUrl}

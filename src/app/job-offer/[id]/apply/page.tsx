@@ -36,7 +36,9 @@ export default async function Apply({ params }: { params: { id: string } }) {
       />
       <Alert>
         <Info className="h-4 w-4" />
-        <AlertTitle>Deseas solicitar este puesto de trabajo?</AlertTitle>
+        <AlertTitle className="mb-4">
+          Deseas solicitar este puesto de trabajo?
+        </AlertTitle>
         <AlertDescription>
           ¿Estás seguro de que deseas solicitar este puesto de trabajo? Una vez
           que envíes tu solicitud, el centro de salud recibirá tu perfil y se

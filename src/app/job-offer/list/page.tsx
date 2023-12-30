@@ -92,9 +92,12 @@ const JobOfferWithApplicationSummary = ({
             <dd className="text-green-500">{applicationCount}</dd>
           </dl>
         </div>
-        <div>
+        <div className="space-x-2">
           <Button variant="outline" asChild>
             <Link href={`/job-offer/${id}/applications`}>Ver solicitudes</Link>
+          </Button>
+          <Button variant="secondary" asChild>
+            <Link href={`/job-offer/${id}/rota`}>Ver rota</Link>
           </Button>
         </div>
       </CardContent>

@@ -17,6 +17,8 @@ import {
   varchar,
 } from "drizzle-orm/mysql-core";
 
+import { createSelectSchema } from "drizzle-zod";
+
 export const healthEntities = mysqlTable("health_entities", {
   id: varchar("id", {
     length: 36,
@@ -125,6 +127,8 @@ export const jobApplications = mysqlTable(
     };
   }
 );
+
+export const selectJobApplicationSchema = createSelectSchema(jobApplications);
 
 export type JobApplication = InferSelectModel<typeof jobApplications>;
 export type CreateJobApplication = InferInsertModel<typeof jobApplications>;

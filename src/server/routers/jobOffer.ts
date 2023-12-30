@@ -15,6 +15,7 @@ import { procedure, protectedProcedure, router } from "../trpc";
 import { TRPCError } from "@trpc/server";
 import { checkUserIsHealthEntityMember } from "../services/permissionsService";
 import { clerkClient } from "@clerk/nextjs";
+import { selectJobApplicationSchema } from "../database/schema";
 import { z } from "zod";
 
 const createInput = z.object({
@@ -142,6 +143,7 @@ export const jobOfferRouter = router({
     .input(
       z.object({
         jobOfferId: z.string(),
+        status: selectJobApplicationSchema.shape.status.optional(),
       })
     )
     .query(async ({ input }) => {
@@ -156,7 +158,8 @@ export const jobOfferRouter = router({
       await checkUserIsHealthEntityMember(jobOffer.healthEntityId);
 
       const applications = await getJobApplicationsForJobOffer(
-        input.jobOfferId
+        input.jobOfferId,
+        { status: input.status }
       );
       const users = await clerkClient.users.getUserList({
         userId: applications.map((x) => x.userId),

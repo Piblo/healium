@@ -10,7 +10,7 @@ import { currentUser } from "@clerk/nextjs";
 import { getContractTypeLabel } from "@/utils/contractType";
 import { trpc } from "@/trpc/server";
 
-type JobOfferProps = {
+export type JobOfferProps = {
   params: { id: string };
   searchParams: Record<string, string>;
 };
@@ -26,7 +26,7 @@ export default async function JobOffer({
   const user = await currentUser();
 
   const userApplications = user
-    ? await trpc.jobOffer.applications.query({
+    ? await trpc.user.applications.query({
         jobOfferId: params.id,
       })
     : [];
