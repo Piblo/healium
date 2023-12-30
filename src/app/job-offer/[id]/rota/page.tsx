@@ -47,7 +47,7 @@ export default async function Rota({ params }: RotaProps) {
             <li
               key={`${x.userId}-${x.jobOfferId}`}
               className={cn("flex relative max-w-screen-md", {
-                "after:absolute after:left-[24px] after:top-[48px] after:w-[1px] after:h-full after:bg-slate-600 mb-12":
+                "after:absolute after:left-[24px] after:top-[100%] after:w-[2px] after:h-full after:bg-slate-400 mb-12":
                   index < applications.length - 1,
               })}
             >
