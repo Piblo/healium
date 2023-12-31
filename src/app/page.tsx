@@ -72,7 +72,7 @@ export default function Home() {
                     <div className="mb-4 flex gap-4 flex-col lg:flex-row">
                       <Heart className="shrink-0" />
                       <CardTitle className="text-xl/7 lg:text-2xl/7">
-                        Facilidad y Conveniencia
+                        Facilidad y conveniencia
                       </CardTitle>
                     </div>
                     <CardDescription>
