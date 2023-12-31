@@ -4,11 +4,12 @@ import { cn } from "@/lib/utils";
 export type StatusProps = {
   color: "green" | "orange" | "red";
   children: ReactNode;
+  className?: string;
 };
 
-export const Status = ({ color, children }: StatusProps) => {
+export const Status = ({ color, children, className }: StatusProps) => {
   return (
-    <div className="flex items-center gap-2 text-sm">
+    <div className={cn("flex items-center gap-2 text-sm", className)}>
       <div className={cn("rounded-full h-2 w-2", getStatusColor(color))} />
       {children}
     </div>

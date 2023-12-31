@@ -1,13 +1,14 @@
 import { ArrowRight, CalendarRange, File } from "lucide-react";
+import { differenceInDays, format } from "date-fns";
 
 import { BackButton } from "@/components/BackButton";
 import Image from "next/image";
 import { JobOfferProps } from "../page";
 import Link from "next/link";
+import { Status } from "@/components/Status";
 import { badgeVariants } from "@/components/ui/badge";
 import { cn } from "@/lib/utils";
 import { es } from "date-fns/locale";
-import { format } from "date-fns";
 import { trpc } from "@/trpc/server";
 
 type RotaProps = {
@@ -34,7 +35,19 @@ export default async function Rota({ params }: RotaProps) {
       return "outline";
     }
 
-    return "outline-dashed";
+    return "outline";
+  }
+
+  function getDurationPercentage() {
+    const { startDate, endDate } = applications.at(0) ?? {};
+    if (!startDate || !endDate) {
+      return 0;
+    }
+
+    const totalDays = differenceInDays(startDate, endDate);
+    const elapsedDays = differenceInDays(startDate, new Date());
+
+    return (elapsedDays / totalDays) * 100;
   }
 
   return (
@@ -46,17 +59,21 @@ export default async function Rota({ params }: RotaProps) {
           <>
             <li
               key={`${x.userId}-${x.jobOfferId}`}
-              className={cn("flex relative max-w-screen-md", {
-                "after:absolute after:left-[24px] after:top-[100%] after:w-[2px] after:h-full after:bg-slate-400 mb-12":
-                  index < applications.length - 1,
-              })}
+              className="flex relative max-w-screen-md items-start pb-12"
             >
+              {index < applications.length - 1 && (
+                <VerticalProgress value={getDurationPercentage()} />
+              )}
               <div className="flex items-center gap-4 w-full">
                 {x.user?.imageUrl && (
                   <Image
                     className={cn(
-                      "rounded-full outline-2 outline-offset-2 outline-blue-500",
-                      index === 0 && getOutlineStyle()
+                      "rounded-full outline-2 outline-offset-2 self-start",
+                      getOutlineStyle(),
+                      {
+                        "outline-blue-500": index === 0,
+                        "outline-slate-400": index > 0,
+                      }
                     )}
                     width={48}
                     height={48}
@@ -65,7 +82,7 @@ export default async function Rota({ params }: RotaProps) {
                   />
                 )}
                 <div className="flex-1">
-                  <div className="flex justify-between items-center gap-6 mb-2">
+                  <div className="flex justify-between items-center gap-6">
                     <h2 className="text-lg font-semibold">
                       {x.user?.firstName} {x.user?.lastName}
                     </h2>
@@ -81,6 +98,11 @@ export default async function Rota({ params }: RotaProps) {
                       </Link>
                     )}
                   </div>
+                  {x.startDate && x.startDate <= new Date() && (
+                    <Status color="green" className="mb-2">
+                      En plantilla
+                    </Status>
+                  )}
                   {x.startDate && x.endDate && (
                     <span className="flex items-center text-muted-foreground capitalize text-sm">
                       <CalendarRange className="h-4 w-4 mr-2" />
@@ -108,3 +130,20 @@ export default async function Rota({ params }: RotaProps) {
     </div>
   );
 }
+
+type VerticalProgressProps = {
+  value: number;
+};
+
+const VerticalProgress = ({ value }: VerticalProgressProps) => {
+  return (
+    <div className="absolute left-[24px] w-[2px] h-[calc(100%-(48px+8px))] top-[calc(4px+48px)] bg-slate-400">
+      <div
+        className="absolute w-full bg-blue-500"
+        style={{
+          height: `${value}%`,
+        }}
+      />
+    </div>
+  );
+};

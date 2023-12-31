@@ -10,10 +10,6 @@ import {
   navigationMenuTriggerStyle,
 } from "./ui/navigation-menu";
 import {
-  NavigationMenuSub,
-  NavigationMenuViewport,
-} from "@radix-ui/react-navigation-menu";
-import {
   Sheet,
   SheetClose,
   SheetContent,
@@ -26,7 +22,9 @@ import { SignedIn, SignedOut, UserButton, useUser } from "@clerk/nextjs";
 
 import Link from "next/link";
 import { Menu } from "lucide-react";
+import { NavigationMenuSub } from "@radix-ui/react-navigation-menu";
 import { Separator } from "./ui/separator";
+import { Skeleton } from "./ui/skeleton";
 import { ThemeToggle } from "./ThemeToggle";
 import { getSelectedHealthEntityId } from "@/utils/healthEntity";
 import { trpc } from "@/trpc/client";
@@ -202,3 +200,20 @@ export const Nav = () => {
     </NavigationMenu>
   );
 };
+
+export const NavSkeleton = () => (
+  <NavigationMenu className="px-4 h-16 max-w-none border-b border-solid border-slate-300 justify-start">
+    <NavigationMenuList>
+      <NavigationMenuItem>
+        <Link href="/" legacyBehavior passHref>
+          <NavigationMenuLink className={navigationMenuTriggerStyle()}>
+            Healium
+          </NavigationMenuLink>
+        </Link>
+      </NavigationMenuItem>
+      <NavigationMenuItem>
+        <Skeleton className="w-40 h-[40px]" />
+      </NavigationMenuItem>
+    </NavigationMenuList>
+  </NavigationMenu>
+);
