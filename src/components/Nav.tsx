@@ -46,7 +46,7 @@ export const Nav = () => {
             <NavigationMenuItem className="flex items-center md:hidden">
               <Sheet>
                 <SheetTrigger>
-                  <Menu />
+                  <Menu aria-label="Toggle navigation menu" />
                 </SheetTrigger>
                 <SheetContent side="left">
                   <SheetHeader>
@@ -187,9 +187,13 @@ export const Nav = () => {
         </NavigationMenuList>
       </div>
       <NavigationMenuList>
-        <ThemeToggle className="mr-2" />
+        <NavigationMenuItem>
+          <ThemeToggle className="mr-2" />
+        </NavigationMenuItem>
         <SignedIn>
-          <UserButton afterSignOutUrl="/" />
+          <NavigationMenuItem>
+            <UserButton afterSignOutUrl="/" />
+          </NavigationMenuItem>
         </SignedIn>
         <SignedOut>
           <NavigationMenuItem>
