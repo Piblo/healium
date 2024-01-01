@@ -1,6 +1,6 @@
 import { Mail, MapPin, Phone } from "lucide-react";
-import { notFound, useSearchParams } from "next/navigation";
 
+import { BackButton } from "@/components/BackButton";
 import { Briefcase } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import Image from "next/image";
@@ -8,6 +8,7 @@ import { Link } from "@/components/Link";
 import NextLink from "next/link";
 import { currentUser } from "@clerk/nextjs";
 import { getContractTypeLabel } from "@/utils/contractType";
+import { notFound } from "next/navigation";
 import { trpc } from "@/trpc/server";
 
 export type JobOfferProps = {
@@ -41,6 +42,10 @@ export default async function JobOffer({
 
   return (
     <div className="container max-w-4xl py-6">
+      <BackButton
+        href={`/job-offer/search?${new URLSearchParams(searchParams)}`}
+        className="mb-6"
+      />
       {jobOffer.healthEntity.logoUrl && (
         <Image
           src={jobOffer.healthEntity.logoUrl}

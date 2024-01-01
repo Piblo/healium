@@ -2,14 +2,15 @@
 
 import { Form, FormControl, FormField, FormItem, FormLabel } from "./ui/form";
 import { parseAsString, useQueryStates } from "next-usequerystate";
-import { useRouter, useSearchParams } from "next/navigation";
 
 import { Button } from "./ui/button";
 import { DateRange } from "react-day-picker";
 import { RangeDatePicker } from "./RangeDatepicker";
 import RegionSearch from "./RegionSearch";
+import { addDays } from "date-fns";
 import { cn } from "@/lib/utils";
 import { useForm } from "react-hook-form";
+import { useRouter } from "next/navigation";
 import { z } from "zod";
 
 type SearchOfferFormProps = {
@@ -35,9 +36,11 @@ export const SearchOfferForm = ({ className }: SearchOfferFormProps) => {
   async function onSubmit(values: FormValues) {
     const region = values.region === "Toda España" ? "" : values.region;
 
+    const endDate = values.startDate ? values.endDate : addDays(new Date(), 7);
+
     const res = await setSearch({
-      from: values.startDate ? dateFormatter.format(values.startDate) : null,
-      to: values.endDate ? dateFormatter.format(values.endDate) : null,
+      from: dateFormatter.format(values.startDate ?? new Date()),
+      to: endDate ? dateFormatter.format(endDate) : null,
       region: region,
     });
 
@@ -72,6 +75,7 @@ export const SearchOfferForm = ({ className }: SearchOfferFormProps) => {
                   onSelect={handleDateChange}
                   from={startDate}
                   to={endDate}
+                  fromDate={new Date()}
                 />
               </FormControl>
             </FormItem>

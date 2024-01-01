@@ -17,9 +17,15 @@ type RangeDatePickerProps = {
   from?: Date;
   to?: Date;
   onSelect: (dateRange: DateRange | undefined) => void;
+  fromDate?: Date;
 };
 
-export function RangeDatePicker({ from, to, onSelect }: RangeDatePickerProps) {
+export function RangeDatePicker({
+  from,
+  to,
+  onSelect,
+  fromDate,
+}: RangeDatePickerProps) {
   return (
     <div className={cn("grid gap-2")}>
       <Popover>
@@ -35,12 +41,9 @@ export function RangeDatePicker({ from, to, onSelect }: RangeDatePickerProps) {
             <CalendarIcon className="mr-2 h-4 w-4" />
             {from ? (
               to ? (
-                <>
-                  {from.toLocaleDateString("es")} -{" "}
-                  {to.toLocaleDateString("es")}
-                </>
+                <>{formatter.formatRange(from, to)}</>
               ) : (
-                from.toLocaleDateString()
+                formatter.format(from)
               )
             ) : (
               <span>Elige una fecha</span>
@@ -56,9 +59,16 @@ export function RangeDatePicker({ from, to, onSelect }: RangeDatePickerProps) {
             onSelect={onSelect}
             numberOfMonths={2}
             locale={es}
+            fromDate={fromDate}
           />
         </PopoverContent>
       </Popover>
     </div>
   );
 }
+
+const formatter = new Intl.DateTimeFormat(navigator.language, {
+  day: "2-digit",
+  month: "2-digit",
+  year: "numeric",
+});
