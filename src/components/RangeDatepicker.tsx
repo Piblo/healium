@@ -67,7 +67,7 @@ export function RangeDatePicker({
   );
 }
 
-const formatter = new Intl.DateTimeFormat(navigator.language, {
+const formatter = new Intl.DateTimeFormat("es", {
   day: "2-digit",
   month: "2-digit",
   year: "numeric",
