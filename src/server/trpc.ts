@@ -4,6 +4,7 @@ import { type CreateNextContextOptions } from "@trpc/server/adapters/next";
 import superjson from "superjson";
 import { db } from "./database/connection";
 import { auth, clerkClient } from "@clerk/nextjs";
+import { ZodError } from "zod";
 
 export const createContext = (opts: CreateNextContextOptions) => {
   const user = auth();
@@ -15,8 +16,15 @@ export const createContext = (opts: CreateNextContextOptions) => {
 
 const t = initTRPC.context<typeof createContext>().create({
   transformer: superjson,
-  errorFormatter({ shape }) {
-    return shape;
+  errorFormatter({ shape, error }) {
+    return {
+      ...shape,
+      data: {
+        ...shape.data,
+        zodError:
+          error.cause instanceof ZodError ? error.cause.flatten() : null,
+      },
+    };
   },
 });
 
