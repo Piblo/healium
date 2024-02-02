@@ -1,12 +1,11 @@
 import { TRPCError, initTRPC } from "@trpc/server";
-import { type CreateNextContextOptions } from "@trpc/server/adapters/next";
-
-import superjson from "superjson";
-import { db } from "./database/connection";
 import { auth, clerkClient } from "@clerk/nextjs";
-import { ZodError } from "zod";
 
-export const createContext = (opts: CreateNextContextOptions) => {
+import { ZodError } from "zod";
+import { db } from "./database/connection";
+import superjson from "superjson";
+
+export const createContext = () => {
   const user = auth();
   return {
     auth: user,
