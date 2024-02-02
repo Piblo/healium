@@ -7,10 +7,10 @@ export default authMiddleware({
     "/sign-up",
     "/job-offer/search",
     "/job-offer/:id",
-    "/(api|api/trpc)(.*)",
+    "/api/(.*)",
   ],
 });
 
 export const config = {
-  matcher: ["/((?!.*\\..*|_next).*)", "/", "/(api|trpc)(.*)"],
+  matcher: ["/((?!.+\\.[\\w]+$|_next).*)", "/", "/(api|trpc)(.*)"],
 };
