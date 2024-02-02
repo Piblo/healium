@@ -9,8 +9,6 @@ import SuperJSON from "superjson";
 import { TRPCErrorResponse } from "@trpc/server/rpc";
 import { callProcedure } from "@trpc/server";
 import { createContext } from "@/server/trpc";
-import { getBaseUrl } from "@/utils/getBaseUrl";
-import { headers } from "next/headers";
 import { observable } from "@trpc/server/observable";
 
 export const trpc = createTRPCProxyClient<AppRouter>({
