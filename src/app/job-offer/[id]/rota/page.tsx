@@ -52,7 +52,7 @@ export default async function Rota({ params }: RotaProps) {
 
   return (
     <div className="container py-6">
-      <BackButton href={`/job-offer/list`} className="mb-4" />
+      <BackButton href="/job-offer/list" className="mb-4" />
       <h1 className="text-2xl font-semibold mb-6">{jobOffer.title}</h1>
       <ul>
         {applications.map((x, index) => (

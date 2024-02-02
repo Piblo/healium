@@ -7,9 +7,7 @@ export default authMiddleware({
     "/sign-up",
     "/job-offer/search",
     "/job-offer/:id",
-    "/api/trpc/jobOffer.search",
-    "/api/trpc/jobOffer.get",
-    "/api/uploadthing",
+    "/(api|trpc)(.*)",
   ],
 });
 
