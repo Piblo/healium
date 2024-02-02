@@ -5,7 +5,7 @@ import { createContext } from "@/server/trpc";
 import { redirect } from "next/navigation";
 
 export async function GET(req: NextRequest) {
-  const caller = appRouter.createCaller(createContext({ req } as any));
+  const caller = appRouter.createCaller(createContext());
 
   const result = await caller.user.healthEntities();
 
@@ -13,7 +13,7 @@ export async function GET(req: NextRequest) {
 
   if (result.length === 1) {
     cookies().set("healthEntityId", result[0].id);
-    return redirect(`/health-entity/manage`);
+    return redirect("/health-entity/manage");
   }
 
   if (result.length > 1) {
