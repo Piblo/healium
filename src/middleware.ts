@@ -8,6 +8,7 @@ export default authMiddleware({
     "/job-offer/search",
     "/job-offer/:id",
     "/api/(.*)",
+    "/api/trpc/jobOffer.get",
   ],
 });
 
