@@ -9,6 +9,7 @@ export default authMiddleware({
     "/job-offer/:id",
     "/api/(.*)",
     "/api/trpc/jobOffer.get",
+    "/health-entity/:id",
   ],
 });
 
