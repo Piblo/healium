@@ -26,6 +26,7 @@ export default async function Apply({ params }: { params: { id: string } }) {
         createdDate={jobOffer.createdDate}
         description={jobOffer.description ?? ""}
         healthEntityName={jobOffer.healthEntity.name}
+        healthEntityId={jobOffer.healthEntityId}
         region={jobOffer.region ?? ""}
         title={jobOffer.title}
         logo={jobOffer.healthEntity.logoUrl}

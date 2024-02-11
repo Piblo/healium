@@ -30,6 +30,7 @@ export default async function ApplicationConfirmed({
         createdDate={jobOffer.createdDate}
         description={jobOffer.description ?? ""}
         healthEntityName={jobOffer.healthEntity.name}
+        healthEntityId={jobOffer.healthEntityId}
         region={jobOffer.region ?? ""}
         title={jobOffer.title}
         logo={jobOffer.healthEntity.logoUrl}
