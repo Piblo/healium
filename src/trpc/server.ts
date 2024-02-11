@@ -21,7 +21,7 @@ export const trpc = createTRPCProxyClient<AppRouter>({
     () =>
       ({ op }) =>
         observable((observer) => {
-          const ctx = createContext;
+          const ctx = createContext();
 
           callProcedure({
             procedures: appRouter._def.procedures,
