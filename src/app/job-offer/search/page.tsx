@@ -1,7 +1,11 @@
 "use client";
 
+import {
+  JobOfferSummary,
+  JobOfferSummarySkeleton,
+} from "@/components/JobOfferSummary";
+
 import { Button } from "@/components/ui/button";
-import { JobOfferSummary } from "@/components/JobOfferSummary";
 import Link from "next/link";
 import { Loader2 } from "lucide-react";
 import { SearchOfferForm } from "@/components/SearchOfferForm";
@@ -43,8 +47,14 @@ export default function SearchJobOffer({ searchParams }: SearchJobOfferProps) {
           realizar una búsqueda diferente
         </p>
       ) : null}
-      {isLoading && <Loader2 className="animate-spin" />}
       <ul className="space-y-4">
+        {isLoading && (
+          <>
+            <JobOfferSummarySkeleton />
+            <JobOfferSummarySkeleton />
+            <JobOfferSummarySkeleton />
+          </>
+        )}
         {items?.map((x) => (
           <li key={x.id}>
             <Link href={`/job-offer/${x.id}?${search.toString()}`}>
@@ -54,6 +64,7 @@ export default function SearchJobOffer({ searchParams }: SearchJobOfferProps) {
                 createdDate={x.createdDate}
                 description={x.description ?? ""}
                 healthEntityName={x.healthEntity.name}
+                healthEntityId={x.healthEntityId}
                 region={x.region ?? ""}
                 title={x.title}
                 logo={x.healthEntity.logoUrl}

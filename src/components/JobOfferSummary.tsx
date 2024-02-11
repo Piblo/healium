@@ -5,7 +5,9 @@ import { Badge } from "./ui/badge";
 import { Card } from "./ui/card";
 import Image from "next/image";
 import { JobApplicationStatus } from "./JobApplicationStatus";
+import Link from "next/link";
 import { PropsWithChildren } from "react";
+import { Skeleton } from "./ui/skeleton";
 import dayjs from "dayjs";
 import es from "dayjs/locale/es";
 import relativeTime from "dayjs/plugin/relativeTime";
@@ -16,6 +18,7 @@ dayjs.extend(relativeTime);
 type JobOfferSummary = {
   title: string;
   healthEntityName: string;
+  healthEntityId: string;
   logo?: string | null;
   createdDate: Date;
   description: string;
@@ -35,6 +38,7 @@ type JobOfferSummary = {
 export const JobOfferSummary = ({
   title,
   healthEntityName,
+  healthEntityId,
   logo,
   description,
   createdDate,
@@ -65,7 +69,12 @@ export const JobOfferSummary = ({
             />
           )}
           <div className="flex-1">
-            <p className="text-xl font-bold">{healthEntityName}</p>
+            <Link
+              href={`/health-entity/${healthEntityId}`}
+              className="text-xl font-bold hover:underline"
+            >
+              {healthEntityName}
+            </Link>
             <p className="text-muted-foreground">{title}</p>
             {applicationEndDate && applicationStartDate && (
               <p className="text-sm text-muted-foreground mt-4">
@@ -127,3 +136,7 @@ export const JobOfferSummary = ({
     </Card>
   );
 };
+
+export const JobOfferSummarySkeleton = () => (
+  <Skeleton className="h-[210px] w-full" />
+);

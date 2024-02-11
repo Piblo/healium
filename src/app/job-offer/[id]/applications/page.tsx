@@ -77,11 +77,11 @@ export default function JobOfferApplications({
   }
 
   return (
-    <div className="container py-6">
-      <BackButton href="/job-offer/list" className="mb-2" />
+    <div className="container py-6 max-w-screen-lg">
+      <BackButton href="/job-offer/list" className="mb-4" />
       {loading && <Loader2 className="animate-spin" />}
       <h1 className="text-xl mb-4">{jobOffer?.title}</h1>
-      <ul className="divide-y max-w-screen-md">
+      <ul className="divide-y">
         {applications?.map((x) => (
           <li key={x.userId} className="flex flex-col gap-4 py-6">
             <div className="flex gap-4">

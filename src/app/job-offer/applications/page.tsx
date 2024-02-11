@@ -16,6 +16,7 @@ export default async function Applications() {
               createdDate={x.jobOffer.createdDate}
               description={x.jobOffer.description ?? ""}
               healthEntityName={x.jobOffer.healthEntity.name}
+              healthEntityId={x.jobOffer.healthEntityId}
               region={x.jobOffer.region ?? ""}
               title={x.jobOffer.title}
               logo={x.jobOffer.healthEntity.logoUrl}
