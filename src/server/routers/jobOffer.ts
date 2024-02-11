@@ -144,6 +144,7 @@ export const jobOfferRouter = router({
       z.object({
         jobOfferId: z.string(),
         status: selectJobApplicationSchema.shape.status.optional(),
+        startDate: z.date().optional(),
       })
     )
     .query(async ({ input }) => {
@@ -159,7 +160,7 @@ export const jobOfferRouter = router({
 
       const applications = await getJobApplicationsForJobOffer(
         input.jobOfferId,
-        { status: input.status }
+        { status: input.status, startDate: input.startDate }
       );
       const users = await clerkClient.users.getUserList({
         userId: applications.map((x) => x.userId),

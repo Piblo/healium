@@ -10,7 +10,7 @@ import { cookies } from "next/headers";
 import dayjs from "dayjs";
 import { trpc } from "@/trpc/server";
 
-export default async function ListJobOffers() {
+export default async function JobOfferList() {
   const healthEntityId = cookies().get("healthEntityId")?.value!;
 
   const jobOffers = await trpc.jobOffer.healthEntityJobOffers.query({
@@ -18,7 +18,7 @@ export default async function ListJobOffers() {
   });
 
   return (
-    <div className="container py-6">
+    <div className="container py-6 max-w-screen-lg">
       <BackButton className="mb-2" href="/health-entity/manage" />
       <h1 className="text-2xl font-bold mb-4">Ofertas publicadas</h1>
       <ul className="space-y-4">

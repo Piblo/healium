@@ -18,6 +18,7 @@ export default async function Rota({ params }: RotaProps) {
   const applications = await trpc.jobOffer.applications.query({
     jobOfferId: params.id,
     status: "approved",
+    startDate: new Date(),
   });
 
   const jobOffer = await trpc.jobOffer.get.query({
@@ -48,6 +49,16 @@ export default async function Rota({ params }: RotaProps) {
     const elapsedDays = differenceInDays(startDate, new Date());
 
     return (elapsedDays / totalDays) * 100;
+  }
+
+  if (!applications.length) {
+    return (
+      <div className="container py-6">
+        <BackButton href="/job-offer/list" className="mb-4" />
+        <h1 className="text-2xl font-semibold mb-6">{jobOffer.title}</h1>
+        <p>No hay ningún trabajador para este puesto</p>
+      </div>
+    );
   }
 
   return (
@@ -98,11 +109,14 @@ export default async function Rota({ params }: RotaProps) {
                       </Link>
                     )}
                   </div>
-                  {x.startDate && x.startDate <= new Date() && (
-                    <Status color="green" className="mb-2">
-                      En plantilla
-                    </Status>
-                  )}
+                  {x.startDate &&
+                    x.startDate <= new Date() &&
+                    x.endDate &&
+                    x.endDate >= new Date() && (
+                      <Status color="green" className="mb-2">
+                        En plantilla
+                      </Status>
+                    )}
                   {x.startDate && x.endDate && (
                     <span className="flex items-center text-muted-foreground capitalize text-sm">
                       <CalendarRange className="h-4 w-4 mr-2" />

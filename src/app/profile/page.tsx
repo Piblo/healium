@@ -1,9 +1,8 @@
 "use client";
 
-import { Download, Loader2 } from "lucide-react";
-
 import { Button } from "@/components/ui/button";
 import { DeleteCv } from "./DeleteCv";
+import { Download } from "lucide-react";
 import { Label } from "@/components/ui/label";
 import Link from "next/link";
 import { Skeleton } from "@/components/ui/skeleton";

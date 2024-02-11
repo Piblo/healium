@@ -1,5 +1,3 @@
-import "@uploadthing/react/styles.css";
-
 import { HealiumFileRouter } from "@/app/api/uploadthing/core";
 import { generateComponents } from "@uploadthing/react";
 import { generateReactHelpers } from "@uploadthing/react/hooks";

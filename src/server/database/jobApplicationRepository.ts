@@ -4,7 +4,7 @@ import {
   jobApplications,
   jobOffers,
 } from "./schema";
-import { and, desc, eq } from "drizzle-orm";
+import { and, desc, eq, gte } from "drizzle-orm";
 
 import { db } from "./connection";
 
@@ -64,6 +64,7 @@ export async function getJobApplicationsForUser(
 
 type GetJobApplicationsForJobOfferOptions = {
   status?: JobApplication["status"];
+  startDate?: Date;
 };
 
 export async function getJobApplicationsForJobOffer(
@@ -73,7 +74,8 @@ export async function getJobApplicationsForJobOffer(
   const applications = await db.query.jobApplications.findMany({
     where: and(
       eq(jobApplications.jobOfferId, jobOfferId),
-      options.status && eq(jobApplications.status, options.status)
+      options.status && eq(jobApplications.status, options.status),
+      options.startDate && gte(jobApplications.startDate, options.startDate)
     ),
     limit: 10,
     with: {
