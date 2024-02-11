@@ -28,7 +28,7 @@ export const TrpcProvider = ({ children }: PropsWithChildren) => {
       transformer: SuperJSON,
       links: [
         loggerLink({
-          enabled: () => true,
+          enabled: () => process.env.NODE_ENV === "development",
         }),
         unstable_httpBatchStreamLink({
           url: `${getBaseUrl()}/api/trpc`,
