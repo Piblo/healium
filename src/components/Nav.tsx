@@ -36,7 +36,7 @@ export const Nav = () => {
   return (
     <nav className="w-full p-3  border-b-neutral-400 flex container">
       <ul className="flex gap-2 flex-1 text-sm items-center">
-        <li className="flex hover:bg-black/10 dark:hover:bg-white/10 p-2 rounded cursor-pointer font-semibold focus:bg-black/10 dark:focus:bg-white/10 focus:outline-none">
+        <li className="flex md:hidden hover:bg-black/10 dark:hover:bg-white/10 p-2 rounded cursor-pointer font-semibold focus:bg-black/10 dark:focus:bg-white/10 focus:outline-none">
           <Sheet>
             <SheetTrigger>
               <Menu aria-label="Toggle navigation menu" />
