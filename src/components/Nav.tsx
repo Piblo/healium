@@ -1,30 +1,25 @@
 "use client";
 
+import { ChevronDown, Menu } from "lucide-react";
 import {
-  NavigationMenu,
-  NavigationMenuContent,
-  NavigationMenuItem,
-  NavigationMenuLink,
-  NavigationMenuList,
-  NavigationMenuTrigger,
-  navigationMenuTriggerStyle,
-} from "./ui/navigation-menu";
+  DropdownMenu,
+  DropdownMenuContent,
+  DropdownMenuItem,
+  DropdownMenuTrigger,
+} from "./ui/dropdown-menu";
+import Link, { LinkProps } from "next/link";
 import {
   Sheet,
   SheetClose,
   SheetContent,
-  SheetDescription,
   SheetHeader,
   SheetTitle,
   SheetTrigger,
 } from "./ui/sheet";
 import { SignedIn, SignedOut, UserButton, useUser } from "@clerk/nextjs";
 
-import Link from "next/link";
-import { Menu } from "lucide-react";
-import { NavigationMenuSub } from "@radix-ui/react-navigation-menu";
+import { ReactNode } from "react";
 import { Separator } from "./ui/separator";
-import { Skeleton } from "./ui/skeleton";
 import { ThemeToggle } from "./ThemeToggle";
 import { getSelectedHealthEntityId } from "@/utils/healthEntity";
 import { trpc } from "@/trpc/client";
@@ -35,189 +30,153 @@ export const Nav = () => {
   const { data } = trpc.user.healthEntities.useQuery(undefined, {
     enabled: isHealthEntityAdmin,
   });
-
   const selectedHealthEntityId = getSelectedHealthEntityId();
+  const isHealiumAdmin = !!user?.publicMetadata.healiumAdmin;
 
   return (
-    <NavigationMenu className="px-4 h-16 max-w-none border-b border-solid border-slate-300 justify-start">
-      <div className="flex flex-1">
-        <NavigationMenuList>
-          <SignedIn>
-            <NavigationMenuItem className="flex items-center md:hidden">
-              <Sheet>
-                <SheetTrigger>
-                  <Menu aria-label="Toggle navigation menu" />
-                </SheetTrigger>
-                <SheetContent side="left">
-                  <SheetHeader>
-                    <SheetTitle className="text-left">Healium</SheetTitle>
-                  </SheetHeader>
+    <nav className="w-full p-3  border-b-neutral-400 flex container">
+      <ul className="flex gap-2 flex-1 text-sm items-center">
+        <li className="flex hover:bg-black/10 dark:hover:bg-white/10 p-2 rounded cursor-pointer font-semibold focus:bg-black/10 dark:focus:bg-white/10 focus:outline-none">
+          <Sheet>
+            <SheetTrigger>
+              <Menu aria-label="Toggle navigation menu" />
+            </SheetTrigger>
+            <SheetContent side="left">
+              <SheetHeader>
+                <SheetTitle className="text-left">Healium</SheetTitle>
+              </SheetHeader>
+              <div className="mt-4 flex flex-col gap-2">
+                <SheetClose asChild>
+                  <Link
+                    className="text-muted-foreground hover:underline"
+                    href="/job-offer/applications"
+                  >
+                    Mis solicitudes
+                  </Link>
+                </SheetClose>
+                <SheetClose asChild>
+                  <Link
+                    className="text-muted-foreground hover:underline"
+                    href="/profile"
+                  >
+                    CV
+                  </Link>
+                </SheetClose>
+              </div>
+              {(isHealthEntityAdmin || isHealiumAdmin) && (
+                <>
+                  <Separator className="my-6" />
                   <div className="mt-4 flex flex-col gap-2">
+                    <span className="font-semibold">Entidad sanitaria</span>
+                    {isHealiumAdmin && (
+                      <SheetClose asChild>
+                        <Link
+                          className="text-muted-foreground hover:underline"
+                          href="/health-entity/create"
+                        >
+                          Crear entidad sanitaria
+                        </Link>
+                      </SheetClose>
+                    )}
                     <SheetClose asChild>
                       <Link
-                        className="text-muted-foreground"
-                        href="/job-offer/applications"
+                        className="text-muted-foreground hover:underline"
+                        href="/health-entity/manage"
                       >
-                        Mis solicitudes
+                        Administrar entidad sanitaria
                       </Link>
                     </SheetClose>
-                    <SheetClose asChild>
-                      <Link className="text-muted-foreground" href="/profile">
-                        CV
-                      </Link>
-                    </SheetClose>
-                  </div>
-                  {!!user?.publicMetadata.healiumAdmin && (
-                    <>
-                      <Separator className="my-6" />
-                      <div className="mt-4 flex flex-col gap-2">
-                        <span className="font-semibold">Entidad sanitaria</span>
-                        <SheetClose asChild>
-                          <Link
-                            className="text-muted-foreground"
-                            href="/health-entity/create"
-                          >
-                            Crear entidad sanitaria
-                          </Link>
-                        </SheetClose>
-                        <SheetClose asChild>
-                          <Link
-                            className="text-muted-foreground"
-                            href="/health-entity/manage"
-                          >
-                            Administrar entidad sanitaria
-                          </Link>
-                        </SheetClose>
-                        <SheetClose asChild>
-                          <Link
-                            className="text-muted-foreground"
-                            href="/health-entity/choose"
-                          >
-                            Elegir entidad sanitaria
-                          </Link>
-                        </SheetClose>
-                      </div>
-                    </>
-                  )}
-                </SheetContent>
-              </Sheet>
-            </NavigationMenuItem>
-          </SignedIn>
-          <NavigationMenuItem>
-            <Link href="/" legacyBehavior passHref>
-              <NavigationMenuLink className={navigationMenuTriggerStyle()}>
-                Healium
-              </NavigationMenuLink>
-            </Link>
-          </NavigationMenuItem>
-          <SignedIn>
-            <NavigationMenuItem className="hidden md:block">
-              <Link href="/job-offer/applications" legacyBehavior passHref>
-                <NavigationMenuLink className={navigationMenuTriggerStyle()}>
-                  Mis solicitudes
-                </NavigationMenuLink>
-              </Link>
-            </NavigationMenuItem>
-            <NavigationMenuItem className="hidden md:block">
-              <Link href="/profile" legacyBehavior passHref>
-                <NavigationMenuLink className={navigationMenuTriggerStyle()}>
-                  CV
-                </NavigationMenuLink>
-              </Link>
-            </NavigationMenuItem>
-            <NavigationMenuItem className="hidden md:block">
-              <NavigationMenuTrigger>
-                <NavigationMenuLink href="/health-entity/manage">
-                  Entidad sanitaria
-                </NavigationMenuLink>
-              </NavigationMenuTrigger>
-              <NavigationMenuContent>
-                <NavigationMenuSub orientation="vertical">
-                  <NavigationMenuList className="grid w-max gap-3 p-4 grid-cols-1">
-                    {!!user?.publicMetadata.healiumAdmin && (
-                      <li>
-                        <Link
-                          href="/health-entity/create"
-                          legacyBehavior
-                          passHref
-                        >
-                          <NavigationMenuLink
-                            className={navigationMenuTriggerStyle()}
-                          >
-                            Crear entidad sanitaria
-                          </NavigationMenuLink>
-                        </Link>
-                      </li>
-                    )}
-                    {isHealthEntityAdmin && selectedHealthEntityId && (
-                      <li>
-                        <Link
-                          href="/health-entity/manage"
-                          legacyBehavior
-                          passHref
-                        >
-                          <NavigationMenuLink
-                            className={navigationMenuTriggerStyle()}
-                          >
-                            Administrar entidad sanitaria
-                          </NavigationMenuLink>
-                        </Link>
-                      </li>
-                    )}
                     {data?.length && data.length > 1 ? (
-                      <li>
+                      <SheetClose asChild>
                         <Link
+                          className="text-muted-foreground hover:underline"
                           href="/health-entity/choose"
-                          legacyBehavior
-                          passHref
                         >
-                          <NavigationMenuLink
-                            className={navigationMenuTriggerStyle()}
-                          >
-                            Elegir entidad sanitaria
-                          </NavigationMenuLink>
+                          Elegir entidad sanitaria
                         </Link>
-                      </li>
+                      </SheetClose>
                     ) : null}
-                  </NavigationMenuList>
-                </NavigationMenuSub>
-              </NavigationMenuContent>
-            </NavigationMenuItem>
-          </SignedIn>
-        </NavigationMenuList>
-      </div>
-      <NavigationMenuList>
-        <NavigationMenuItem>
-          <ThemeToggle className="mr-2" />
-        </NavigationMenuItem>
+                  </div>
+                </>
+              )}
+            </SheetContent>
+          </Sheet>
+        </li>
+        <li>
+          <NavLink href="/">Healium</NavLink>
+        </li>
         <SignedIn>
-          <NavigationMenuItem>
+          <li className="hidden md:block">
+            <NavLink href="/job-offer/applications">Mis solicitudes</NavLink>
+          </li>
+          <li className="hidden md:block">
+            <NavLink href="/profile">CV</NavLink>
+          </li>
+        </SignedIn>
+        {isHealthEntityAdmin && (
+          <li className="hidden md:block">
+            <DropdownMenu>
+              <DropdownMenuTrigger className="flex gap-2 items-center dark:hover:bg-white/10 px-4 py-3 rounded cursor-pointer font-semibold focus:bg-white/10 focus:outline-none">
+                Entidad sanitaria <ChevronDown className="w-4 h-4" />
+              </DropdownMenuTrigger>
+              <DropdownMenuContent className="p-2 space-y-2">
+                {!!user?.publicMetadata.healiumAdmin && (
+                  <DropdownMenuItem className="font-semibold" asChild>
+                    <Link
+                      href="/health-entity/create"
+                      className="w-full px-4 cursor-pointer"
+                    >
+                      Crear entidad sanitaria
+                    </Link>
+                  </DropdownMenuItem>
+                )}
+                {isHealthEntityAdmin && selectedHealthEntityId && (
+                  <DropdownMenuItem className="font-semibold" asChild>
+                    <Link
+                      href="/health-entity/manage"
+                      className="w-full px-4 cursor-pointer"
+                    >
+                      Administrar entidad sanitaria
+                    </Link>
+                  </DropdownMenuItem>
+                )}
+                {data?.length && data.length > 1 ? (
+                  <DropdownMenuItem className="font-semibold" asChild>
+                    <Link
+                      href="/health-entity/choose"
+                      className="w-full px-4 cursor-pointer"
+                    >
+                      Elegir entidad sanitaria
+                    </Link>
+                  </DropdownMenuItem>
+                ) : null}
+              </DropdownMenuContent>
+            </DropdownMenu>
+          </li>
+        )}
+      </ul>
+      <ul className="flex gap-2 text-sm items-center">
+        <li>
+          <ThemeToggle />
+        </li>
+        <SignedIn>
+          <li className="p-2">
             <UserButton afterSignOutUrl="/" />
-          </NavigationMenuItem>
+          </li>
         </SignedIn>
         <SignedOut>
-          <NavigationMenuItem>
-            <Link href="/sign-in">Iniciar sesión</Link>
-          </NavigationMenuItem>
+          <li>
+            <NavLink href="/sign-in">Iniciar sesión</NavLink>
+          </li>
         </SignedOut>
-      </NavigationMenuList>
-    </NavigationMenu>
+      </ul>
+    </nav>
   );
 };
 
-export const NavSkeleton = () => (
-  <NavigationMenu className="px-4 h-16 max-w-none border-b border-solid border-slate-300 justify-start">
-    <NavigationMenuList>
-      <NavigationMenuItem>
-        <Link href="/" legacyBehavior passHref>
-          <NavigationMenuLink className={navigationMenuTriggerStyle()}>
-            Healium
-          </NavigationMenuLink>
-        </Link>
-      </NavigationMenuItem>
-      <NavigationMenuItem>
-        <Skeleton className="w-40 h-[40px]" />
-      </NavigationMenuItem>
-    </NavigationMenuList>
-  </NavigationMenu>
+const NavLink = (props: LinkProps & { children: ReactNode }) => (
+  <Link
+    {...props}
+    className="hover:bg-black/10 dark:hover:bg-white/10 px-4 py-3 rounded cursor-pointer font-semibold focus:bg-black/10 dark:focus:bg-white/10 focus:outline-none"
+  />
 );

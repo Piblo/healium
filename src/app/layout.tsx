@@ -1,12 +1,10 @@
 import "./globals.css";
 
-import { Nav, NavSkeleton } from "@/components/Nav";
-
 import { Analytics } from "@vercel/analytics/react";
 import { ClerkProvider } from "@clerk/nextjs";
 import { Inter } from "next/font/google";
+import { Nav } from "@/components/Nav";
 import { SpeedInsights } from "@vercel/speed-insights/next";
-import { Suspense } from "react";
 import { ThemeProvider } from "@/components/ThemeProvider";
 import { Toaster } from "@/components/ui/toaster";
 import { TrpcProvider } from "@/trpc/TrcpProvider";
@@ -38,9 +36,7 @@ export default function RootLayout({
         <html lang="es" suppressHydrationWarning>
           <body className={inter.className}>
             <ThemeProvider attribute="class" enableSystem enableColorScheme>
-              <Suspense fallback={<NavSkeleton />}>
-                <Nav />
-              </Suspense>
+              <Nav />
               {children}
               <Toaster />
             </ThemeProvider>
