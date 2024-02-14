@@ -116,7 +116,7 @@ export const Nav = () => {
         {isHealthEntityAdmin && (
           <li className="hidden md:block">
             <DropdownMenu>
-              <DropdownMenuTrigger className="flex gap-2 items-center dark:hover:bg-white/10 px-4 py-3 rounded cursor-pointer font-semibold focus:bg-white/10 focus:outline-none">
+              <DropdownMenuTrigger className="flex gap-2 items-center hover:bg-black/10 dark:hover:bg-white/10 px-4 py-3 rounded cursor-pointer font-semibold focus:bg-black/10 dark:focus:bg-white/10 focus:outline-none">
                 Entidad sanitaria <ChevronDown className="w-4 h-4" />
               </DropdownMenuTrigger>
               <DropdownMenuContent className="p-2 space-y-2">
