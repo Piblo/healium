@@ -18,7 +18,7 @@ export default async function Rota({ params }: RotaProps) {
   const applications = await trpc.jobOffer.applications.query({
     jobOfferId: params.id,
     status: "approved",
-    startDate: new Date(),
+    endDate: new Date(),
   });
 
   const jobOffer = await trpc.jobOffer.get.query({

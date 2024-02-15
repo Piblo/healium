@@ -65,6 +65,7 @@ export async function getJobApplicationsForUser(
 type GetJobApplicationsForJobOfferOptions = {
   status?: JobApplication["status"];
   startDate?: Date;
+  endDate?: Date;
 };
 
 export async function getJobApplicationsForJobOffer(
@@ -75,7 +76,8 @@ export async function getJobApplicationsForJobOffer(
     where: and(
       eq(jobApplications.jobOfferId, jobOfferId),
       options.status && eq(jobApplications.status, options.status),
-      options.startDate && gte(jobApplications.startDate, options.startDate)
+      options.startDate && gte(jobApplications.startDate, options.startDate),
+      options.endDate && gte(jobApplications.endDate, options.endDate)
     ),
     limit: 10,
     with: {

@@ -14,7 +14,7 @@ export default function Profile() {
 
   return (
     <div className="container py-6">
-      <h1 className="text-xl mb-4">Perfil</h1>
+      <h1 className="text-2xl font-semibold mb-6">Mi perfil</h1>
       <div className="flex flex-col gap-2 max-w-md">
         <Label htmlFor="cv">Curriculum Vitae</Label>
         {isLoading && <Skeleton className="h-[58px] w-[448px]" />}

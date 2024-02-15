@@ -1,5 +1,5 @@
 import { Card, CardContent, CardHeader } from "@/components/ui/card";
-import { File, FileCheck, Inbox } from "lucide-react";
+import { Contact, File, FileCheck, Inbox } from "lucide-react";
 
 import { Skeleton } from "@/components/ui/skeleton";
 import { cookies } from "next/headers";
@@ -15,8 +15,8 @@ export async function Stats() {
     <div className="grid grid-cols-2 md:grid-cols-4 gap-4 mb-8">
       <Card>
         <CardHeader className="pb-2 flex flex-row justify-between text-sm">
-          <span>Solicitudes</span>
-          <Inbox className="mt-0 h-5 w-5 stroke-muted-foreground" />
+          <span className="text-muted-foreground">Solicitudes</span>
+          <Inbox className="mt-0 h-5 w-5 stroke-muted-foreground shrink-0" />
         </CardHeader>
         <CardContent>
           <span className="text-2xl font-bold">
@@ -26,8 +26,8 @@ export async function Stats() {
       </Card>
       <Card>
         <CardHeader className="pb-2 flex flex-row justify-between text-sm">
-          <span>Solicitudes aceptadas</span>
-          <FileCheck className="mt-0 h-5 w-5 stroke-muted-foreground" />
+          <span className="text-muted-foreground">Solicitudes aceptadas</span>
+          <FileCheck className="mt-0 h-5 w-5 stroke-muted-foreground shrink-0" />
         </CardHeader>
         <CardContent>
           <span className="text-2xl font-bold">
@@ -37,11 +37,20 @@ export async function Stats() {
       </Card>
       <Card>
         <CardHeader className="pb-2 flex flex-row justify-between text-sm">
-          <span>Ofertas publicadas</span>
-          <File className="mt-0 h-5 w-5 stroke-muted-foreground" />
+          <span className="text-muted-foreground">Ofertas publicadas</span>
+          <File className="mt-0 h-5 w-5 stroke-muted-foreground shrink-0" />
         </CardHeader>
         <CardContent>
           <span className="text-2xl font-bold">{stats.jobOfferCount ?? 0}</span>
+        </CardContent>
+      </Card>
+      <Card>
+        <CardHeader className="pb-2 flex flex-row justify-between text-sm">
+          <span className="text-muted-foreground">Empleados en plantilla</span>
+          <Contact className="mt-0 h-5 w-5 stroke-muted-foreground shrink-0" />
+        </CardHeader>
+        <CardContent>
+          <span className="text-2xl font-bold">{123}</span>
         </CardContent>
       </Card>
     </div>

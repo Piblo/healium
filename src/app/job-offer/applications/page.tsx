@@ -6,7 +6,7 @@ export default async function Applications() {
 
   return (
     <div className="container max-w-screen-lg py-6">
-      <h1 className="text-2xl mb-6">Mis solicitudes de empleo</h1>
+      <h1 className="text-2xl font-semibold mb-6">Mis solicitudes de empleo</h1>
       <ul className="space-y-4">
         {jobApplications.map((x) => (
           <li key={x.jobOfferId}>

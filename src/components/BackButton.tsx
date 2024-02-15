@@ -15,7 +15,7 @@ export const BackButton = ({
 }: BackButtonProps) => {
   return (
     <Link href={href} className={clsx("flex text-sm items-center", className)}>
-      <ChevronLeft /> {children}
+      <ChevronLeft className="-ml-1" /> {children}
     </Link>
   );
 };
