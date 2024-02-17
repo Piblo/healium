@@ -11,6 +11,7 @@ import { Calendar } from "@/components/ui/calendar";
 import { Calendar as CalendarIcon } from "lucide-react";
 import { DateRange } from "react-day-picker";
 import { cn } from "@/lib/utils";
+import { dateFormatter } from "@/utils/date";
 import es from "date-fns/locale/es";
 
 type RangeDatePickerProps = {
@@ -41,9 +42,9 @@ export function RangeDatePicker({
             <CalendarIcon className="mr-2 h-4 w-4" />
             {from ? (
               to ? (
-                <>{formatter.formatRange(from, to)}</>
+                <>{dateFormatter.formatRange(from, to)}</>
               ) : (
-                formatter.format(from)
+                dateFormatter.format(from)
               )
             ) : (
               <span>Elige una fecha</span>
@@ -66,9 +67,3 @@ export function RangeDatePicker({
     </div>
   );
 }
-
-const formatter = new Intl.DateTimeFormat("es", {
-  day: "2-digit",
-  month: "2-digit",
-  year: "numeric",
-});

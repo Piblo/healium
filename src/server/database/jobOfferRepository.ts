@@ -5,7 +5,7 @@ import {
   jobApplications,
   jobOffers,
 } from "./schema";
-import { SQL, and, eq, gte, like, lte, sql } from "drizzle-orm";
+import { SQL, and, eq, gt, like, lt, lte, or, sql } from "drizzle-orm";
 
 import { PaginatedResult } from "@/models/PaginatedResult";
 import { db } from "./connection";
@@ -105,8 +105,22 @@ export async function searchJobOffers(request: SearchJobOffersRequest) {
                 and(
                   eq(jobApplications.jobOfferId, jobOffers.id),
                   eq(jobApplications.status, "approved"),
-                  request.from && lte(jobApplications.startDate, request.from),
-                  request.to && gte(jobApplications.endDate, request.to)
+                  or(
+                    and(
+                      request.from &&
+                        gt(jobApplications.startDate, request.from),
+                      request.to && lt(jobApplications.endDate, request.to)
+                    ),
+                    and(
+                      request.from &&
+                        lt(jobApplications.startDate, request.from),
+                      request.from && gt(jobApplications.endDate, request.from)
+                    ),
+                    and(
+                      request.to && gt(jobApplications.startDate, request.to),
+                      request.to && lt(jobApplications.endDate, request.to)
+                    )
+                  )
                 )
               )
           )

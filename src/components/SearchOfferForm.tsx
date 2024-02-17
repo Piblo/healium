@@ -27,8 +27,8 @@ export const SearchOfferForm = ({ className }: SearchOfferFormProps) => {
   const form = useForm<FormValues>({
     defaultValues: {
       region: search.region ?? "",
-      startDate: search.from ? new Date(search.from) : undefined,
-      endDate: search.to ? new Date(search.to) : undefined,
+      startDate: search.from ? new Date(search.from) : new Date(),
+      endDate: search.to ? new Date(search.to) : addDays(new Date(), 7),
     },
   });
   const router = useRouter();
@@ -36,11 +36,9 @@ export const SearchOfferForm = ({ className }: SearchOfferFormProps) => {
   async function onSubmit(values: FormValues) {
     const region = values.region === "Toda España" ? "" : values.region;
 
-    const endDate = values.startDate ? values.endDate : addDays(new Date(), 7);
-
     const res = await setSearch({
-      from: dateFormatter.format(values.startDate ?? new Date()),
-      to: endDate ? dateFormatter.format(endDate) : null,
+      from: values.startDate?.toISOString(),
+      to: endDate ? endDate?.toISOString() : null,
       region: region,
     });
 
@@ -115,9 +113,3 @@ const schema = z.object({
 });
 
 type FormValues = z.infer<typeof schema>;
-
-const dateFormatter = Intl.DateTimeFormat("en-US", {
-  year: "numeric",
-  month: "numeric",
-  day: "numeric",
-});

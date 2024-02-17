@@ -8,6 +8,7 @@ import { JobApplicationStatus } from "./JobApplicationStatus";
 import Link from "next/link";
 import { PropsWithChildren } from "react";
 import { Skeleton } from "./ui/skeleton";
+import { dateFormatter } from "@/utils/date";
 import dayjs from "dayjs";
 import es from "dayjs/locale/es";
 import relativeTime from "dayjs/plugin/relativeTime";
@@ -79,8 +80,10 @@ export const JobOfferSummary = ({
             {applicationEndDate && applicationStartDate && (
               <p className="text-sm text-muted-foreground mt-4">
                 Duración del empleo:{" "}
-                {applicationStartDate?.toLocaleDateString("es")} -{" "}
-                {applicationEndDate?.toLocaleDateString("es")}
+                {dateFormatter.formatRange(
+                  applicationStartDate,
+                  applicationEndDate
+                )}
               </p>
             )}
           </div>
@@ -107,8 +110,9 @@ export const JobOfferSummary = ({
             {getContractTypeLabel(contractType)}
             {contractType === "fixed-term" && (
               <span className="ml-1">
-                ({startDate?.toLocaleDateString()}
-                {endDate ? <> - {endDate.toLocaleDateString()}</> : null})
+                {startDate &&
+                  endDate &&
+                  dateFormatter.formatRange(startDate, endDate)}
               </span>
             )}
           </li>
