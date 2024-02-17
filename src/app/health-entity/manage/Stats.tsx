@@ -50,7 +50,9 @@ export async function Stats() {
           <Contact className="mt-0 h-5 w-5 stroke-muted-foreground shrink-0" />
         </CardHeader>
         <CardContent>
-          <span className="text-2xl font-bold">{123}</span>
+          <span className="text-2xl font-bold">
+            {stats.activeEmployeesCount}
+          </span>
         </CardContent>
       </Card>
     </div>

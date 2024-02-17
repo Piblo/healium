@@ -6,7 +6,7 @@ import {
   jobApplications,
   jobOffers,
 } from "./schema";
-import { and, eq, sql } from "drizzle-orm";
+import { and, eq, gte, lte, sql } from "drizzle-orm";
 
 import { db } from "./connection";
 import { ulid } from "ulid";
@@ -131,9 +131,25 @@ export async function getHealthEntityStats(healthEntityId: string) {
       )
     );
 
+  const activeEmployeesCount = await db
+    .select({
+      count: sql<number>`count(*)`,
+    })
+    .from(jobApplications)
+    .innerJoin(jobOffers, eq(jobOffers.id, jobApplications.jobOfferId))
+    .where(
+      and(
+        eq(jobOffers.healthEntityId, healthEntityId),
+        eq(jobApplications.status, "approved"),
+        lte(jobApplications.startDate, new Date()),
+        gte(jobApplications.endDate, new Date())
+      )
+    );
+
   return {
     jobApplicationCount: applicationsCount.at(0)?.count,
     jobOfferCount: jobOfferCount.at(0)?.count,
     acceptedJobApplicationCount: acceptedApplicationCount.at(0)?.count,
+    activeEmployeesCount: activeEmployeesCount.at(0)?.count,
   };
 }
