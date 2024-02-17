@@ -6,6 +6,8 @@ import { Button } from "@/components/ui/button";
 import Image from "next/image";
 import { Link } from "@/components/Link";
 import NextLink from "next/link";
+import SearchJobOffer from "../search/page";
+import { SearchOfferForm } from "@/components/SearchOfferForm";
 import { auth } from "@clerk/nextjs";
 import { getContractTypeLabel } from "@/utils/contractType";
 import { notFound } from "next/navigation";
@@ -42,10 +44,8 @@ export default async function JobOffer({
 
   return (
     <div className="container max-w-4xl py-6">
-      <BackButton
-        href={`/job-offer/search?${new URLSearchParams(searchParams)}`}
-        className="mb-6"
-      />
+      <SearchOfferForm className="mb-8 hidden md:flex" />
+      <BackButton className="mb-4" />
       {jobOffer.healthEntity.logoUrl && (
         <Image
           src={jobOffer.healthEntity.logoUrl}
@@ -56,9 +56,12 @@ export default async function JobOffer({
         />
       )}
       <h1 className="text-2xl font-semibold">{jobOffer.title}</h1>
-      <p className="text-lg mb-4 text-muted-foreground">
+      <Link
+        className="text-lg mb-4 text-muted-foreground inline-block hover:underline"
+        href={`/health-entity/${jobOffer.healthEntityId}`}
+      >
         {jobOffer.healthEntity.name}
-      </p>
+      </Link>
       <h2 className="text-lg font-bold">Descripción</h2>
       <p className="text-base mb-6 text-muted-foreground">
         {jobOffer.description}
@@ -102,7 +105,7 @@ export default async function JobOffer({
           </p>
           <Link
             href={`/health-entity/${jobOffer.healthEntityId}`}
-            className="block"
+            className="inline-block"
           >
             Ver más detalles
           </Link>

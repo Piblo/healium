@@ -25,6 +25,7 @@ export default async function ApplicationConfirmed({
       <p className="text-lg">¡Felicidades {user?.firstName}!</p>
       <p>Has enviado tu solicitud para el puesto de trabajo:</p>
       <JobOfferSummary
+        id={jobOffer.id}
         city={jobOffer.city ?? ""}
         contractType={jobOffer.contractType ?? "full-time"}
         createdDate={jobOffer.createdDate}

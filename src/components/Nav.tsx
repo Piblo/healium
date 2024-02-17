@@ -124,7 +124,7 @@ export const Nav = () => {
                   <DropdownMenuItem className="font-semibold" asChild>
                     <Link
                       href="/health-entity/create"
-                      className="w-full px-4 cursor-pointer"
+                      className="w-full px-4 py-3 cursor-pointer"
                     >
                       Crear entidad sanitaria
                     </Link>
@@ -134,7 +134,7 @@ export const Nav = () => {
                   <DropdownMenuItem className="font-semibold" asChild>
                     <Link
                       href="/health-entity/manage"
-                      className="w-full px-4 cursor-pointer"
+                      className="w-full px-4 py-3 cursor-pointer"
                     >
                       Administrar entidad sanitaria
                     </Link>
@@ -144,7 +144,7 @@ export const Nav = () => {
                   <DropdownMenuItem className="font-semibold" asChild>
                     <Link
                       href="/health-entity/choose"
-                      className="w-full px-4 cursor-pointer"
+                      className="w-full px-4 py-3 cursor-pointer"
                     >
                       Elegir entidad sanitaria
                     </Link>

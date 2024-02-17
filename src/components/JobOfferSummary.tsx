@@ -17,6 +17,7 @@ dayjs.locale(es);
 dayjs.extend(relativeTime);
 
 type JobOfferSummary = {
+  id: string;
   title: string;
   healthEntityName: string;
   healthEntityId: string;
@@ -34,12 +35,13 @@ type JobOfferSummary = {
   salaryPerHour?: number | null;
   applicationStartDate?: Date | null;
   applicationEndDate?: Date | null;
+  showHealthEntityLink?: boolean;
 } & PropsWithChildren;
 
 export const JobOfferSummary = ({
   title,
   healthEntityName,
-  healthEntityId,
+  id,
   logo,
   description,
   createdDate,
@@ -70,12 +72,14 @@ export const JobOfferSummary = ({
             />
           )}
           <div className="flex-1">
-            <Link
-              href={`/health-entity/${healthEntityId}`}
-              className="text-xl font-bold hover:underline"
-            >
-              {healthEntityName}
-            </Link>
+            <div className="flex gap-2 items-center">
+              <Link
+                className="text-xl font-bold hover:underline"
+                href={`/job-offer/${id}`}
+              >
+                {healthEntityName}
+              </Link>
+            </div>
             <p className="text-muted-foreground">{title}</p>
             {applicationEndDate && applicationStartDate && (
               <p className="text-sm text-muted-foreground mt-4">

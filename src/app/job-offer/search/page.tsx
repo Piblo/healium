@@ -59,6 +59,7 @@ export default function SearchJobOffer({ searchParams }: SearchJobOfferProps) {
           <li key={x.id}>
             <Link href={`/job-offer/${x.id}?${search.toString()}`}>
               <JobOfferSummary
+                id={x.id}
                 city={x.city ?? ""}
                 contractType={x.contractType ?? "full-time"}
                 createdDate={x.createdDate}

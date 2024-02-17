@@ -66,7 +66,7 @@ export const SearchOfferForm = ({ className }: SearchOfferFormProps) => {
           name="startDate"
           control={form.control}
           render={({ field }) => (
-            <FormItem className="flex-1">
+            <FormItem className="flex-[2]">
               <FormLabel>Duración</FormLabel>
               <FormControl>
                 <RangeDatePicker
@@ -83,7 +83,7 @@ export const SearchOfferForm = ({ className }: SearchOfferFormProps) => {
           name="region"
           control={form.control}
           render={({ field }) => (
-            <FormItem className="flex-1">
+            <FormItem className="flex-[2]">
               <FormLabel>Provincia</FormLabel>
               <FormControl>
                 <RegionSearch
@@ -97,8 +97,7 @@ export const SearchOfferForm = ({ className }: SearchOfferFormProps) => {
             </FormItem>
           )}
         />
-
-        <Button type="submit" className="self-end">
+        <Button type="submit" className="sm:self-end flex-1">
           Buscar
         </Button>
       </form>

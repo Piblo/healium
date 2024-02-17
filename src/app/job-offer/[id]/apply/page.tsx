@@ -21,6 +21,7 @@ export default async function Apply({ params }: { params: { id: string } }) {
     <div className="container py-6 max-w-xl space-y-6">
       <h1 className="text-xl font-semibold">Confirmar solicitud de empleo</h1>
       <JobOfferSummary
+        id={jobOffer.id}
         city={jobOffer.city ?? ""}
         contractType={jobOffer.contractType ?? "full-time"}
         createdDate={jobOffer.createdDate}

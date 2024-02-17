@@ -11,6 +11,7 @@ export default async function Applications() {
         {jobApplications.map((x) => (
           <li key={x.jobOfferId}>
             <JobOfferSummary
+              id={x.jobOfferId}
               city={x.jobOffer.city ?? ""}
               contractType={x.jobOffer.contractType ?? "full-time"}
               createdDate={x.jobOffer.createdDate}
@@ -26,6 +27,7 @@ export default async function Applications() {
               hoursPerWeek={x.jobOffer.hoursPerWeek}
               applicationEndDate={x.endDate}
               applicationStartDate={x.startDate}
+              showHealthEntityLink
             />
           </li>
         ))}
