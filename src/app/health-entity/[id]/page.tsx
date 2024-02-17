@@ -1,7 +1,7 @@
-import { Badge, badgeVariants } from "@/components/ui/badge";
 import { Mail, Phone } from "lucide-react";
 
 import Image from "next/image";
+import { badgeVariants } from "@/components/ui/badge";
 import { cn } from "@/lib/utils";
 import { notFound } from "next/navigation";
 import { trpc } from "@/trpc/server";

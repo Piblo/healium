@@ -18,7 +18,7 @@ type ApplyButtonProps = {
 export const ApplyButton = ({ jobOfferId }: ApplyButtonProps) => {
   const router = useRouter();
   const { toast } = useToast();
-  const [search, setSearch] = useQueryStates({
+  const [search] = useQueryStates({
     region: parseAsString,
     from: parseAsIsoDateTime,
     to: parseAsIsoDateTime,

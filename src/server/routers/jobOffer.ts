@@ -98,7 +98,7 @@ export const jobOfferRouter = router({
         jobOfferId: z.string(),
       })
     )
-    .mutation(async ({ input, ctx }) => {
+    .mutation(async ({ input }) => {
       const jobOffer = await getJobOffer(input.jobOfferId);
       if (!jobOffer) {
         throw new TRPCError({
@@ -127,18 +127,16 @@ export const jobOfferRouter = router({
         startDate: input.startDate,
       });
     }),
-  update: protectedProcedure
-    .input(updateInput)
-    .mutation(async ({ ctx, input }) => {
-      await checkUserIsHealthEntityMember(input.healthEntityId);
-      await updateJobOffer({
-        ...input,
-        startDate: input.startDate ?? null,
-        endDate: input.endDate ?? null,
-        hoursPerWeek: input.hoursPerWeek ?? null,
-        salaryPerHour: input.salaryPerHour?.toString() ?? null,
-      });
-    }),
+  update: protectedProcedure.input(updateInput).mutation(async ({ input }) => {
+    await checkUserIsHealthEntityMember(input.healthEntityId);
+    await updateJobOffer({
+      ...input,
+      startDate: input.startDate ?? null,
+      endDate: input.endDate ?? null,
+      hoursPerWeek: input.hoursPerWeek ?? null,
+      salaryPerHour: input.salaryPerHour?.toString() ?? null,
+    });
+  }),
   applications: protectedProcedure
     .input(
       z.object({

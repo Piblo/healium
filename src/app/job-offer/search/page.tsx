@@ -7,10 +7,8 @@ import {
 
 import { Button } from "@/components/ui/button";
 import Link from "next/link";
-import { Loader2 } from "lucide-react";
 import { SearchOfferForm } from "@/components/SearchOfferForm";
 import { trpc } from "@/trpc/client";
-import { useSearchParams } from "next/navigation";
 
 type SearchJobOfferProps = {
   searchParams: {
@@ -21,7 +19,6 @@ type SearchJobOfferProps = {
 };
 
 export default function SearchJobOffer({ searchParams }: SearchJobOfferProps) {
-  const search = useSearchParams();
   const { data, isLoading, isFetched, fetchNextPage, hasNextPage } =
     trpc.jobOffer.search.useInfiniteQuery(
       {
@@ -57,7 +54,7 @@ export default function SearchJobOffer({ searchParams }: SearchJobOfferProps) {
         )}
         {items?.map((x) => (
           <li key={x.id}>
-            <Link href={`/job-offer/${x.id}?${search.toString()}`}>
+            <Link href={`/job-offer/${x.id}`}>
               <JobOfferSummary
                 id={x.id}
                 city={x.city ?? ""}

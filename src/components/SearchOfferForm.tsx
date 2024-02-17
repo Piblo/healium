@@ -65,7 +65,7 @@ export const SearchOfferForm = ({ className }: SearchOfferFormProps) => {
         <FormField
           name="startDate"
           control={form.control}
-          render={({ field }) => (
+          render={() => (
             <FormItem className="flex-[2]">
               <FormLabel>Duración</FormLabel>
               <FormControl>

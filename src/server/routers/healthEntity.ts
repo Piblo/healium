@@ -74,7 +74,7 @@ export const healthEntityRouter = router({
         healthEntityId: z.string(),
       })
     )
-    .query(async ({ ctx, input }) => {
+    .query(async ({ input }) => {
       return getHealthEntity(input.healthEntityId);
     }),
   members: protectedProcedure
@@ -83,7 +83,7 @@ export const healthEntityRouter = router({
         healthEntityId: z.string(),
       })
     )
-    .query(async ({ ctx, input }) => {
+    .query(async ({ input }) => {
       await checkUserIsHealthEntityMember(input.healthEntityId);
       const members = await getHealthEntityMembers(input.healthEntityId);
 

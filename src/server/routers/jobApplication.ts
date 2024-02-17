@@ -19,7 +19,7 @@ export const jobApplicationRouter = router({
         status: z.enum(["pending", "approved", "rejected"]),
       })
     )
-    .mutation(async ({ input, ctx }) => {
+    .mutation(async ({ input }) => {
       const jobOffer = await getJobOffer(input.jobOfferId);
       if (!jobOffer) {
         throw new TRPCError({

@@ -1,10 +1,9 @@
-import { NextRequest } from "next/server";
 import { appRouter } from "@/server/routers/_app";
 import { cookies } from "next/headers";
 import { createContext } from "@/server/trpc";
 import { redirect } from "next/navigation";
 
-export async function GET(req: NextRequest) {
+export async function GET() {
   const caller = appRouter.createCaller(createContext());
 
   const result = await caller.user.healthEntities();

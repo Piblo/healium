@@ -6,7 +6,6 @@ import { Button } from "@/components/ui/button";
 import Image from "next/image";
 import { Link } from "@/components/Link";
 import NextLink from "next/link";
-import SearchJobOffer from "../search/page";
 import { SearchOfferForm } from "@/components/SearchOfferForm";
 import { auth } from "@clerk/nextjs";
 import { getContractTypeLabel } from "@/utils/contractType";

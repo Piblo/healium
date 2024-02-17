@@ -8,7 +8,7 @@ export const fileRouter = {
   // Define as many FileRoutes as you like, each with a unique routeSlug
   image: f({ image: { maxFileSize: "4MB" } })
     .middleware(authMiddleware)
-    .onUploadComplete(async ({ metadata, file }) => {
+    .onUploadComplete(async ({ file }) => {
       // This code RUNS ON YOUR SERVER after upload
       console.log("file url", file.url);
     }),

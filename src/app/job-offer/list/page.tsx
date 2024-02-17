@@ -1,4 +1,4 @@
-import { Briefcase, CalendarClock, MapPin, X } from "lucide-react";
+import { Briefcase, CalendarClock, MapPin } from "lucide-react";
 import { Card, CardContent, CardHeader } from "@/components/ui/card";
 import { ContractType, getContractTypeLabel } from "@/utils/contractType";
 
