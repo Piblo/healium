@@ -56,7 +56,7 @@ export async function getJobApplicationsForUser(
         },
       },
     },
-    limit: 10,
+    limit: 50,
   });
 
   return offers;

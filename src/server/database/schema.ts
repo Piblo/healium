@@ -18,6 +18,7 @@ import {
 } from "drizzle-orm/mysql-core";
 
 import { createSelectSchema } from "drizzle-zod";
+import { ulid } from "ulid";
 
 export const healthEntities = mysqlTable("health_entities", {
   id: varchar("id", {
@@ -105,28 +106,25 @@ export const jobOffersRelations = relations(jobOffers, ({ one, many }) => ({
   applications: many(jobApplications),
 }));
 
-export const jobApplications = mysqlTable(
-  "job_applications",
-  {
-    jobOfferId: varchar("job_offer_id", { length: 36 }).notNull(),
-    userId: varchar("user_id", {
-      length: 36,
-    }).notNull(),
-    createdDate: timestamp("created_date")
-      .notNull()
-      .default(sql`CURRENT_TIMESTAMP`), //https://stackoverflow.com/questions/76678778/drizzle-timestamp-datenow-invalid-default-value
-    status: mysqlEnum("status", ["pending", "approved", "rejected"])
-      .notNull()
-      .default("pending"),
-    startDate: date("start_date"),
-    endDate: date("end_date"),
-  },
-  (table) => {
-    return {
-      pk: primaryKey(table.userId, table.jobOfferId),
-    };
-  }
-);
+export const jobApplications = mysqlTable("job_applications", {
+  id: varchar("id", {
+    length: 36,
+  })
+    .$default(() => ulid())
+    .primaryKey(),
+  jobOfferId: varchar("job_offer_id", { length: 36 }).notNull(),
+  userId: varchar("user_id", {
+    length: 36,
+  }).notNull(),
+  createdDate: timestamp("created_date")
+    .notNull()
+    .default(sql`CURRENT_TIMESTAMP`), //https://stackoverflow.com/questions/76678778/drizzle-timestamp-datenow-invalid-default-value
+  status: mysqlEnum("status", ["pending", "approved", "rejected"])
+    .notNull()
+    .default("pending"),
+  startDate: date("start_date"),
+  endDate: date("end_date"),
+});
 
 export const selectJobApplicationSchema = createSelectSchema(jobApplications);
 

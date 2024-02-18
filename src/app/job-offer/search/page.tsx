@@ -37,7 +37,7 @@ export default function SearchJobOffer({ searchParams }: SearchJobOfferProps) {
   return (
     <div className="container max-w-4xl py-6">
       <SearchOfferForm className="mb-6" />
-      <h1 className="text-2xl mb-4">Ofertas de trabajo</h1>
+      <h1 className="text-2xl font-semibold mb-4">Ofertas de trabajo</h1>
       {isFetched && !items?.length ? (
         <p>
           😅 Vaya, no hemos encontrado ninguna oferta de trabajo, prueba a

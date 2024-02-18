@@ -42,7 +42,7 @@ export default function EditHealthEntity() {
   return (
     <div className="container max-w-md mx-auto py-6">
       <BackButton className="mb-4" href="/health-entity/manage" />
-      <h1 className="text-2xl mb-6">Editar entidad sanitaria</h1>
+      <h1 className="text-2xl font-semibold mb-6">Editar entidad sanitaria</h1>
       {data ? (
         <HealthEntityForm
           onSubmit={handleSubmit}

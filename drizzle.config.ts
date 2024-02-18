@@ -7,6 +7,9 @@ export default {
   driver: "mysql2",
   breakpoints: true,
   dbCredentials: {
-    uri: process.env["DATABASE_URL"]!,
+    uri:
+      process.env.DB === "dev"
+        ? process.env["DATABASE_DEV_URL"]!
+        : process.env["DATABASE_URL"]!,
   },
 } satisfies Config;

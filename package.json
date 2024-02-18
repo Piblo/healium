@@ -11,8 +11,7 @@
     "db:introspect": "drizzle-kit introspect:mysql",
     "db:pull": "drizzle-kit introspect:mysql",
     "db:push": "drizzle-kit push:mysql",
-    "db:studio": "drizzle-kit studio",
-    "db:migrate": "tsx scripts/migrate"
+    "db:studio": "drizzle-kit studio"
   },
   "dependencies": {
     "@clerk/localizations": "^1.26.15",

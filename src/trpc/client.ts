@@ -9,3 +9,5 @@ type RouterOutput = inferRouterOutputs<AppRouter>;
 export type CandidateProfileOutput = RouterOutput["candidate"]["profile"];
 export type JobOfferApplicationsOutput =
   RouterOutput["jobOffer"]["applications"];
+export type UserApplicationsOutput =
+  RouterOutput["user"]["applications"][number];

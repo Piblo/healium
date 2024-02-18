@@ -46,7 +46,7 @@ export default function Members() {
   return (
     <div className="container py-6">
       <BackButton href="/health-entity/manage" className="mb-4" />
-      <h1 className="text-2xl mb-4">Miembros</h1>
+      <h1 className="text-2xl font-semibold mb-4">Miembros</h1>
       {isLoading && <Loader2 className="animate-spin" />}
       <Table className="mb-4">
         <TableHeader>

@@ -35,7 +35,6 @@ type JobOfferSummary = {
   salaryPerHour?: number | null;
   applicationStartDate?: Date | null;
   applicationEndDate?: Date | null;
-  showHealthEntityLink?: boolean;
 } & PropsWithChildren;
 
 export const JobOfferSummary = ({
@@ -74,7 +73,7 @@ export const JobOfferSummary = ({
           <div className="flex-1">
             <div className="flex gap-2 items-center">
               <Link
-                className="text-xl font-bold hover:underline"
+                className="text-xl font-semibold hover:underline"
                 href={`/job-offer/${id}`}
               >
                 {healthEntityName}
