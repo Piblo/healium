@@ -6,7 +6,6 @@ import {
   desc,
   eq,
   gt,
-  isNull,
   like,
   lt,
   lte,

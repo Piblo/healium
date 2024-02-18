@@ -7,7 +7,6 @@ import Image from "next/image";
 import { Link } from "@/components/Link";
 import NextLink from "next/link";
 import { SearchOfferForm } from "@/components/SearchOfferForm";
-import { auth } from "@clerk/nextjs";
 import { getContractTypeLabel } from "@/utils/contractType";
 import { notFound } from "next/navigation";
 import { trpc } from "@/trpc/server";
@@ -24,18 +23,6 @@ export default async function JobOffer({
   const jobOffer = await trpc.jobOffer.get.query({
     jobOfferId: params.id,
   });
-
-  const user = await auth();
-
-  const userApplications = user.userId
-    ? await trpc.user.applications.query({
-        jobOfferId: params.id,
-      })
-    : [];
-
-  const hasUserApplied = Boolean(
-    userApplications.find((x) => x.userId === user.userId)
-  );
 
   if (!jobOffer) {
     notFound();
