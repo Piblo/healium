@@ -116,5 +116,10 @@ const Application = (application: UserApplicationsOutput) => (
     hoursPerWeek={application.jobOffer.hoursPerWeek}
     applicationEndDate={application.endDate}
     applicationStartDate={application.startDate}
+    salaryPerHour={
+      application.jobOffer.salaryPerHour
+        ? Number(application.jobOffer.salaryPerHour)
+        : null
+    }
   />
 );

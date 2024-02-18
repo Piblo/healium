@@ -51,6 +51,7 @@ export const UploadCv = () => {
         accept="application/pdf"
         onChange={(e) => handleFileSelected(e.currentTarget.files)}
         disabled={isUploading}
+        className="cursor-pointer"
       />
       {isUploading && <Progress value={progress} className="h-2" />}
     </>

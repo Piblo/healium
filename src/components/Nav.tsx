@@ -28,8 +28,10 @@ import { ReactNode } from "react";
 import { Separator } from "./ui/separator";
 import { Skeleton } from "./ui/skeleton";
 import { ThemeToggle } from "./ThemeToggle";
+import { cn } from "@/lib/utils";
 import { getSelectedHealthEntityId } from "@/utils/healthEntity";
 import { trpc } from "@/trpc/client";
+import { usePathname } from "next/navigation";
 
 export const Nav = () => {
   const { user } = useUser();
@@ -63,7 +65,9 @@ export const Nav = () => {
                 </SheetClose>
                 <SheetClose asChild>
                   <Link
-                    className="text-muted-foreground hover:underline"
+                    className={cn(
+                      "text-muted-foreground hover:underline underline"
+                    )}
                     href="/profile"
                   >
                     CV
@@ -162,7 +166,7 @@ export const Nav = () => {
           </li>
         )}
       </ul>
-      <ul className="flex gap-2 text-sm items-center">
+      <ul className="flex text-sm items-center">
         <li>
           <ThemeToggle />
         </li>
@@ -184,9 +188,18 @@ export const Nav = () => {
   );
 };
 
-const NavLink = (props: LinkProps & { children: ReactNode }) => (
-  <Link
-    {...props}
-    className="hover:bg-black/10 dark:hover:bg-white/10 px-4 py-3 rounded cursor-pointer font-semibold focus:bg-black/10 dark:focus:bg-white/10 focus:outline-none"
-  />
-);
+const NavLink = (props: LinkProps & { children: ReactNode }) => {
+  const path = usePathname();
+
+  return (
+    <Link
+      {...props}
+      className={cn(
+        "hover:bg-black/10 dark:hover:bg-white/10 px-4 py-3 rounded cursor-pointer font-semibold focus:bg-black/10 dark:focus:bg-white/10 focus:outline-none underline-offset-4",
+        {
+          underline: path === props.href,
+        }
+      )}
+    />
+  );
+};

@@ -67,7 +67,7 @@ export const JobOfferSummary = ({
               alt=""
               width="80"
               height="80"
-              className="rounded self-start w-[60px] h-[60px] md:w-[80px] md:h-[80px]"
+              className="rounded self-start w-[60px] h-[60px] md:w-[80px] md:h-[80px] border"
             />
           )}
           <div className="flex-1">

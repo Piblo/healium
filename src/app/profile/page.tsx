@@ -1,8 +1,9 @@
 "use client";
 
+import { Download, Info } from "lucide-react";
+
 import { Button } from "@/components/ui/button";
 import { DeleteCv } from "./DeleteCv";
-import { Download } from "lucide-react";
 import { Label } from "@/components/ui/label";
 import Link from "next/link";
 import { Skeleton } from "@/components/ui/skeleton";
@@ -38,7 +39,16 @@ export default function Profile() {
             <DeleteCv />
           </>
         ) : (
-          !isLoading && <UploadCv />
+          !isLoading && (
+            <div>
+              <UploadCv />
+              <p className="mt-4 flex gap-2 text-muted-foreground">
+                <Info />
+                Sube tu CV para que las entidades sanitarias puedan verlo junto
+                a tus solicitudes de empleo
+              </p>
+            </div>
+          )
         )}
       </div>
     </div>

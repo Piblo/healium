@@ -1,11 +1,18 @@
+import { CreateJobOffer, JobOffer, jobApplications, jobOffers } from "./schema";
 import {
-  CreateJobOffer,
-  JobOffer,
-  healthEntities,
-  jobApplications,
-  jobOffers,
-} from "./schema";
-import { SQL, and, eq, gt, like, lt, lte, or, sql } from "drizzle-orm";
+  SQL,
+  and,
+  count,
+  desc,
+  eq,
+  gt,
+  isNull,
+  like,
+  lt,
+  lte,
+  or,
+  sql,
+} from "drizzle-orm";
 
 import { PaginatedResult } from "@/models/PaginatedResult";
 import { db } from "./connection";
@@ -48,16 +55,28 @@ export async function getJobOffer(jobOfferId: string) {
 }
 
 export async function getJobOffers(healthEntityId: string) {
+  const pendingApplicationCount = db
+    .select({
+      jobOfferId: jobApplications.jobOfferId,
+      count: count().as("pendingApplicationCount"),
+    })
+    .from(jobApplications)
+    .where(eq(jobApplications.status, "pending"))
+    .groupBy(jobApplications.jobOfferId)
+    .as("pendingApplicationCount");
+
   const results = await db
     .select({
       jobOffer: jobOffers,
-      applicationsCount: sql<number>`count(${jobApplications.userId})`,
+      pendingApplicationCount: sql<number>`COALESCE(${pendingApplicationCount.count}, 0)`,
     })
     .from(jobOffers)
-    .innerJoin(healthEntities, eq(healthEntities.id, jobOffers.healthEntityId))
-    .leftJoin(jobApplications, eq(jobApplications.jobOfferId, jobOffers.id))
-    .groupBy(jobApplications.jobOfferId, jobOffers.id)
-    .where(eq(healthEntities.id, healthEntityId));
+    .leftJoin(
+      pendingApplicationCount,
+      eq(pendingApplicationCount.jobOfferId, jobOffers.id)
+    )
+    .where(eq(jobOffers.healthEntityId, healthEntityId))
+    .orderBy(desc(jobOffers.createdDate));
 
   return results;
 }

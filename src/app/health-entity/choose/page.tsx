@@ -13,7 +13,9 @@ export default function ChooseHealthEntity() {
 
   return (
     <div className="container py-6 max-w-lg">
-      <h1 className="text-2xl md:text-4xl mb-4">Elige una entidad sanitaria</h1>
+      <h1 className="text-2xl font-semibold md:text-4xl mb-4">
+        Elige una entidad sanitaria
+      </h1>
       {isLoading && <Loader2 className="animate-spin" />}
       <ul className="space-y-2 flex flex-col gap-2">
         {data?.map((x) => (
@@ -28,7 +30,7 @@ export default function ChooseHealthEntity() {
               <Card className="p-4 flex text-lg">
                 {x.logoUrl && (
                   <Image
-                    className="mr-4"
+                    className="mr-4 rounded border"
                     width={80}
                     height={80}
                     src={x.logoUrl}

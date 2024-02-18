@@ -21,6 +21,19 @@ export async function createJobApplication(
   return request;
 }
 
+export function getJobApplication(id: string) {
+  return db.query.jobApplications.findFirst({
+    where: eq(jobApplications.id, id),
+    with: {
+      jobOffer: {
+        columns: {
+          healthEntityId: true,
+        },
+      },
+    },
+  });
+}
+
 export async function getJobApplicationsForHealthEntity(
   healthEntityId: string
 ) {
@@ -89,8 +102,7 @@ export async function getJobApplicationsForJobOffer(
 }
 
 type SetJobApplicationStatusRequest = {
-  jobOfferId: string;
-  userId: string;
+  id: string;
   status: JobApplication["status"];
 };
 
@@ -100,10 +112,5 @@ export async function setJobApplicationStatus(
   await db
     .update(jobApplications)
     .set({ status: request.status })
-    .where(
-      and(
-        eq(jobApplications.userId, request.userId),
-        eq(jobApplications.jobOfferId, request.jobOfferId)
-      )
-    );
+    .where(and(eq(jobApplications.id, request.id)));
 }

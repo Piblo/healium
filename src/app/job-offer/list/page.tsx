@@ -30,7 +30,7 @@ export default async function JobOfferList() {
               city={x.jobOffer.city ?? ""}
               region={x.jobOffer.region ?? ""}
               contractType={x.jobOffer.contractType ?? "fixed-term"}
-              applicationCount={x.applicationsCount}
+              applicationCount={x.pendingApplicationCount}
               publishedDate={x.jobOffer.createdDate}
               hoursPerWeek={x.jobOffer.hoursPerWeek ?? undefined}
             />
@@ -88,7 +88,7 @@ const JobOfferWithApplicationSummary = ({
             ) : null}
           </ul>
           <dl className="text-sm flex-1">
-            <dt className="text-muted-foreground">Solicitudes</dt>
+            <dt className="text-muted-foreground">Solicitudes pendientes</dt>
             <dd className="text-green-500">{applicationCount}</dd>
           </dl>
         </div>

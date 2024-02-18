@@ -110,28 +110,16 @@ export default async function JobOffer({
           </Link>
         </div>
       )}
-      {hasUserApplied ? (
-        <>
-          <p className="text-muted-foreground mb-2 text-sm">
-            Ya has solicitado este puesto
-          </p>
-          <Button variant="outline" asChild>
-            <NextLink href="/job-offer/applications">
-              Ver mis solicitudes
-            </NextLink>
-          </Button>
-        </>
-      ) : (
-        <Button disabled asChild>
-          <NextLink
-            href={`/job-offer/${params.id}/apply?${new URLSearchParams(
-              searchParams
-            ).toString()}`}
-          >
-            Solicitar puesto
-          </NextLink>
-        </Button>
-      )}
+
+      <Button disabled asChild>
+        <NextLink
+          href={`/job-offer/${params.id}/apply?${new URLSearchParams(
+            searchParams
+          ).toString()}`}
+        >
+          Solicitar puesto
+        </NextLink>
+      </Button>
     </div>
   );
 }

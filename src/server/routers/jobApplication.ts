@@ -1,42 +1,44 @@
+import {
+  getJobApplication,
+  setJobApplicationStatus,
+} from "../database/jobApplicationRepository";
 import { protectedProcedure, router } from "../trpc";
 
 import { ApplicationAcceptedEmail } from "@/components/ApplicationAcceptedEmail";
 import { TRPCError } from "@trpc/server";
 import { checkUserIsHealthEntityMember } from "../services/permissionsService";
 import { clerkClient } from "@clerk/nextjs";
-import { getJobOffer } from "../database/jobOfferRepository";
 import { getPrimaryEmailAddress } from "../utils/user";
 import { resendClient } from "../clients/resend";
-import { setJobApplicationStatus } from "../database/jobApplicationRepository";
 import { z } from "zod";
 
 export const jobApplicationRouter = router({
   setStatus: protectedProcedure
     .input(
       z.object({
-        jobOfferId: z.string(),
-        userId: z.string(),
+        id: z.string().ulid(),
         status: z.enum(["pending", "approved", "rejected"]),
       })
     )
     .mutation(async ({ input }) => {
-      const jobOffer = await getJobOffer(input.jobOfferId);
-      if (!jobOffer) {
+      const jobApplication = await getJobApplication(input.id);
+      if (!jobApplication?.jobOffer.healthEntityId) {
         throw new TRPCError({
           code: "NOT_FOUND",
         });
       }
 
-      await checkUserIsHealthEntityMember(jobOffer.healthEntityId);
+      await checkUserIsHealthEntityMember(
+        jobApplication?.jobOffer.healthEntityId
+      );
 
       await setJobApplicationStatus({
-        jobOfferId: input.jobOfferId,
+        id: input.id,
         status: input.status,
-        userId: input.userId,
       });
 
       if (input.status === "approved") {
-        const user = await clerkClient.users.getUser(input.userId);
+        const user = await clerkClient.users.getUser(jobApplication.userId);
 
         await resendClient.emails.send({
           from: "onboarding@resend.dev",

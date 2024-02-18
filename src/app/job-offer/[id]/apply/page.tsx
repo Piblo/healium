@@ -18,8 +18,8 @@ export default async function Apply({ params }: { params: { id: string } }) {
   }
 
   return (
-    <div className="container py-6 max-w-xl space-y-6">
-      <h1 className="text-xl font-semibold">Confirmar solicitud de empleo</h1>
+    <section className="container py-6 max-w-screen-md space-y-6">
+      <h1 className="text-2xl font-semibold">Confirmar solicitud de empleo</h1>
       <JobOfferSummary
         id={jobOffer.id}
         city={jobOffer.city ?? ""}
@@ -38,10 +38,10 @@ export default async function Apply({ params }: { params: { id: string } }) {
       />
       <Alert>
         <Info className="h-4 w-4" />
-        <AlertTitle className="mb-4">
+        <AlertTitle className="mb-4 font-semibold">
           Deseas solicitar este puesto de trabajo?
         </AlertTitle>
-        <AlertDescription>
+        <AlertDescription className="text-muted-foreground">
           ¿Estás seguro de que deseas solicitar este puesto de trabajo? Una vez
           que envíes tu solicitud, el centro de salud recibirá tu perfil y se
           considerará como una postulación oficial.
@@ -55,6 +55,6 @@ export default async function Apply({ params }: { params: { id: string } }) {
         </Button>
         <ApplyButton jobOfferId={params.id} />
       </div>
-    </div>
+    </section>
   );
 }

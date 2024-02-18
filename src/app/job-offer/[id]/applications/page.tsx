@@ -49,7 +49,7 @@ export default function JobOfferApplications({
           "query"
         ),
         (oldData) => {
-          const offer = oldData?.find((x) => x.userId === data.userId);
+          const offer = oldData?.find((x) => x.id === data.id);
           if (!offer) {
             return oldData;
           }
@@ -64,25 +64,35 @@ export default function JobOfferApplications({
 
   const loading = isApplicationsLoading || isJobOfferLoading;
 
-  function setStatus(userId: string, status: "approved" | "rejected") {
+  function setStatus(
+    jobApplicationId: string,
+    status: "approved" | "rejected"
+  ) {
     if (!jobOffer) {
       return;
     }
 
     mutation.mutate({
-      jobOfferId: jobOffer.id,
+      id: jobApplicationId,
       status,
-      userId: userId,
     });
   }
 
   const pending = applications?.filter((x) => x.status === "pending") ?? [];
   const notPending = applications?.filter((x) => x.status !== "pending") ?? [];
 
+  if (loading) {
+    return (
+      <div className="container py-6 max-w-screen-lg">
+        <BackButton href="/job-offer/list" className="mb-4" />
+        {loading && <Loader2 className="animate-spin" />}
+      </div>
+    );
+  }
+
   return (
     <div className="container py-6 max-w-screen-lg">
       <BackButton href="/job-offer/list" className="mb-4" />
-      {loading && <Loader2 className="animate-spin" />}
       <h1 className="text-2xl font-semibold mb-6">{jobOffer?.title}</h1>
       <section className="mb-10">
         <h2 className="text-xl font-semibold mb-2">Pendientes</h2>
@@ -123,7 +133,7 @@ export default function JobOfferApplications({
                       )}
                     </div>
                     <div className="text-muted-foreground text-sm">
-                      Solicitado {dayjs(x.createdDate).fromNow()}
+                      Solicitado el {dayjs(x.createdDate).format("DD/MM/YYYY")}
                     </div>
                   </div>
                 </div>
@@ -151,15 +161,20 @@ export default function JobOfferApplications({
                 </ul>
                 <div className="flex gap-4">
                   <Button
-                    loading={mutation.isLoading}
-                    onClick={() => setStatus(x.userId, "approved")}
+                    loading={
+                      mutation.isLoading && mutation.variables?.id === x.id
+                    }
+                    onClick={() => setStatus(x.id, "approved")}
                     disabled={x.status === "approved"}
                   >
                     Aceptar
                   </Button>
                   <Button
                     variant="secondary"
-                    onClick={() => setStatus(x.userId, "rejected")}
+                    onClick={() => setStatus(x.id, "rejected")}
+                    loading={
+                      mutation.isLoading && mutation.variables?.id === x.id
+                    }
                   >
                     Rechazar
                   </Button>
@@ -210,7 +225,7 @@ export default function JobOfferApplications({
                   )}
                 </div>
                 <div className="text-muted-foreground text-sm">
-                  Solicitado {dayjs(x.createdDate).fromNow()}
+                  Solicitado el {dayjs(x.createdDate).format("DD/MM/YYYY")}
                 </div>
               </div>
             </div>
@@ -236,21 +251,6 @@ export default function JobOfferApplications({
                 </li>
               ) : null}
             </ul>
-            <div className="flex gap-4">
-              <Button
-                loading={mutation.isLoading}
-                onClick={() => setStatus(x.userId, "approved")}
-                disabled={x.status === "approved"}
-              >
-                Aceptar
-              </Button>
-              <Button
-                variant="secondary"
-                onClick={() => setStatus(x.userId, "rejected")}
-              >
-                Rechazar
-              </Button>
-            </div>
           </li>
         ))}
       </ul>

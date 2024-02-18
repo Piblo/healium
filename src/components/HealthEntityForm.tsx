@@ -126,7 +126,15 @@ export const HealthEntityForm = ({
         />
         <FormItem>
           <FormLabel className="block">Logo</FormLabel>
-          {logoUrl && <Image width="100" height="100" src={logoUrl} alt="" />}
+          {logoUrl && (
+            <Image
+              width="100"
+              height="100"
+              src={logoUrl}
+              alt=""
+              className="border rounded"
+            />
+          )}
           <UploadButton
             variant="secondary"
             onFileSelected={(files) => setLogo(files[0])}
