@@ -2,6 +2,13 @@
 
 import { ChevronDown, Menu } from "lucide-react";
 import {
+  ClerkLoading,
+  SignedIn,
+  SignedOut,
+  UserButton,
+  useUser,
+} from "@clerk/nextjs";
+import {
   DropdownMenu,
   DropdownMenuContent,
   DropdownMenuItem,
@@ -16,10 +23,10 @@ import {
   SheetTitle,
   SheetTrigger,
 } from "./ui/sheet";
-import { SignedIn, SignedOut, UserButton, useUser } from "@clerk/nextjs";
 
 import { ReactNode } from "react";
 import { Separator } from "./ui/separator";
+import { Skeleton } from "./ui/skeleton";
 import { ThemeToggle } from "./ThemeToggle";
 import { getSelectedHealthEntityId } from "@/utils/healthEntity";
 import { trpc } from "@/trpc/client";
@@ -161,6 +168,9 @@ export const Nav = () => {
         </li>
         <SignedIn>
           <li className="p-2">
+            <ClerkLoading>
+              <Skeleton className="w-8 h-8 rounded-full" />
+            </ClerkLoading>
             <UserButton afterSignOutUrl="/" />
           </li>
         </SignedIn>
