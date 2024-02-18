@@ -65,9 +65,7 @@ export const Nav = () => {
                 </SheetClose>
                 <SheetClose asChild>
                   <Link
-                    className={cn(
-                      "text-muted-foreground hover:underline underline"
-                    )}
+                    className="text-muted-foreground hover:underline"
                     href="/profile"
                   >
                     CV

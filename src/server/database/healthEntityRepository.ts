@@ -103,13 +103,18 @@ export async function removeMember(request: RemoveMemberRequest) {
 }
 
 export async function getHealthEntityStats(healthEntityId: string) {
-  const applicationsCount = await db
+  const pendingApplicationCount = await db
     .select({
       count: sql<number>`count(*)`,
     })
     .from(jobApplications)
     .innerJoin(jobOffers, eq(jobOffers.id, jobApplications.jobOfferId))
-    .where(eq(jobOffers.healthEntityId, healthEntityId));
+    .where(
+      and(
+        eq(jobOffers.healthEntityId, healthEntityId),
+        eq(jobApplications.status, "pending")
+      )
+    );
 
   const jobOfferCount = await db
     .select({
@@ -147,7 +152,7 @@ export async function getHealthEntityStats(healthEntityId: string) {
     );
 
   return {
-    jobApplicationCount: applicationsCount.at(0)?.count,
+    pendingApplicationCount: pendingApplicationCount.at(0)?.count,
     jobOfferCount: jobOfferCount.at(0)?.count,
     acceptedJobApplicationCount: acceptedApplicationCount.at(0)?.count,
     activeEmployeesCount: activeEmployeesCount.at(0)?.count,

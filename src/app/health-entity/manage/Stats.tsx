@@ -15,12 +15,12 @@ export async function Stats() {
     <div className="grid grid-cols-2 md:grid-cols-4 gap-4 mb-8">
       <Card className="bg-slate-100 dark:bg-slate-900">
         <CardHeader className="pb-2 flex flex-row justify-between text-sm">
-          <span className="text-muted-foreground">Solicitudes</span>
+          <span className="text-muted-foreground">Solicitudes pendientes</span>
           <Inbox className="mt-0 h-5 w-5 stroke-muted-foreground shrink-0" />
         </CardHeader>
         <CardContent>
           <span className="text-2xl font-bold">
-            {stats.jobApplicationCount ?? 0}
+            {stats.pendingApplicationCount ?? 0}
           </span>
         </CardContent>
       </Card>
@@ -62,6 +62,7 @@ export async function Stats() {
 export const StatsSkeleton = () => {
   return (
     <div className="grid grid-cols-2 md:grid-cols-4 gap-4 mb-8">
+      <Skeleton className="h-[116px]" />
       <Skeleton className="h-[116px]" />
       <Skeleton className="h-[116px]" />
       <Skeleton className="h-[116px]" />
