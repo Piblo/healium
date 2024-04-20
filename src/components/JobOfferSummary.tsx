@@ -132,7 +132,7 @@ export const JobOfferSummary = ({
           )}
           {hasApplied && (
             <li>
-              <Badge className="bg-teal-500 dark:bg-teal-700 pointer-events-none">
+              <Badge className="bg-teal-500 dark:bg-teal-600 pointer-events-none">
                 <Check size={16} className="mr-1" /> Puesto solicitado
               </Badge>
             </li>

@@ -13,7 +13,7 @@ export async function Stats() {
 
   return (
     <div className="grid grid-cols-2 md:grid-cols-4 gap-4 mb-8">
-      <Card className="bg-slate-100 dark:bg-slate-900">
+      <Card className="bg-slate-100 dark:bg-zinc-900">
         <CardHeader className="pb-2 flex flex-row justify-between text-sm">
           <span className="text-muted-foreground">Solicitudes pendientes</span>
           <Inbox className="mt-0 h-5 w-5 stroke-muted-foreground shrink-0" />
@@ -24,7 +24,7 @@ export async function Stats() {
           </span>
         </CardContent>
       </Card>
-      <Card className="bg-slate-100 dark:bg-slate-900">
+      <Card className="bg-slate-100 dark:bg-zinc-900">
         <CardHeader className="pb-2 flex flex-row justify-between text-sm">
           <span className="text-muted-foreground">Solicitudes aceptadas</span>
           <FileCheck className="mt-0 h-5 w-5 stroke-muted-foreground shrink-0" />
@@ -35,7 +35,7 @@ export async function Stats() {
           </span>
         </CardContent>
       </Card>
-      <Card className="bg-slate-100 dark:bg-slate-900">
+      <Card className="bg-slate-100 dark:bg-zinc-900">
         <CardHeader className="pb-2 flex flex-row justify-between text-sm">
           <span className="text-muted-foreground">Ofertas publicadas</span>
           <File className="mt-0 h-5 w-5 stroke-muted-foreground shrink-0" />
@@ -44,7 +44,7 @@ export async function Stats() {
           <span className="text-2xl font-bold">{stats.jobOfferCount ?? 0}</span>
         </CardContent>
       </Card>
-      <Card className="bg-slate-100 dark:bg-slate-900">
+      <Card className="bg-slate-100 dark:bg-zinc-900">
         <CardHeader className="pb-2 flex flex-row justify-between text-sm">
           <span className="text-muted-foreground">Empleados en plantilla</span>
           <Contact className="mt-0 h-5 w-5 stroke-muted-foreground shrink-0" />
