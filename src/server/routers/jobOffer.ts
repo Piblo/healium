@@ -15,7 +15,7 @@ import { procedure, protectedProcedure, router } from "../trpc";
 import { TRPCError } from "@trpc/server";
 import { checkUserIsHealthEntityMember } from "../services/permissionsService";
 import { clerkClient } from "@clerk/nextjs";
-import { selectJobApplicationSchema } from "../database/schema";
+import { selectJobApplicationSchema } from "../database/neon/schema";
 import { z } from "zod";
 
 const createInput = z.object({
@@ -64,9 +64,10 @@ export const jobOfferRouter = router({
 
     await createJobOffer({
       ...input,
-      startDate: input.startDate ?? null,
-      endDate: input.endDate ?? null,
+      startDate: input.startDate?.toISOString() ?? null,
+      endDate: input.endDate?.toISOString() ?? null,
       salaryPerHour: input.salaryPerHour?.toString() ?? null,
+      hoursPerWeek: input.hoursPerWeek?.toString() ?? null,
     });
   }),
   search: procedure
@@ -123,17 +124,17 @@ export const jobOfferRouter = router({
         jobOfferId: input.jobOfferId,
         userId: ctx.auth.userId,
         status: "pending",
-        endDate: input.endDate,
-        startDate: input.startDate,
+        endDate: input.endDate?.toISOString(),
+        startDate: input.startDate?.toISOString(),
       });
     }),
   update: protectedProcedure.input(updateInput).mutation(async ({ input }) => {
     await checkUserIsHealthEntityMember(input.healthEntityId);
     await updateJobOffer({
       ...input,
-      startDate: input.startDate ?? null,
-      endDate: input.endDate ?? null,
-      hoursPerWeek: input.hoursPerWeek ?? null,
+      startDate: input.startDate?.toISOString() ?? null,
+      endDate: input.endDate?.toISOString() ?? null,
+      hoursPerWeek: input.hoursPerWeek?.toString() ?? null,
       salaryPerHour: input.salaryPerHour?.toString() ?? null,
     });
   }),

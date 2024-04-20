@@ -1,4 +1,9 @@
-import { CreateJobOffer, JobOffer, jobApplications, jobOffers } from "./schema";
+import {
+  CreateJobOffer,
+  JobOffer,
+  jobApplications,
+  jobOffers,
+} from "./neon/schema";
 import {
   SQL,
   and,
@@ -14,7 +19,7 @@ import {
 } from "drizzle-orm";
 
 import { PaginatedResult } from "@/models/PaginatedResult";
-import { db } from "./connection";
+import { db } from "./neon/connection";
 import { ulid } from "ulid";
 
 type CreateJobOfferRequest = Omit<CreateJobOffer, "id">;
@@ -126,17 +131,27 @@ export async function searchJobOffers(request: SearchJobOffersRequest) {
                   or(
                     and(
                       request.from &&
-                        gt(jobApplications.startDate, request.from),
-                      request.to && lt(jobApplications.endDate, request.to)
+                        gt(
+                          jobApplications.startDate,
+                          request.from.toISOString()
+                        ),
+                      request.to &&
+                        lt(jobApplications.endDate, request.to.toISOString())
                     ),
                     and(
                       request.from &&
-                        lt(jobApplications.startDate, request.from),
-                      request.from && gt(jobApplications.endDate, request.from)
+                        lt(
+                          jobApplications.startDate,
+                          request.from.toISOString()
+                        ),
+                      request.from &&
+                        gt(jobApplications.endDate, request.from.toISOString())
                     ),
                     and(
-                      request.to && gt(jobApplications.startDate, request.to),
-                      request.to && lt(jobApplications.endDate, request.to)
+                      request.to &&
+                        gt(jobApplications.startDate, request.to.toISOString()),
+                      request.to &&
+                        lt(jobApplications.endDate, request.to.toISOString())
                     )
                   )
                 )

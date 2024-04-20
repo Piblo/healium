@@ -10,7 +10,7 @@ import {
 import {
   healthEntityUsers,
   selectJobApplicationSchema,
-} from "../database/schema";
+} from "../database/neon/schema";
 import { isHealiumAdmin, procedure, protectedProcedure, router } from "../trpc";
 
 import { HealthEntityInviteEmail } from "@/components/HealthEntityInviteEmail";

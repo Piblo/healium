@@ -3,10 +3,10 @@ import {
   JobApplication,
   jobApplications,
   jobOffers,
-} from "./schema";
+} from "./neon/schema";
 import { and, desc, eq, gte } from "drizzle-orm";
 
-import { db } from "./connection";
+import { db } from "./neon/connection";
 
 type CreateJobApplicationRequest = Omit<
   CreateJobApplication,
@@ -89,8 +89,10 @@ export async function getJobApplicationsForJobOffer(
     where: and(
       eq(jobApplications.jobOfferId, jobOfferId),
       options.status && eq(jobApplications.status, options.status),
-      options.startDate && gte(jobApplications.startDate, options.startDate),
-      options.endDate && gte(jobApplications.endDate, options.endDate)
+      options.startDate &&
+        gte(jobApplications.startDate, options.startDate.toISOString()),
+      options.endDate &&
+        gte(jobApplications.endDate, options.endDate.toISOString())
     ),
     limit: 10,
     with: {

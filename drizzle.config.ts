@@ -2,14 +2,11 @@ import type { Config } from "drizzle-kit";
 import "dotenv/config";
 
 export default {
-  schema: "./src/server/database/schema.ts",
+  schema: "./src/server/database/neon/schema.ts",
   out: "./drizzle",
-  driver: "mysql2",
+  driver: "pg",
   breakpoints: true,
   dbCredentials: {
-    uri:
-      process.env.DB === "dev"
-        ? process.env["DATABASE_DEV_URL"]!
-        : process.env["DATABASE_URL"]!,
+    connectionString: process.env["NEON_DATABASE_URL"]!,
   },
 } satisfies Config;

@@ -5,10 +5,10 @@ import {
   healthEntityUsers,
   jobApplications,
   jobOffers,
-} from "./schema";
+} from "./neon/schema";
 import { and, eq, gte, lte, sql } from "drizzle-orm";
 
-import { db } from "./connection";
+import { db } from "./neon/connection";
 import { ulid } from "ulid";
 
 type CreateHealthEntityRequest = {
@@ -146,8 +146,8 @@ export async function getHealthEntityStats(healthEntityId: string) {
       and(
         eq(jobOffers.healthEntityId, healthEntityId),
         eq(jobApplications.status, "approved"),
-        lte(jobApplications.startDate, new Date()),
-        gte(jobApplications.endDate, new Date())
+        lte(jobApplications.startDate, new Date().toISOString()),
+        gte(jobApplications.endDate, new Date().toISOString())
       )
     );
 

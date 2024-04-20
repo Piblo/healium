@@ -2,9 +2,9 @@ import {
   CandidateProfile,
   CandidateProfileInsert,
   candidateProfiles,
-} from "./schema";
+} from "./neon/schema";
 
-import { db } from "./connection";
+import { db } from "./neon/connection";
 import { eq } from "drizzle-orm";
 
 export async function getCandidateProfile(

@@ -2,7 +2,7 @@ import { TRPCError, initTRPC } from "@trpc/server";
 import { auth, clerkClient } from "@clerk/nextjs";
 
 import { ZodError } from "zod";
-import { db } from "./database/connection";
+import { db } from "./database/neon/connection";
 import superjson from "superjson";
 
 export const createContext = () => {
