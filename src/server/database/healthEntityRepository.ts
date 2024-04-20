@@ -146,8 +146,8 @@ export async function getHealthEntityStats(healthEntityId: string) {
       and(
         eq(jobOffers.healthEntityId, healthEntityId),
         eq(jobApplications.status, "approved"),
-        lte(jobApplications.startDate, new Date().toISOString()),
-        gte(jobApplications.endDate, new Date().toISOString())
+        lte(jobApplications.startDate, new Date()),
+        gte(jobApplications.endDate, new Date())
       )
     );
 

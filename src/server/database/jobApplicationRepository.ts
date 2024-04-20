@@ -72,7 +72,15 @@ export async function getJobApplicationsForUser(
     limit: 50,
   });
 
-  return offers;
+  return offers.map((offer) => ({
+    ...offer,
+    jobOffer: {
+      ...offer.jobOffer,
+      hoursPerWeek: offer.jobOffer.hoursPerWeek
+        ? Number(offer.jobOffer.hoursPerWeek)
+        : undefined,
+    },
+  }));
 }
 
 type GetJobApplicationsForJobOfferOptions = {
@@ -89,10 +97,8 @@ export async function getJobApplicationsForJobOffer(
     where: and(
       eq(jobApplications.jobOfferId, jobOfferId),
       options.status && eq(jobApplications.status, options.status),
-      options.startDate &&
-        gte(jobApplications.startDate, options.startDate.toISOString()),
-      options.endDate &&
-        gte(jobApplications.endDate, options.endDate.toISOString())
+      options.startDate && gte(jobApplications.startDate, options.startDate),
+      options.endDate && gte(jobApplications.endDate, options.endDate)
     ),
     limit: 10,
     with: {

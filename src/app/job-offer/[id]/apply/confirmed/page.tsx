@@ -1,7 +1,7 @@
 import { Button } from "@/components/ui/button";
 import { JobOfferSummary } from "@/components/JobOfferSummary";
 import Link from "next/link";
-import { currentUser } from "@clerk/nextjs";
+import { currentUser } from "@clerk/nextjs/server";
 import { notFound } from "next/navigation";
 import { trpc } from "@/trpc/server";
 

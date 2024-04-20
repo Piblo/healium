@@ -82,7 +82,15 @@ export async function getJobOffers(healthEntityId: string) {
     .where(eq(jobOffers.healthEntityId, healthEntityId))
     .orderBy(desc(jobOffers.createdDate));
 
-  return results;
+  return results.map((result) => ({
+    ...result,
+    jobOffer: {
+      ...result.jobOffer,
+      hoursPerWeek: result.jobOffer.hoursPerWeek
+        ? Number(result.jobOffer.hoursPerWeek)
+        : null,
+    },
+  }));
 }
 
 type SearchJobOffersRequest = {
@@ -131,27 +139,17 @@ export async function searchJobOffers(request: SearchJobOffersRequest) {
                   or(
                     and(
                       request.from &&
-                        gt(
-                          jobApplications.startDate,
-                          request.from.toISOString()
-                        ),
-                      request.to &&
-                        lt(jobApplications.endDate, request.to.toISOString())
+                        gt(jobApplications.startDate, request.from),
+                      request.to && lt(jobApplications.endDate, request.to)
                     ),
                     and(
                       request.from &&
-                        lt(
-                          jobApplications.startDate,
-                          request.from.toISOString()
-                        ),
-                      request.from &&
-                        gt(jobApplications.endDate, request.from.toISOString())
+                        lt(jobApplications.startDate, request.from),
+                      request.from && gt(jobApplications.endDate, request.from)
                     ),
                     and(
-                      request.to &&
-                        gt(jobApplications.startDate, request.to.toISOString()),
-                      request.to &&
-                        lt(jobApplications.endDate, request.to.toISOString())
+                      request.to && gt(jobApplications.startDate, request.to),
+                      request.to && lt(jobApplications.endDate, request.to)
                     )
                   )
                 )

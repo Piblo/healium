@@ -1,18 +1,21 @@
-import { authMiddleware } from "@clerk/nextjs";
+import { clerkMiddleware, createRouteMatcher } from "@clerk/nextjs/server";
+
 import { pathToRegexp } from "path-to-regexp";
 
-export default authMiddleware({
-  publicRoutes: (req) => {
-    const path = new URL(req.url).pathname;
-    return (
-      !privateOverrides.some((x) => x.test(path)) &&
-      publicRoutes.some((x) => x.test(path))
-    );
-  },
+export default clerkMiddleware((auth, req) => {
+  if (!isPublicRoute(req)) auth().protect();
+});
+
+const isPublicRoute = createRouteMatcher((req) => {
+  const path = new URL(req.url).pathname;
+  return (
+    !privateOverrides.some((x) => x.test(path)) &&
+    publicRoutes.some((x) => x.test(path))
+  );
 });
 
 export const config = {
-  matcher: ["/((?!.+\\.[\\w]+$|_next).*)", "/", "/(api|trpc)(.*)"],
+  matcher: ["/((?!.*\\..*|_next).*)", "/", "/(api|trpc)(.*)"],
 };
 
 const publicRoutes = [

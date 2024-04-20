@@ -14,8 +14,8 @@
     "db:studio": "drizzle-kit studio"
   },
   "dependencies": {
-    "@clerk/localizations": "^1.26.15",
-    "@clerk/nextjs": "^4.29.7",
+    "@clerk/localizations": "^2.0.0",
+    "@clerk/nextjs": "^5.0.1",
     "@hookform/resolvers": "^3.3.4",
     "@neondatabase/serverless": "^0.9.1",
     "@planetscale/database": "^1.16.0",

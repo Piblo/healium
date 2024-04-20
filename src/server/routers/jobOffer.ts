@@ -14,7 +14,7 @@ import { procedure, protectedProcedure, router } from "../trpc";
 
 import { TRPCError } from "@trpc/server";
 import { checkUserIsHealthEntityMember } from "../services/permissionsService";
-import { clerkClient } from "@clerk/nextjs";
+import { clerkClient } from "@clerk/nextjs/server";
 import { selectJobApplicationSchema } from "../database/neon/schema";
 import { z } from "zod";
 
@@ -54,6 +54,9 @@ export const jobOfferRouter = router({
 
       return {
         ...jobOffer,
+        hoursPerWeek: jobOffer.hoursPerWeek
+          ? Number(jobOffer.hoursPerWeek)
+          : undefined,
         salaryPerHour: jobOffer.salaryPerHour
           ? Number(jobOffer.salaryPerHour)
           : undefined,
@@ -64,8 +67,8 @@ export const jobOfferRouter = router({
 
     await createJobOffer({
       ...input,
-      startDate: input.startDate?.toISOString() ?? null,
-      endDate: input.endDate?.toISOString() ?? null,
+      startDate: input.startDate,
+      endDate: input.endDate,
       salaryPerHour: input.salaryPerHour?.toString() ?? null,
       hoursPerWeek: input.hoursPerWeek?.toString() ?? null,
     });
@@ -124,16 +127,16 @@ export const jobOfferRouter = router({
         jobOfferId: input.jobOfferId,
         userId: ctx.auth.userId,
         status: "pending",
-        endDate: input.endDate?.toISOString(),
-        startDate: input.startDate?.toISOString(),
+        endDate: input.endDate,
+        startDate: input.startDate,
       });
     }),
   update: protectedProcedure.input(updateInput).mutation(async ({ input }) => {
     await checkUserIsHealthEntityMember(input.healthEntityId);
     await updateJobOffer({
       ...input,
-      startDate: input.startDate?.toISOString() ?? null,
-      endDate: input.endDate?.toISOString() ?? null,
+      startDate: input.startDate ?? null,
+      endDate: input.endDate ?? null,
       hoursPerWeek: input.hoursPerWeek?.toString() ?? null,
       salaryPerHour: input.salaryPerHour?.toString() ?? null,
     });
@@ -171,7 +174,7 @@ export const jobOfferRouter = router({
       });
 
       return applications.map((application) => {
-        const user = users.find((x) => x.id === application.userId);
+        const user = users.data.find((x) => x.id === application.userId);
 
         return {
           ...application,

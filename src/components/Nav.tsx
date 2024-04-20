@@ -173,7 +173,10 @@ export const Nav = () => {
             <ClerkLoading>
               <Skeleton className="w-8 h-8 rounded-full" />
             </ClerkLoading>
-            <UserButton afterSignOutUrl="/" />
+            <UserButton
+              afterSignOutUrl="/"
+              appearance={{ elements: { button: "w-10 h-10" } }}
+            />
           </li>
         </SignedIn>
         <SignedOut>

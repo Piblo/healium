@@ -7,7 +7,7 @@ import { protectedProcedure, router } from "../trpc";
 import { ApplicationAcceptedEmail } from "@/components/ApplicationAcceptedEmail";
 import { TRPCError } from "@trpc/server";
 import { checkUserIsHealthEntityMember } from "../services/permissionsService";
-import { clerkClient } from "@clerk/nextjs";
+import { clerkClient } from "@clerk/nextjs/server";
 import { getPrimaryEmailAddress } from "../utils/user";
 import { resendClient } from "../clients/resend";
 import { z } from "zod";

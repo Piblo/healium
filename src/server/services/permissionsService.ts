@@ -1,5 +1,5 @@
 import { TRPCError } from "@trpc/server";
-import { currentUser } from "@clerk/nextjs";
+import { currentUser } from "@clerk/nextjs/server";
 import { getHealthEntityMembers } from "../database/healthEntityRepository";
 
 export async function checkUserIsHealthEntityMember(healthEntityId: string) {

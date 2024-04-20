@@ -1,5 +1,5 @@
 import { TRPCError, initTRPC } from "@trpc/server";
-import { auth, clerkClient } from "@clerk/nextjs";
+import { auth, clerkClient } from "@clerk/nextjs/server";
 
 import { ZodError } from "zod";
 import { db } from "./database/neon/connection";

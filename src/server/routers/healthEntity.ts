@@ -16,7 +16,7 @@ import { isHealiumAdmin, procedure, protectedProcedure, router } from "../trpc";
 import { HealthEntityInviteEmail } from "@/components/HealthEntityInviteEmail";
 import { TRPCError } from "@trpc/server";
 import { checkUserIsHealthEntityMember } from "../services/permissionsService";
-import { clerkClient } from "@clerk/nextjs";
+import { clerkClient } from "@clerk/nextjs/server";
 import { getBaseUrl } from "./_app";
 import { getJobApplicationsForHealthEntity } from "../database/jobApplicationRepository";
 import { getPrimaryEmailAddress } from "../utils/user";
@@ -92,7 +92,7 @@ export const healthEntityRouter = router({
       });
 
       return members.map((member) => {
-        const user = users.find((x) =>
+        const user = users.data.find((x) =>
           x.emailAddresses.map((x) => x.emailAddress).includes(member.email)
         );
 
@@ -121,7 +121,7 @@ export const healthEntityRouter = router({
       });
 
       const invitationExists = Boolean(
-        invitations.find((x) => x.emailAddress === input.emailAddress)
+        invitations.data.find((x) => x.emailAddress === input.emailAddress)
       );
 
       if (!invitationExists) {
@@ -219,7 +219,7 @@ export const healthEntityRouter = router({
       });
 
       return applications.map((application) => {
-        const user = users.find(
+        const user = users.data.find(
           (user) => user.id === application.jobApplication.userId
         );
 

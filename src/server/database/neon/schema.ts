@@ -8,9 +8,9 @@ import {
   timestamp,
   varchar,
 } from "drizzle-orm/pg-core";
-import { relations, sql } from "drizzle-orm";
 
 import { createSelectSchema } from "drizzle-zod";
+import { relations } from "drizzle-orm";
 import { ulid } from "ulid";
 
 export const healthEntities = pgTable("health_entities", {
@@ -50,8 +50,10 @@ export const healthEntityUsers = pgTable(
     healthEntityId: varchar("health_entity_id", {
       length: 36,
     }).notNull(),
-    invitedDate: timestamp("invited_date").notNull(),
-    acceptedDate: timestamp("accepted_date"),
+    invitedDate: timestamp("invited_date", { mode: "date" })
+      .defaultNow()
+      .notNull(),
+    acceptedDate: timestamp("accepted_date", { mode: "date" }),
     status: healthEntityUserStatusEnum("status"),
     userId: varchar("user_id", {
       length: 256,
@@ -80,11 +82,11 @@ export const jobOffers = pgTable("job_offers", {
   region: varchar("region", { length: 128 }),
   city: varchar("city", { length: 128 }),
   contractType: contractType("contract_type").notNull(),
-  startDate: date("start_date"),
-  endDate: date("end_date"),
-  createdDate: timestamp("created_date")
+  startDate: date("start_date", { mode: "date" }),
+  endDate: date("end_date", { mode: "date" }),
+  createdDate: timestamp("created_date", { mode: "date" })
     .notNull()
-    .default(sql`CURRENT_TIMESTAMP`), //https://stackoverflow.com/questions/76678778/drizzle-timestamp-datenow-invalid-default-value
+    .defaultNow(),
   hoursPerWeek: decimal("hours_per_week", {
     precision: 5,
     scale: 2,
@@ -122,12 +124,12 @@ export const jobApplications = pgTable("job_applications", {
   userId: varchar("user_id", {
     length: 36,
   }).notNull(),
-  createdDate: timestamp("created_date")
+  createdDate: timestamp("created_date", { mode: "date" })
     .notNull()
-    .default(sql`CURRENT_TIMESTAMP`), //https://stackoverflow.com/questions/76678778/drizzle-timestamp-datenow-invalid-default-value
+    .defaultNow(),
   status: jobApplicationStatus("status").notNull().default("pending"),
-  startDate: date("start_date"),
-  endDate: date("end_date"),
+  startDate: date("start_date", { mode: "date" }),
+  endDate: date("end_date", { mode: "date" }),
 });
 
 export const selectJobApplicationSchema = createSelectSchema(jobApplications);

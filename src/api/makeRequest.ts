@@ -1,4 +1,4 @@
-import { auth } from "@clerk/nextjs";
+import { auth } from "@clerk/nextjs/server";
 
 export async function makeRequest<TResponse>(url: string): Promise<TResponse> {
   const { getToken } = auth();
