@@ -1,9 +1,5 @@
 import { HealiumFileRouter } from "@/app/api/uploadthing/core";
-import { generateComponents } from "@uploadthing/react";
-import { generateReactHelpers } from "@uploadthing/react/hooks";
-
-export const { UploadButton, UploadDropzone, Uploader } =
-  generateComponents<HealiumFileRouter>();
+import { generateReactHelpers } from "@uploadthing/react";
 
 export const { useUploadThing, uploadFiles } =
   generateReactHelpers<HealiumFileRouter>();

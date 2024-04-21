@@ -7,8 +7,8 @@ import {
   jobOffers,
 } from "./neon/schema";
 import { and, eq, gte, lte, sql } from "drizzle-orm";
+import { db, poolDb } from "./neon/connection";
 
-import { db } from "./neon/connection";
 import { ulid } from "ulid";
 
 type CreateHealthEntityRequest = {
@@ -22,7 +22,7 @@ type CreateHealthEntityRequest = {
 export async function createHealthEntity(
   request: CreateHealthEntityRequest
 ): Promise<HealthEntity> {
-  return await db.transaction(async (tx) => {
+  return await poolDb.transaction(async (tx) => {
     const healthEntity: HealthEntity = {
       ...request.healthEntity,
       id: ulid(),

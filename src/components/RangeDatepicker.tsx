@@ -12,7 +12,7 @@ import { Calendar as CalendarIcon } from "lucide-react";
 import { DateRange } from "react-day-picker";
 import { cn } from "@/lib/utils";
 import { dateFormatter } from "@/utils/date";
-import es from "date-fns/locale/es";
+import { es } from "date-fns/locale";
 
 type RangeDatePickerProps = {
   from?: Date;

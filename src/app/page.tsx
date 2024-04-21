@@ -37,7 +37,7 @@ export default function Home() {
                 ofreciendo la flexibilidad y los beneficios que merecen
               </p>
               <div className="grid md:grid-cols-3 gap-4">
-                <Card>
+                <Card className="dark:bg-zinc-900">
                   <CardHeader>
                     <div className="mb-4 flex gap-4 flex-col lg:flex-row">
                       <CalendarClock className="shrink-0" />
@@ -52,7 +52,7 @@ export default function Home() {
                     </CardDescription>
                   </CardHeader>
                 </Card>
-                <Card>
+                <Card className="dark:bg-zinc-900">
                   <CardHeader>
                     <div className="mb-4 flex gap-4 flex-col lg:flex-row">
                       <MapPinned className="shrink-0" />
@@ -67,7 +67,7 @@ export default function Home() {
                     </CardDescription>
                   </CardHeader>
                 </Card>
-                <Card>
+                <Card className="dark:bg-zinc-900">
                   <CardHeader>
                     <div className="mb-4 flex gap-4 flex-col lg:flex-row">
                       <Heart className="shrink-0" />

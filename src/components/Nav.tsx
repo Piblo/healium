@@ -164,7 +164,7 @@ export const Nav = () => {
           </li>
         )}
       </ul>
-      <ul className="flex text-sm items-center">
+      <ul className="flex text-sm items-center space-x-2">
         <li>
           <ThemeToggle />
         </li>

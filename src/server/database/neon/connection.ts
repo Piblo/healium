@@ -1,10 +1,14 @@
 import * as schema from "./schema";
 
-import { Pool } from "@neondatabase/serverless";
-import { drizzle } from "drizzle-orm/neon-serverless";
+import { Pool, neon } from "@neondatabase/serverless";
 
-// const sql = neon(process.env.NEON_DATABASE_URL!);
+import { drizzle } from "drizzle-orm/neon-http";
+import { drizzle as drizzleServerless } from "drizzle-orm/neon-serverless";
+
+const sql = neon(process.env.NEON_DATABASE_URL!);
+export const db = drizzle(sql, { schema });
+
 const pool = new Pool({ connectionString: process.env.NEON_DATABASE_URL! });
-export const db = drizzle(pool, {
+export const poolDb = drizzleServerless(pool, {
   schema,
 });
