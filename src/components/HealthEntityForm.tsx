@@ -12,6 +12,7 @@ import Image from "next/image";
 import { Input } from "./ui/input";
 import { Textarea } from "./ui/textarea";
 import { UploadButton } from "./UploadButton";
+import { toast } from "./ui/use-toast";
 import { useForm } from "react-hook-form";
 import { useState } from "react";
 import { useUploadThing } from "./uploadthing/uploadthing";
@@ -32,7 +33,13 @@ export const HealthEntityForm = ({
   submitButtonText,
 }: HealthEntityFormProps) => {
   const [logo, setLogo] = useState<File>();
-  const { isUploading, startUpload } = useUploadThing("image");
+  const { isUploading, startUpload } = useUploadThing("image", {
+    onUploadError: (e) =>
+      toast({
+        title: "Ha habido un problema al subir tu imagen",
+        description: `${e.code}: ${e.message}`,
+      }),
+  });
 
   const form = useForm<FormValues>({
     defaultValues: values,
