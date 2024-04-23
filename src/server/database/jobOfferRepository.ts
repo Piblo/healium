@@ -127,34 +127,32 @@ export async function searchJobOffers(request: SearchJobOffersRequest) {
     where: (jobOffers, { notExists }) =>
       and(
         ...where,
-        (request.from || request.to) &&
-          notExists(
-            db
-              .select()
-              .from(jobApplications)
-              .where(
-                and(
-                  eq(jobApplications.jobOfferId, jobOffers.id),
-                  eq(jobApplications.status, "approved"),
-                  or(
-                    and(
-                      request.from &&
-                        gt(jobApplications.startDate, request.from),
-                      request.to && lt(jobApplications.endDate, request.to)
-                    ),
-                    and(
-                      request.from &&
-                        lt(jobApplications.startDate, request.from),
-                      request.from && gt(jobApplications.endDate, request.from)
-                    ),
-                    and(
-                      request.to && gt(jobApplications.startDate, request.to),
-                      request.to && lt(jobApplications.endDate, request.to)
-                    )
-                  )
+        notExists(
+          db
+            .select()
+            .from(jobApplications)
+            .where(
+              and(
+                eq(jobApplications.jobOfferId, jobOffers.id),
+                eq(jobApplications.status, "approved"),
+                or(
+                  and(
+                    request.from && gt(jobApplications.startDate, request.from),
+                    request.to && lt(jobApplications.endDate, request.to)
+                  ),
+                  and(
+                    request.from && lt(jobApplications.startDate, request.from),
+                    request.from && gt(jobApplications.endDate, request.from)
+                  ),
+                  and(
+                    request.to && gt(jobApplications.startDate, request.to),
+                    request.to && lt(jobApplications.endDate, request.to)
+                  ),
+                  and(eq(jobOffers.contractType, "full-time"))
                 )
               )
-          )
+            )
+        )
       ),
     limit: limit + 1,
     with: {

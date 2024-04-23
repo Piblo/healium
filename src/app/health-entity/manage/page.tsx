@@ -26,7 +26,7 @@ export default async function ManageHealthEntity() {
           <Image
             priority
             src={healthEntity.logoUrl}
-            className="rounded border"
+            className="rounded border object-cover aspect-square"
             alt=""
             width="80"
             height="80"

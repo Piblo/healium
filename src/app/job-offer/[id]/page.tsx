@@ -38,7 +38,7 @@ export default async function JobOffer({
           alt=""
           width={80}
           height={80}
-          className="rounded mx-auto md:mx-0 mb-4"
+          className="rounded mx-auto md:mx-0 mb-4 aspect-square object-cover"
         />
       )}
       <h1 className="text-2xl font-semibold">{jobOffer.title}</h1>

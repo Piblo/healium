@@ -49,7 +49,9 @@ export const healthEntityUsers = pgTable(
     }).notNull(),
     healthEntityId: varchar("health_entity_id", {
       length: 36,
-    }).notNull(),
+    })
+      .references(() => healthEntities.id, { onDelete: "cascade" })
+      .notNull(),
     invitedDate: timestamp("invited_date", { mode: "date" })
       .defaultNow()
       .notNull(),
@@ -76,7 +78,9 @@ export const jobOffers = pgTable("job_offers", {
   id: varchar("id", {
     length: 36,
   }).primaryKey(),
-  healthEntityId: varchar("health_entity_id", { length: 36 }).notNull(),
+  healthEntityId: varchar("health_entity_id", { length: 36 })
+    .references(() => healthEntities.id, { onDelete: "cascade" })
+    .notNull(),
   title: varchar("title", { length: 256 }).notNull(),
   description: text("description"),
   region: varchar("region", { length: 128 }),
@@ -120,7 +124,9 @@ export const jobApplications = pgTable("job_applications", {
   })
     .$default(() => ulid())
     .primaryKey(),
-  jobOfferId: varchar("job_offer_id", { length: 36 }).notNull(),
+  jobOfferId: varchar("job_offer_id", { length: 36 })
+    .references(() => jobOffers.id, { onDelete: "cascade" })
+    .notNull(),
   userId: varchar("user_id", {
     length: 36,
   }).notNull(),

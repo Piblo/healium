@@ -54,7 +54,7 @@ export default function SearchJobOffer({ searchParams }: SearchJobOfferProps) {
         )}
         {items?.map((x) => (
           <li key={x.id}>
-            <Link href={`/job-offer/${x.id}`}>
+            <Link href={`/job-offer/${x.id}${window.location.search}`}>
               <JobOfferSummary
                 id={x.id}
                 city={x.city ?? ""}
