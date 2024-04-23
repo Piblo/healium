@@ -5,7 +5,7 @@ import { ContractType, getContractTypeLabel } from "@/utils/contractType";
 import { BackButton } from "@/components/BackButton";
 import { Button } from "@/components/ui/button";
 import { JobOfferDropdownMenu } from "./JobOfferDropdownMenu";
-import Link from "next/link";
+import { Link } from "@/components/Link";
 import { cookies } from "next/headers";
 import dayjs from "dayjs";
 import { trpc } from "@/trpc/server";
@@ -21,6 +21,12 @@ export default async function JobOfferList() {
     <div className="container py-6 max-w-screen-lg">
       <BackButton className="mb-4" href="/health-entity/manage" />
       <h1 className="text-2xl font-bold mb-4">Ofertas publicadas</h1>
+      {!jobOffers.length && (
+        <div>
+          <span>No hay ninguna oferta publicada.</span>{" "}
+          <Link href="/job-offer/create">Crear oferta</Link>
+        </div>
+      )}
       <ul className="space-y-4">
         {jobOffers.map((x) => (
           <li key={x.jobOffer.id}>

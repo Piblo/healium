@@ -5,12 +5,14 @@ import { JobOfferForm, JobOfferFormValues } from "@/components/JobOfferForm";
 import { BackButton } from "@/components/BackButton";
 import { getSelectedHealthEntityId } from "@/utils/healthEntity";
 import { trpc } from "@/trpc/client";
+import { useRouter } from "next/navigation";
 import { useToast } from "@/components/ui/use-toast";
 
 export default function CreateJobOffer() {
   const healthEntityId = getSelectedHealthEntityId()!;
 
   const { toast } = useToast();
+  const router = useRouter();
 
   const mutation = trpc.jobOffer.create.useMutation({
     onSuccess: () => {
@@ -18,6 +20,9 @@ export default function CreateJobOffer() {
         title: "Oferta de trabajo creada",
         description: "La oferta de trabajo se ha creado correctamente",
       });
+
+      router.prefetch("/job-offer/list");
+      router.push("/job-offer/list");
     },
   });
 

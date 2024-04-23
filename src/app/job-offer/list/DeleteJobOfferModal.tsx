@@ -12,6 +12,7 @@ import {
 import { Button } from "@/components/ui/button";
 import { DialogClose } from "@radix-ui/react-dialog";
 import { trpc } from "@/trpc/client";
+import { useRouter } from "next/navigation";
 import { useToast } from "@/components/ui/use-toast";
 
 type Props = {
@@ -22,6 +23,7 @@ type Props = {
 
 export const DeleteJobOfferModal = ({ jobOfferId, open, onClose }: Props) => {
   const { toast } = useToast();
+  const router = useRouter();
 
   const mutation = trpc.jobOffer.delete.useMutation({
     onSuccess: () => {
@@ -30,6 +32,7 @@ export const DeleteJobOfferModal = ({ jobOfferId, open, onClose }: Props) => {
         description: "La oferta de trabajo ha sido borrada correctamente",
       });
       onClose();
+      router.refresh();
     },
   });
 
