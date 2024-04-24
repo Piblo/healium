@@ -21,8 +21,8 @@ export default function CreateJobOffer() {
         description: "La oferta de trabajo se ha creado correctamente",
       });
 
-      router.prefetch("/job-offer/list");
       router.push("/job-offer/list");
+      router.refresh();
     },
   });
 

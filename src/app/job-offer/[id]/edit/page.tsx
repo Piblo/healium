@@ -6,6 +6,7 @@ import { BackButton } from "@/components/BackButton";
 import { Loader2 } from "lucide-react";
 import { getSelectedHealthEntityId } from "@/utils/healthEntity";
 import { trpc } from "@/trpc/client";
+import { useRouter } from "next/navigation";
 import { useToast } from "@/components/ui/use-toast";
 
 type Props = {
@@ -13,16 +14,24 @@ type Props = {
 };
 
 export default function EditJobOffer({ params }: Props) {
-  const { isLoading, data } = trpc.jobOffer.get.useQuery({
-    jobOfferId: params.id,
-  });
+  const { isLoading, data } = trpc.jobOffer.get.useQuery(
+    {
+      jobOfferId: params.id,
+    },
+    { cacheTime: 0 }
+  );
+
   const { toast } = useToast();
+  const router = useRouter();
   const mutation = trpc.jobOffer.update.useMutation({
     onSuccess: () => {
       toast({
         title: "Oferta de trabajo modificada",
         description: "La oferta de trabajo ha sido modificada correctamente",
       });
+
+      router.push("/job-offer/list");
+      router.refresh();
     },
   });
   const healthEntityId = getSelectedHealthEntityId()!;

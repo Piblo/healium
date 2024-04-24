@@ -5,11 +5,12 @@ import { ContractType, getContractTypeLabel } from "@/utils/contractType";
 import { BackButton } from "@/components/BackButton";
 import { Button } from "@/components/ui/button";
 import { JobOfferDropdownMenu } from "./JobOfferDropdownMenu";
-import { Link } from "@/components/Link";
+import Link from "next/link";
 import { cookies } from "next/headers";
 import dayjs from "dayjs";
 import { trpc } from "@/trpc/server";
 
+export const dynamic = "force-dynamic";
 export default async function JobOfferList() {
   const healthEntityId = cookies().get("healthEntityId")?.value!;
 
@@ -24,9 +25,11 @@ export default async function JobOfferList() {
       {!jobOffers.length && (
         <div>
           <span>No hay ninguna oferta publicada.</span>{" "}
-          <Link href="/job-offer/create">Crear oferta</Link>
         </div>
       )}
+      <Button asChild className="mb-4">
+        <Link href="/job-offer/create">Crear oferta</Link>
+      </Button>
       <ul className="space-y-4">
         {jobOffers.map((x) => (
           <li key={x.jobOffer.id}>
