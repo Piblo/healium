@@ -39,9 +39,9 @@ export default function Home() {
               <div className="grid md:grid-cols-3 gap-4">
                 <Card className="dark:bg-zinc-900">
                   <CardHeader>
-                    <div className="mb-4 flex gap-4 flex-col lg:flex-row">
+                    <div className="mb-4 flex gap-4 flex-col ">
                       <CalendarClock className="shrink-0" />
-                      <CardTitle className="text-xl/7 lg:text-2xl/7">
+                      <CardTitle className="text-xl/7 lg:text-2xl/9">
                         Contratos indefinidos y de corta duración
                       </CardTitle>
                     </div>
@@ -54,9 +54,9 @@ export default function Home() {
                 </Card>
                 <Card className="dark:bg-zinc-900">
                   <CardHeader>
-                    <div className="mb-4 flex gap-4 flex-col lg:flex-row">
+                    <div className="mb-4 flex gap-4 flex-col ">
                       <MapPinned className="shrink-0" />
-                      <CardTitle className="text-xl/7 lg:text-2xl/7">
+                      <CardTitle className="text-xl/7 lg:text-2xl/9">
                         Ofertas de trabajo en toda España
                       </CardTitle>
                     </div>
@@ -69,9 +69,9 @@ export default function Home() {
                 </Card>
                 <Card className="dark:bg-zinc-900">
                   <CardHeader>
-                    <div className="mb-4 flex gap-4 flex-col lg:flex-row">
+                    <div className="mb-4 flex gap-4 flex-col">
                       <Heart className="shrink-0" />
-                      <CardTitle className="text-xl/7 lg:text-2xl/7">
+                      <CardTitle className="text-xl/7 lg:text-2xl/9">
                         Facilidad y conveniencia
                       </CardTitle>
                     </div>

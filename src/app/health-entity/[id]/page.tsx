@@ -31,7 +31,7 @@ export default async function HealthEntity({ params }: HealthEntityProps) {
           height={100}
           width={100}
           alt=""
-          className="rounded mb-4"
+          className="rounded mb-4 aspect-square object-cover"
         />
       )}
       <h1 className="text-4xl mb-6">{healthEntity?.name}</h1>
