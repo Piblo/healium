@@ -1,4 +1,3 @@
-import { ArrowRight } from "lucide-react";
 import { JobOfferSummary } from "@/components/JobOfferSummary";
 import { Link } from "@/components/Link";
 import { UserApplicationsOutput } from "@/trpc/client";

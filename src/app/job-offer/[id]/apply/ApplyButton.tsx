@@ -1,12 +1,9 @@
 "use client";
 
-import {
-  parseAsIsoDateTime,
-  parseAsString,
-  useQueryStates,
-} from "next-usequerystate";
+import { parseAsIsoDateTime, useQueryStates } from "next-usequerystate";
 
 import { Button } from "@/components/ui/button";
+import { addDays } from "date-fns";
 import { trpc } from "@/trpc/client";
 import { useRouter } from "next/navigation";
 import { useToast } from "@/components/ui/use-toast";
@@ -19,10 +16,11 @@ export const ApplyButton = ({ jobOfferId }: ApplyButtonProps) => {
   const router = useRouter();
   const { toast } = useToast();
   const [search] = useQueryStates({
-    region: parseAsString,
-    from: parseAsIsoDateTime,
-    to: parseAsIsoDateTime,
+    from: parseAsIsoDateTime.withDefault(new Date()),
+    to: parseAsIsoDateTime.withDefault(addDays(new Date(), 7)),
   });
+
+  const { data } = trpc.jobOffer.get.useQuery({ jobOfferId });
 
   const mutation = trpc.jobOffer.apply.useMutation({
     onSuccess: () => {
@@ -39,8 +37,8 @@ export const ApplyButton = ({ jobOfferId }: ApplyButtonProps) => {
   function handleClick() {
     mutation.mutate({
       jobOfferId,
-      endDate: search.to ?? undefined,
-      startDate: search.from ?? undefined,
+      startDate: data?.contractType === "full-time" ? undefined : search.from,
+      endDate: data?.contractType === "full-time" ? undefined : search.to,
     });
   }
 

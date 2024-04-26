@@ -5,10 +5,18 @@ import { Button } from "@/components/ui/button";
 import { Info } from "lucide-react";
 import { JobOfferSummary } from "@/components/JobOfferSummary";
 import Link from "next/link";
+import { addDays } from "date-fns";
+import { dateFormatter } from "@/utils/date";
 import { notFound } from "next/navigation";
 import { trpc } from "@/trpc/server";
 
-export default async function Apply({ params }: { params: { id: string } }) {
+export default async function Apply({
+  params,
+  searchParams,
+}: {
+  params: { id: string };
+  searchParams: { from?: string; to?: string };
+}) {
   const jobOffer = await trpc.jobOffer.get.query({
     jobOfferId: params.id,
   });
@@ -16,6 +24,11 @@ export default async function Apply({ params }: { params: { id: string } }) {
   if (!jobOffer) {
     notFound();
   }
+
+  const from = searchParams.from ? new Date(searchParams.from) : new Date();
+  const to = searchParams.to
+    ? new Date(searchParams.to)
+    : addDays(new Date(), 7);
 
   return (
     <section className="container py-6 max-w-screen-md space-y-6">
@@ -42,9 +55,19 @@ export default async function Apply({ params }: { params: { id: string } }) {
           Deseas solicitar este puesto de trabajo?
         </AlertTitle>
         <AlertDescription className="text-muted-foreground">
-          ¿Estás seguro de que deseas solicitar este puesto de trabajo? Una vez
-          que envíes tu solicitud, el centro de salud recibirá tu perfil y se
-          considerará como una postulación oficial.
+          <p>
+            ¿Estás seguro de que deseas solicitar este puesto de trabajo? Una
+            vez que envíes tu solicitud, el centro de salud recibirá tu perfil y
+            se considerará como una postulación oficial.
+          </p>
+          {jobOffer.contractType !== "full-time" && (
+            <dl className="mt-4">
+              <dt className="text-foreground font-semibold">
+                Duración del empleo
+              </dt>
+              <dd>{dateFormatter.formatRange(from, to)}</dd>
+            </dl>
+          )}
         </AlertDescription>
       </Alert>
       <div className="flex flex-col sm:flex-row gap-4 justify-between">
