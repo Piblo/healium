@@ -1,4 +1,6 @@
+import { ArrowRight } from "lucide-react";
 import { JobOfferSummary } from "@/components/JobOfferSummary";
+import { Link } from "@/components/Link";
 import { UserApplicationsOutput } from "@/trpc/client";
 import { trpc } from "@/trpc/server";
 
@@ -32,6 +34,16 @@ export default async function Applications() {
   return (
     <section className="container max-w-screen-lg py-6">
       <h1 className="text-2xl font-semibold mb-6">Mis solicitudes de empleo</h1>
+      {jobApplications.length === 0 && (
+        <div>
+          <p className="text-muted-foreground">
+            No has solicitado ningún puesto de trabajo
+          </p>
+          <Link href="/job-offer/search" className="flex gap-2 mt-2">
+            Buscar ofertas de trabajo
+          </Link>
+        </div>
+      )}
       {current.length > 0 && (
         <section className="mb-8">
           <h2 className="text-xl font-semibold mb-2">En activo</h2>
