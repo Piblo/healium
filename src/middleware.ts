@@ -20,8 +20,8 @@ export const config = {
 
 const publicRoutes = [
   "/",
-  "/sign-in",
-  "/sign-up",
+  "/sign-in(.*)",
+  "/sign-up(.*)",
   "/job-offer/search",
   "/job-offer/:id",
   "/api/(.*)",
