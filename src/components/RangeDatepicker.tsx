@@ -5,13 +5,13 @@ import {
   PopoverContent,
   PopoverTrigger,
 } from "@/components/ui/popover";
+import { formatDate, formatDateRange } from "@/utils/date";
 
 import { Button } from "@/components/ui/button";
 import { Calendar } from "@/components/ui/calendar";
 import { Calendar as CalendarIcon } from "lucide-react";
 import { DateRange } from "react-day-picker";
 import { cn } from "@/lib/utils";
-import { dateFormatter } from "@/utils/date";
 import { es } from "date-fns/locale";
 
 type RangeDatePickerProps = {
@@ -42,9 +42,9 @@ export function RangeDatePicker({
             <CalendarIcon className="mr-2 h-4 w-4" />
             {from ? (
               to ? (
-                <>{dateFormatter.formatRange(from, to)}</>
+                <>{formatDateRange(from, to)}</>
               ) : (
-                dateFormatter.format(from)
+                formatDate(from)
               )
             ) : (
               <span>Elige una fecha</span>

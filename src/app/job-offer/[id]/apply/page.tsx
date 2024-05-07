@@ -6,7 +6,7 @@ import { Info } from "lucide-react";
 import { JobOfferSummary } from "@/components/JobOfferSummary";
 import Link from "next/link";
 import { addDays } from "date-fns";
-import { dateFormatter } from "@/utils/date";
+import { formatDateRange } from "@/utils/date";
 import { notFound } from "next/navigation";
 import { trpc } from "@/trpc/server";
 
@@ -65,7 +65,7 @@ export default async function Apply({
               <dt className="text-foreground font-semibold">
                 Duración del empleo
               </dt>
-              <dd>{dateFormatter.formatRange(from, to)}</dd>
+              <dd>{formatDateRange(from, to)}</dd>
             </dl>
           )}
         </AlertDescription>

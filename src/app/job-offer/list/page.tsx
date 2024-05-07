@@ -23,9 +23,7 @@ export default async function JobOfferList() {
       <BackButton className="mb-4" href="/health-entity/manage" />
       <h1 className="text-2xl font-bold mb-4">Ofertas publicadas</h1>
       {!jobOffers.length && (
-        <div>
-          <span>No hay ninguna oferta publicada.</span>{" "}
-        </div>
+        <p className="mb-4">No hay ninguna oferta publicada.</p>
       )}
       <Button asChild className="mb-4">
         <Link href="/job-offer/create">Crear oferta</Link>
