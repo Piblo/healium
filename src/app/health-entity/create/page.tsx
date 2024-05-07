@@ -5,21 +5,36 @@ import {
   HealthEntityFormValues,
 } from "@/components/HealthEntityForm";
 
-import { trpc } from "@/trpc/client";
+import { CreateHealthEntityRequest } from "@/server/routers/healthEntity";
+import { createHealthEntity } from "./actions";
+import { setSelectedHealthEntityId } from "@/utils/healthEntity";
+import { useMutation } from "@tanstack/react-query";
+import { useRouter } from "next/navigation";
 import { useToast } from "@/components/ui/use-toast";
 
 export default function CreateHealthEntity() {
-  const mutation = trpc.healthEntity.create.useMutation();
+  const mutation = useMutation({
+    mutationKey: ["create-health-entity"],
+    mutationFn: async (req: CreateHealthEntityRequest) => {
+      return createHealthEntity(req);
+    },
+    onSuccess: (data) => {
+      toast({
+        title: "Entidad sanitaria creada correctamente",
+      });
+      setSelectedHealthEntityId(data.id);
+      router.push("/health-entity/manage");
+    },
+  });
   const { toast } = useToast();
+  const router = useRouter();
 
-  async function handleSubmit(values: HealthEntityFormValues) {
-    await mutation.mutateAsync({
+  function handleSubmit(values: HealthEntityFormValues) {
+    mutation.mutate({
       ...values,
       registrationNumber: "",
       description: values.description ?? null,
-    });
-    toast({
-      title: "Entidad sanitaria creada correctamente",
+      logoUrl: values.logoUrl ?? null,
     });
   }
 

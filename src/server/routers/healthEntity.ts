@@ -33,6 +33,8 @@ const createHealthEntityInput = z.object({
   description: z.string().nullable(),
 });
 
+export type CreateHealthEntityRequest = z.infer<typeof createHealthEntityInput>;
+
 const updateHealthEntityInput = createHealthEntityInput.extend({
   id: z.string(),
 });

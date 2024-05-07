@@ -1,36 +1,27 @@
-"use client";
-
 import { Card } from "@/components/ui/card";
 import Image from "next/image";
-import { Loader2 } from "lucide-react";
-import { setSelectedHealthEntityId } from "@/utils/healthEntity";
-import { trpc } from "@/trpc/client";
-import { useRouter } from "next/navigation";
+import Link from "next/link";
+import { trpc } from "@/trpc/server";
 
-export default function ChooseHealthEntity() {
-  const { data, isLoading } = trpc.user.healthEntities.useQuery();
-  const router = useRouter();
+export default async function ChooseHealthEntity() {
+  const healthEntities = await trpc.user.healthEntities.query();
 
   return (
     <div className="container py-6 max-w-lg">
       <h1 className="text-2xl font-semibold md:text-4xl mb-4">
         Elige una entidad sanitaria
       </h1>
-      {isLoading && <Loader2 className="animate-spin" />}
       <ul className="space-y-2 flex flex-col gap-2">
-        {data?.map((x) => (
+        {healthEntities?.map((x) => (
           <li key={x.id}>
-            <button
+            <Link
               className="w-full"
-              onClick={() => {
-                setSelectedHealthEntityId(x.id);
-                router.push("/health-entity/manage");
-              }}
+              href={`/api/health-entity/${x.id}/set-active`}
             >
               <Card className="p-4 flex text-lg">
                 {x.logoUrl && (
                   <Image
-                    className="mr-4 rounded border"
+                    className="mr-4 rounded border aspect-square object-cover"
                     width={80}
                     height={80}
                     src={x.logoUrl}
@@ -39,7 +30,7 @@ export default function ChooseHealthEntity() {
                 )}
                 {x.name}
               </Card>
-            </button>
+            </Link>
           </li>
         ))}
       </ul>
