@@ -3,7 +3,7 @@ import {
   JobOffer,
   jobApplications,
   jobOffers,
-} from "./neon/schema";
+} from "./schema";
 import {
   SQL,
   and,
@@ -19,7 +19,7 @@ import {
 } from "drizzle-orm";
 
 import { PaginatedResult } from "@/models/PaginatedResult";
-import { db } from "./neon/connection";
+import { db } from "./connection";
 import { ulid } from "ulid";
 
 type CreateJobOfferRequest = Omit<CreateJobOffer, "id">;

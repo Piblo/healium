@@ -1,15 +1,14 @@
 import * as schema from "./schema";
 
-import { connect } from "@planetscale/database";
-import { drizzle } from "drizzle-orm/planetscale-serverless";
+import { Pool, neon } from "@neondatabase/serverless";
 
-// create the connection
-const connection = connect({
-  host: process.env["DATABASE_HOST"],
-  username: process.env["DATABASE_USERNAME"],
-  password: process.env["DATABASE_PASSWORD"],
-});
+import { drizzle } from "drizzle-orm/neon-http";
+import { drizzle as drizzleServerless } from "drizzle-orm/neon-serverless";
 
-export const db = drizzle(connection, {
+const sql = neon(process.env.NEON_DATABASE_URL!);
+export const db = drizzle(sql, { schema });
+
+const pool = new Pool({ connectionString: process.env.NEON_DATABASE_URL! });
+export const poolDb = drizzleServerless(pool, {
   schema,
 });

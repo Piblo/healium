@@ -18,7 +18,7 @@ export default async function ChooseHealthEntity() {
               className="w-full"
               href={`/api/health-entity/${x.id}/set-active`}
             >
-              <Card className="p-4 flex text-lg">
+              <Card className="p-4 flex text-lg font-semibold">
                 {x.logoUrl && (
                   <Image
                     className="mr-4 rounded border aspect-square object-cover"

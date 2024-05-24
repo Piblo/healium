@@ -1,4 +1,4 @@
-import { healthEntities, healthEntityUsers } from "../database/neon/schema";
+import { healthEntities, healthEntityUsers } from "../database/schema";
 import { protectedProcedure, router } from "../trpc";
 
 import { eq } from "drizzle-orm";

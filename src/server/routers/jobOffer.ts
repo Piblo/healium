@@ -1,3 +1,4 @@
+import { clerkClient, currentUser } from "@clerk/nextjs/server";
 import {
   createJobApplication,
   getJobApplicationsForJobOffer,
@@ -12,10 +13,12 @@ import {
 } from "../database/jobOfferRepository";
 import { procedure, protectedProcedure, router } from "../trpc";
 
+import ApplicationSentEmail from "@/emails/ApplicationSentEmail";
 import { TRPCError } from "@trpc/server";
 import { checkUserIsHealthEntityMember } from "../services/permissionsService";
-import { clerkClient } from "@clerk/nextjs/server";
-import { selectJobApplicationSchema } from "../database/neon/schema";
+import { getHealthEntityMembers } from "../database/healthEntityRepository";
+import { resendClient } from "../clients/resend";
+import { selectJobApplicationSchema } from "../database/schema";
 import { z } from "zod";
 
 const createInput = z.object({
@@ -123,12 +126,43 @@ export const jobOfferRouter = router({
       })
     )
     .mutation(async ({ input, ctx }) => {
-      await createJobApplication({
+      const jobOffer = await getJobOffer(input.jobOfferId);
+      if (!jobOffer) {
+        throw new TRPCError({
+          code: "NOT_FOUND",
+          message: "Job offer not found",
+        });
+      }
+
+      const jobApplication = await createJobApplication({
         jobOfferId: input.jobOfferId,
         userId: ctx.auth.userId,
         status: "pending",
         endDate: input.endDate,
         startDate: input.startDate,
+      });
+
+      const healthEntityAdmins = await getHealthEntityMembers(
+        jobOffer.healthEntityId
+      );
+
+      const user = await currentUser();
+      if (!user) {
+        throw new TRPCError({
+          code: "UNAUTHORIZED",
+          message: "Could not retrieve logged-in user",
+        });
+      }
+
+      await resendClient.emails.send({
+        from: "onboarding@resend.dev",
+        to: healthEntityAdmins.map((x) => x.email),
+        subject: "Nueva solicitud de empleo",
+        react: ApplicationSentEmail({
+          applicant: user,
+          jobApplication: jobApplication!,
+          jobOffer: jobOffer,
+        }),
       });
     }),
   update: protectedProcedure.input(updateInput).mutation(async ({ input }) => {

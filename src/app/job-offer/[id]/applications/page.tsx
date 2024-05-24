@@ -97,9 +97,12 @@ export default function JobOfferApplications({
       <section className="mb-10">
         <h2 className="text-xl font-semibold mb-2">Pendientes</h2>
         {pending?.length > 0 ? (
-          <ul className="divide-y">
+          <ul className="space-y-4">
             {pending?.map((x) => (
-              <li key={x.userId} className="flex flex-col gap-4 py-6">
+              <li
+                key={x.userId}
+                className="flex flex-col gap-4 py-6 border rounded p-4"
+              >
                 <div className="flex gap-4">
                   <Avatar>
                     <AvatarImage asChild src={x.user?.imageUrl!}>
@@ -170,7 +173,7 @@ export default function JobOfferApplications({
                     Aceptar
                   </Button>
                   <Button
-                    variant="secondary"
+                    variant="outline"
                     onClick={() => setStatus(x.id, "rejected")}
                     loading={
                       mutation.isLoading && mutation.variables?.id === x.id

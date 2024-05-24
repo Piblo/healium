@@ -1,26 +1,19 @@
 import {
-  InferInsertModel,
-  InferSelectModel,
-  relations,
-  sql,
-} from "drizzle-orm";
-import {
   date,
-  datetime,
   decimal,
-  double,
-  mysqlEnum,
-  mysqlTable,
+  pgEnum,
+  pgTable,
   primaryKey,
   text,
   timestamp,
   varchar,
-} from "drizzle-orm/mysql-core";
+} from "drizzle-orm/pg-core";
 
 import { createSelectSchema } from "drizzle-zod";
+import { relations } from "drizzle-orm";
 import { ulid } from "ulid";
 
-export const healthEntities = mysqlTable("health_entities", {
+export const healthEntities = pgTable("health_entities", {
   id: varchar("id", {
     length: 36,
   }).primaryKey(),
@@ -37,13 +30,18 @@ export const healthEntities = mysqlTable("health_entities", {
   description: text("description"),
 });
 
-export type HealthEntity = InferSelectModel<typeof healthEntities>;
+export type HealthEntity = typeof healthEntities.$inferSelect;
 
 export const healthEntityRelations = relations(healthEntities, ({ many }) => ({
   jobOffers: many(jobOffers),
 }));
 
-export const healthEntityUsers = mysqlTable(
+export const healthEntityUserStatusEnum = pgEnum("health_entity_user_status", [
+  "pending",
+  "accepted",
+]);
+
+export const healthEntityUsers = pgTable(
   "users_to_health_entities",
   {
     email: varchar("email", {
@@ -51,41 +49,49 @@ export const healthEntityUsers = mysqlTable(
     }).notNull(),
     healthEntityId: varchar("health_entity_id", {
       length: 36,
-    }).notNull(),
-    invitedDate: datetime("invited_date").notNull(),
-    acceptedDate: datetime("accepted_date"),
-    status: mysqlEnum("status", ["pending", "accepted"]).notNull(),
+    })
+      .references(() => healthEntities.id, { onDelete: "cascade" })
+      .notNull(),
+    invitedDate: timestamp("invited_date", { mode: "date" })
+      .defaultNow()
+      .notNull(),
+    acceptedDate: timestamp("accepted_date", { mode: "date" }),
+    status: healthEntityUserStatusEnum("status"),
     userId: varchar("user_id", {
       length: 256,
     }),
   },
   (table) => ({
-    pk: primaryKey(table.healthEntityId, table.email),
+    pk: primaryKey({ columns: [table.healthEntityId, table.email] }),
   })
 );
 
-export type HealthEntityUser = InferSelectModel<typeof healthEntityUsers>;
+export type HealthEntityUser = typeof healthEntityUsers.$inferSelect;
 
-export const jobOffers = mysqlTable("job_offers", {
+export const contractType = pgEnum("contract_type", [
+  "full-time",
+  "part-time",
+  "fixed-term",
+]);
+
+export const jobOffers = pgTable("job_offers", {
   id: varchar("id", {
     length: 36,
   }).primaryKey(),
-  healthEntityId: varchar("health_entity_id", { length: 36 }).notNull(),
+  healthEntityId: varchar("health_entity_id", { length: 36 })
+    .references(() => healthEntities.id, { onDelete: "cascade" })
+    .notNull(),
   title: varchar("title", { length: 256 }).notNull(),
   description: text("description"),
   region: varchar("region", { length: 128 }),
   city: varchar("city", { length: 128 }),
-  contractType: mysqlEnum("contract_type", [
-    "full-time",
-    "part-time",
-    "fixed-term",
-  ]),
-  startDate: date("start_date"),
-  endDate: date("end_date"),
-  createdDate: timestamp("created_date")
+  contractType: contractType("contract_type").notNull(),
+  startDate: date("start_date", { mode: "date" }),
+  endDate: date("end_date", { mode: "date" }),
+  createdDate: timestamp("created_date", { mode: "date" })
     .notNull()
-    .default(sql`CURRENT_TIMESTAMP`), //https://stackoverflow.com/questions/76678778/drizzle-timestamp-datenow-invalid-default-value
-  hoursPerWeek: double("hours_per_week", {
+    .defaultNow(),
+  hoursPerWeek: decimal("hours_per_week", {
     precision: 5,
     scale: 2,
   }),
@@ -95,8 +101,8 @@ export const jobOffers = mysqlTable("job_offers", {
   }),
 });
 
-export type JobOffer = InferSelectModel<typeof jobOffers>;
-export type CreateJobOffer = InferInsertModel<typeof jobOffers>;
+export type JobOffer = typeof jobOffers.$inferSelect;
+export type CreateJobOffer = typeof jobOffers.$inferInsert;
 
 export const jobOffersRelations = relations(jobOffers, ({ one, many }) => ({
   healthEntity: one(healthEntities, {
@@ -106,30 +112,36 @@ export const jobOffersRelations = relations(jobOffers, ({ one, many }) => ({
   applications: many(jobApplications),
 }));
 
-export const jobApplications = mysqlTable("job_applications", {
+export const jobApplicationStatus = pgEnum("job_application_status", [
+  "pending",
+  "approved",
+  "rejected",
+]);
+
+export const jobApplications = pgTable("job_applications", {
   id: varchar("id", {
     length: 36,
   })
     .$default(() => ulid())
     .primaryKey(),
-  jobOfferId: varchar("job_offer_id", { length: 36 }).notNull(),
+  jobOfferId: varchar("job_offer_id", { length: 36 })
+    .references(() => jobOffers.id, { onDelete: "cascade" })
+    .notNull(),
   userId: varchar("user_id", {
     length: 36,
   }).notNull(),
-  createdDate: timestamp("created_date")
+  createdDate: timestamp("created_date", { mode: "date" })
     .notNull()
-    .default(sql`CURRENT_TIMESTAMP`), //https://stackoverflow.com/questions/76678778/drizzle-timestamp-datenow-invalid-default-value
-  status: mysqlEnum("status", ["pending", "approved", "rejected"])
-    .notNull()
-    .default("pending"),
-  startDate: date("start_date"),
-  endDate: date("end_date"),
+    .defaultNow(),
+  status: jobApplicationStatus("status").notNull().default("pending"),
+  startDate: date("start_date", { mode: "date" }),
+  endDate: date("end_date", { mode: "date" }),
 });
 
 export const selectJobApplicationSchema = createSelectSchema(jobApplications);
 
-export type JobApplication = InferSelectModel<typeof jobApplications>;
-export type CreateJobApplication = InferInsertModel<typeof jobApplications>;
+export type JobApplication = typeof jobApplications.$inferSelect;
+export type CreateJobApplication = typeof jobApplications.$inferInsert;
 
 export const jobApplicationRelations = relations(
   jobApplications,
@@ -145,7 +157,7 @@ export const jobApplicationRelations = relations(
   })
 );
 
-export const candidateProfiles = mysqlTable("candidate_profiles", {
+export const candidateProfiles = pgTable("candidate_profiles", {
   userId: varchar("user_id", {
     length: 36,
   }).primaryKey(),
@@ -153,5 +165,5 @@ export const candidateProfiles = mysqlTable("candidate_profiles", {
   curriculumVitaeName: text("curriculum_vitae_name"),
 });
 
-export type CandidateProfile = InferSelectModel<typeof candidateProfiles>;
-export type CandidateProfileInsert = InferInsertModel<typeof candidateProfiles>;
+export type CandidateProfile = typeof candidateProfiles.$inferSelect;
+export type CandidateProfileInsert = typeof candidateProfiles.$inferInsert;

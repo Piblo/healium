@@ -10,10 +10,10 @@ import {
 import {
   healthEntityUsers,
   selectJobApplicationSchema,
-} from "../database/neon/schema";
+} from "../database/schema";
 import { isHealiumAdmin, procedure, protectedProcedure, router } from "../trpc";
 
-import { HealthEntityInviteEmail } from "@/components/HealthEntityInviteEmail";
+import HealthEntityInviteEmailProps from "@/emails/HealthEntityInviteEmail";
 import { TRPCError } from "@trpc/server";
 import { checkUserIsHealthEntityMember } from "../services/permissionsService";
 import { clerkClient } from "@clerk/nextjs/server";
@@ -146,7 +146,7 @@ export const healthEntityRouter = router({
           from: "onboarding@resend.dev",
           to: input.emailAddress,
           subject: "Bienvenido a Healium",
-          react: HealthEntityInviteEmail({
+          react: HealthEntityInviteEmailProps({
             healthEntityName: healthEntity.name,
             healthEntityId: healthEntity.id,
           }),

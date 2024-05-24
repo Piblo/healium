@@ -73,7 +73,7 @@ export const JobOfferSummary = ({
           <div className="flex-1">
             <div className="flex gap-2 items-center">
               <Link
-                className="text-xl font-semibold hover:underline"
+                className="text-lg font-semibold hover:underline"
                 href={`/job-offer/${id}`}
               >
                 {healthEntityName}

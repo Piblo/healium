@@ -23,11 +23,13 @@ export default async function JobOfferList() {
       <BackButton className="mb-4" href="/health-entity/manage" />
       <h1 className="text-2xl font-bold mb-4">Ofertas publicadas</h1>
       {!jobOffers.length && (
-        <p className="mb-4">No hay ninguna oferta publicada.</p>
+        <>
+          <p className="mb-4">No hay ninguna oferta publicada.</p>
+          <Button asChild className="mb-4">
+            <Link href="/job-offer/create">Crear oferta</Link>
+          </Button>
+        </>
       )}
-      <Button asChild className="mb-4">
-        <Link href="/job-offer/create">Crear oferta</Link>
-      </Button>
       <ul className="space-y-4">
         {jobOffers.map((x) => (
           <li key={x.jobOffer.id}>
@@ -71,7 +73,7 @@ const JobOfferWithApplicationSummary = ({
   return (
     <Card className="">
       <CardHeader className="flex flex-row items-center justify-between pt-2 pb-1">
-        <div className="text-lg">{title}</div>
+        <div className="text-lg font-semibold">{title}</div>
         <JobOfferDropdownMenu jobOfferId={id} />
       </CardHeader>
       <CardContent className="flex flex-col gap-2">
@@ -103,7 +105,7 @@ const JobOfferWithApplicationSummary = ({
           <Button variant="outline" asChild>
             <Link href={`/job-offer/${id}/applications`}>Ver solicitudes</Link>
           </Button>
-          <Button variant="secondary" asChild>
+          <Button variant="ghost" asChild>
             <Link href={`/job-offer/${id}/rota`}>Ver rota</Link>
           </Button>
         </div>

@@ -3,10 +3,10 @@ import {
   JobApplication,
   jobApplications,
   jobOffers,
-} from "./neon/schema";
+} from "./schema";
 import { and, desc, eq, gte } from "drizzle-orm";
 
-import { db } from "./neon/connection";
+import { db } from "./connection";
 
 type CreateJobApplicationRequest = Omit<
   CreateJobApplication,
@@ -16,9 +16,7 @@ type CreateJobApplicationRequest = Omit<
 export async function createJobApplication(
   request: CreateJobApplicationRequest
 ) {
-  await db.insert(jobApplications).values(request);
-
-  return request;
+  return (await db.insert(jobApplications).values(request).returning()).at(0);
 }
 
 export function getJobApplication(id: string) {

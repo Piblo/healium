@@ -11,14 +11,14 @@
     "db:introspect": "drizzle-kit introspect:pg",
     "db:pull": "drizzle-kit introspect:pg",
     "db:push": "drizzle-kit push:pg",
-    "db:studio": "drizzle-kit studio"
+    "db:studio": "drizzle-kit studio",
+    "dev:email": "email dev --dir ./src/emails --port 3001"
   },
   "dependencies": {
     "@clerk/localizations": "^2.3.0",
     "@clerk/nextjs": "^5.0.6",
     "@hookform/resolvers": "^3.3.4",
     "@neondatabase/serverless": "^0.9.1",
-    "@planetscale/database": "^1.16.0",
     "@radix-ui/react-avatar": "^1.0.4",
     "@radix-ui/react-dialog": "^1.0.5",
     "@radix-ui/react-dropdown-menu": "^2.0.6",
@@ -30,6 +30,7 @@
     "@radix-ui/react-separator": "^1.0.3",
     "@radix-ui/react-slot": "^1.0.2",
     "@radix-ui/react-toast": "^1.1.5",
+    "@react-email/components": "^0.0.18",
     "@tanstack/react-query": "^4.36.1",
     "@trpc/client": "^10.45.1",
     "@trpc/next": "^10.45.1",
@@ -54,7 +55,6 @@
     "eslint": "8.56.0",
     "eslint-config-next": "^14.2.3",
     "lucide-react": "^0.321.0",
-    "mysql2": "^3.9.7",
     "next": "^14.2.3",
     "next-themes": "^0.3.0",
     "next-usequerystate": "^1.17.1",
@@ -66,6 +66,7 @@
     "react-day-picker": "^8.10.1",
     "react-dom": "^18.3.1",
     "react-dropzone": "^14.2.3",
+    "react-email": "^2.1.3",
     "react-hook-form": "^7.51.3",
     "resend": "^3.2.0",
     "superjson": "^2.2.1",
@@ -78,6 +79,7 @@
     "zod": "^3.23.5"
   },
   "devDependencies": {
+    "@biomejs/biome": "1.7.3",
     "drizzle-kit": "latest",
     "tsx": "^4.8.2"
   }

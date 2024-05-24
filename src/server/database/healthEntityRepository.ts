@@ -5,9 +5,9 @@ import {
   healthEntityUsers,
   jobApplications,
   jobOffers,
-} from "./neon/schema";
+} from "./schema";
 import { and, eq, gte, lte, sql } from "drizzle-orm";
-import { db, poolDb } from "./neon/connection";
+import { db, poolDb } from "./connection";
 
 import { ulid } from "ulid";
 
