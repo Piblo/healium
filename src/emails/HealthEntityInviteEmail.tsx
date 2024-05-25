@@ -2,12 +2,12 @@ import {
 	Button,
 	Font,
 	Head,
-	Hr,
 	Html,
 	Img,
 	Tailwind,
 } from "@react-email/components";
 
+import { getAssetUrl } from "./_utils/cdn";
 import { getBaseUrl } from "@/utils/getBaseUrl";
 
 type HealthEntityInviteEmailProps = {
@@ -27,16 +27,20 @@ const HealthEntityInviteEmail = ({
 					fallbackFontFamily="Verdana"
 					webFont={{
 						format: "woff2",
-						url: "https://fonts.googleapis.com/css2?family=Inter:wght@100..900&display=swap",
+						url: "https://fonts.gstatic.com/s/inter/v13/UcC73FwrK3iLTeHuS_fvQtMwCp50KnMa1ZL7.woff2",
 					}}
 				/>
 			</Head>
 			<Tailwind>
-				<header className="flex gap-2 items-center">
-					<Img width={48} height={48} src="/static/healium-icon.png" alt="" />
-					<span className="text-lg font-semibold">HEALIUM</span>
+				<header className="flex justify-center mb-8">
+					<Img
+						className="text-center"
+						width={48}
+						height={48}
+						src={getAssetUrl("healium-icon.png")}
+						alt=""
+					/>
 				</header>
-				<Hr />
 				<main className="text-base">
 					<h1 className="text-xl mb-4">Bienvenido a Healium</h1>
 					<p className="text-neutral-700">

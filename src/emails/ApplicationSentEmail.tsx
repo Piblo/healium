@@ -3,7 +3,6 @@ import {
 	Button,
 	Font,
 	Head,
-	Hr,
 	Html,
 	Img,
 	Tailwind,
@@ -14,6 +13,7 @@ import { JobApplication, JobOffer } from "@/server/database/schema";
 import { User } from "@clerk/nextjs/dist/types/server";
 import { addDays } from "date-fns";
 import { formatDateRange } from "@/utils/date";
+import { getAssetUrl } from "./_utils/cdn";
 import { getBaseUrl } from "@/utils/getBaseUrl";
 import { getContractTypeLabel } from "@/utils/contractType";
 import tailwindConfig from "../../tailwind.config";
@@ -37,17 +37,21 @@ export const ApplicationSentEmail = ({
 					fallbackFontFamily="Verdana"
 					webFont={{
 						format: "woff2",
-						url: "https://fonts.googleapis.com/css2?family=Inter:wght@100..900&display=swap",
+						url: "https://fonts.gstatic.com/s/inter/v13/UcC73FwrK3iLTeHuS_fvQtMwCp50KnMa1ZL7.woff2",
 					}}
 				/>
 			</Head>
 			<Tailwind config={tailwindConfig}>
 				<main className="text-base">
-					<header className="flex gap-2 items-center">
-						<Img width={48} height={48} src="/static/healium-icon.png" alt="" />
-						<span className="text-lg font-semibold">HEALIUM</span>
+					<header className="flex justify-center mb-8">
+						<Img
+							className="text-center"
+							width={48}
+							height={48}
+							src={getAssetUrl("healium-icon.png")}
+							alt=""
+						/>
 					</header>
-					<Hr />
 					<h1 className="text-xl font-semibold mb-2">
 						Nueva solicitud de empleo
 					</h1>

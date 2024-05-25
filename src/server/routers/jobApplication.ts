@@ -52,7 +52,7 @@ export const jobApplicationRouter = router({
         await resendClient.emails.send({
           from: "onboarding@resend.dev",
           to: getPrimaryEmailAddress(user)?.emailAddress!,
-          subject: "Tu solicitud ha sido aceptada!",
+          subject: "¡Tu solicitud ha sido aceptada!",
           react: ApplicationAcceptedEmail({
             jobOffer,
             healthEntity: jobOffer.healthEntity,

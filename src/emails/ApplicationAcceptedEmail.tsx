@@ -2,13 +2,13 @@ import {
 	Button,
 	Font,
 	Head,
-	Hr,
 	Html,
 	Img,
 	Tailwind,
 } from "@react-email/components";
 import { HealthEntity, JobOffer } from "@/server/database/schema";
 
+import { getAssetUrl } from "./_utils/cdn";
 import { getBaseUrl } from "@/utils/getBaseUrl";
 
 type ApplicationAcceptedEmailProps = {
@@ -28,17 +28,22 @@ const ApplicationAcceptedEmail = ({
 					fallbackFontFamily="Verdana"
 					webFont={{
 						format: "woff2",
-						url: "https://fonts.googleapis.com/css2?family=Inter:wght@100..900&display=swap",
+						url: "https://fonts.gstatic.com/s/inter/v13/UcC73FwrK3iLTeHuS_fvQtMwCp50KnMa1ZL7.woff2",
 					}}
 				/>
 			</Head>
 			<Tailwind>
 				<main className="text-base">
-					<header className="flex gap-2 items-center">
-						<Img width={48} height={48} src="/static/healium-icon.png" alt="" />
-						<span className="text-lg font-semibold">HEALIUM</span>
+					<header className="flex justify-center mb-8">
+						<Img
+							className="text-center"
+							width={48}
+							height={48}
+							src={getAssetUrl("healium-icon.png")}
+							alt=""
+						/>
 					</header>
-					<Hr />
+
 					<h1 className="text-xl font-semibold mb-2">¡Enhorabuena!</h1>
 					<p className="text-neutral-700 mb-6">
 						Tu solicitud de trabajo para el puesto de{" "}
