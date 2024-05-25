@@ -22,7 +22,7 @@ type HealthEntityInviteEmailProps = {
   healthEntityName: string;
   healthEntityId: string;
   inviter: User;
-  healthEntityLogo?: string;
+  healthEntityLogo?: string | null;
 };
 
 const HealthEntityInviteEmail = ({

@@ -1,4 +1,5 @@
 import { and, eq } from "drizzle-orm";
+import { clerkClient, currentUser } from "@clerk/nextjs/server";
 import {
   createHealthEntity,
   getHealthEntity,
@@ -16,7 +17,6 @@ import { isHealiumAdmin, procedure, protectedProcedure, router } from "../trpc";
 import HealthEntityInviteEmailProps from "@/emails/HealthEntityInviteEmail";
 import { TRPCError } from "@trpc/server";
 import { checkUserIsHealthEntityMember } from "../services/permissionsService";
-import { clerkClient } from "@clerk/nextjs/server";
 import { getBaseUrl } from "./_app";
 import { getJobApplicationsForHealthEntity } from "../database/jobApplicationRepository";
 import { getPrimaryEmailAddress } from "../utils/user";
@@ -142,6 +142,13 @@ export const healthEntityRouter = router({
           });
         }
 
+        const inviter =  await currentUser();
+        if(!inviter) {
+          throw new TRPCError({
+            code: 'UNAUTHORIZED'
+          })
+        }
+
         await resendClient.emails.send({
           from: "onboarding@resend.dev",
           to: input.emailAddress,
@@ -149,6 +156,8 @@ export const healthEntityRouter = router({
           react: HealthEntityInviteEmailProps({
             healthEntityName: healthEntity.name,
             healthEntityId: healthEntity.id,
+            healthEntityLogo: healthEntity.logoUrl,
+            inviter,
           }),
         });
       }
