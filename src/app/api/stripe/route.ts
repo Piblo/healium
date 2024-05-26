@@ -41,9 +41,3 @@ export async function POST(req: NextRequest) {
     message: "Event processed successfully",
   });
 }
-
-export const config = {
-  api: {
-    bodyParser: false,
-  },
-};
