@@ -30,12 +30,12 @@ const ApplicationAcceptedEmail = ({
           <main className="text-base">
             <Header />
             <h1 className="text-xl font-semibold mb-2">¡Enhorabuena!</h1>
-            <p className="text-neutral-700 mb-6">
+            <p className="mb-6">
               Tu solicitud de trabajo para el puesto de{" "}
               <strong>
                 {jobOffer.title} ({healthEntity.name})
               </strong>{" "}
-              ha sido aceptada
+              ha sido aceptada.
             </p>
             <Button
               href={`${getBaseUrl()}/job-offer/${jobOffer.id}`}
