@@ -13,8 +13,8 @@ export async function POST(req: NextRequest) {
     let event: Stripe.Event
 
     try {
-        const body = await req.arrayBuffer()
-        event = stripe.webhooks.constructEvent(Buffer.from(body), sig, process.env.STRIPE_WEBHOOK_SECRET!);
+        const body = await req.text();
+        event = stripe.webhooks.constructEvent(body, sig, process.env.STRIPE_WEBHOOK_SECRET!);
     } catch (err) {
       console.error(`Error message: ${err instanceof Error ? err.message : 'Unknown error'}`)
       return NextResponse.json({
