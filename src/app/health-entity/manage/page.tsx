@@ -2,6 +2,7 @@ import { Card, CardHeader } from "@/components/ui/card";
 import { FilePlus2, FileSearch, Pencil, Users2 } from "lucide-react";
 import { Stats, StatsSkeleton } from "./Stats";
 
+import { GoToCheckout } from "@/components/GoToCheckout";
 import Image from "next/image";
 import Link from "next/link";
 import { Suspense } from "react";
@@ -37,6 +38,7 @@ export default async function ManageHealthEntity() {
       <Suspense fallback={<StatsSkeleton />}>
         <Stats />
       </Suspense>
+      <GoToCheckout />
       <div className="grid gap-4 grid-cols-1 sm:grid-cols-2 md:grid-cols-3">
         <Link className="" href="/job-offer/list">
           <Card>
