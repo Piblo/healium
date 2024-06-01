@@ -3,9 +3,7 @@ export function getBaseUrl() {
     // browser should use relative path
     return "";
 
-  if (process.env.NEXT_PUBLIC_ROOT_URL)
-    // reference for vercel.com
-    return `https://${process.env.NEXT_PUBLIC_ROOT_URL}`;
+  if (process.env.NEXT_PUBLIC_ROOT_URL) return process.env.NEXT_PUBLIC_ROOT_URL;
 
   if (process.env.RENDER_INTERNAL_HOSTNAME)
     // reference for render.com
