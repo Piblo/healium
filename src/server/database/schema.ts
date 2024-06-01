@@ -13,10 +13,17 @@ import { createSelectSchema } from "drizzle-zod";
 import { relations } from "drizzle-orm";
 import { ulid } from "ulid";
 
+export const subscriptionStatus = pgEnum("subscription_status", [
+  "active",
+  "inactive",
+]);
+
 export const healthEntities = pgTable("health_entities", {
   id: varchar("id", {
     length: 36,
-  }).primaryKey(),
+  })
+    .primaryKey()
+    .$default(() => ulid()),
   name: varchar("name", {
     length: 100,
   }).notNull(),
@@ -28,9 +35,13 @@ export const healthEntities = pgTable("health_entities", {
     length: 100,
   }),
   description: text("description"),
+  subscriptionStatus: subscriptionStatus("subscription_status").default(
+    "inactive",
+  ),
 });
 
 export type HealthEntity = typeof healthEntities.$inferSelect;
+export type HealthEntityInsert = typeof healthEntities.$inferInsert;
 
 export const healthEntityRelations = relations(healthEntities, ({ many }) => ({
   jobOffers: many(jobOffers),
@@ -63,7 +74,7 @@ export const healthEntityUsers = pgTable(
   },
   (table) => ({
     pk: primaryKey({ columns: [table.healthEntityId, table.email] }),
-  })
+  }),
 );
 
 export type HealthEntityUser = typeof healthEntityUsers.$inferSelect;
@@ -154,7 +165,7 @@ export const jobApplicationRelations = relations(
       fields: [jobApplications.userId],
       references: [candidateProfiles.userId],
     }),
-  })
+  }),
 );
 
 export const candidateProfiles = pgTable("candidate_profiles", {

@@ -2,17 +2,19 @@
 
 import { Button } from "./ui/button";
 import { createCheckoutSession } from "@/app/job-offer/list/actions";
+import { getSelectedHealthEntityId } from "@/utils/healthEntity";
 import getStripe from "@/utils/stripe";
 import { useMutation } from "@tanstack/react-query";
 
 export const GoToCheckout = () => {
+  const healthEntityId = getSelectedHealthEntityId();
   const mutation = useMutation({
     mutationKey: ["checkout-session"],
     mutationFn: createCheckoutSession,
   });
 
   async function onClick() {
-    const session = await mutation.mutateAsync();
+    const session = await mutation.mutateAsync(healthEntityId!);
     const stripe = await getStripe();
 
     await stripe?.redirectToCheckout({

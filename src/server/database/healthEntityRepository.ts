@@ -1,5 +1,6 @@
 import {
   HealthEntity,
+  HealthEntityInsert,
   HealthEntityUser,
   healthEntities,
   healthEntityUsers,
@@ -9,10 +10,8 @@ import {
 import { and, eq, gte, lte, sql } from "drizzle-orm";
 import { db, poolDb } from "./connection";
 
-import { ulid } from "ulid";
-
 type CreateHealthEntityRequest = {
-  healthEntity: Omit<HealthEntity, "id">;
+  healthEntity: Omit<HealthEntityInsert, "id">;
   user: {
     email: string;
     id: string;
@@ -20,15 +19,13 @@ type CreateHealthEntityRequest = {
 };
 
 export async function createHealthEntity(
-  request: CreateHealthEntityRequest
+  request: CreateHealthEntityRequest,
 ): Promise<HealthEntity> {
   return await poolDb.transaction(async (tx) => {
-    const healthEntity: HealthEntity = {
-      ...request.healthEntity,
-      id: ulid(),
-    };
-
-    await tx.insert(healthEntities).values(healthEntity);
+    const [healthEntity] = await tx
+      .insert(healthEntities)
+      .values(request.healthEntity)
+      .returning();
 
     await tx.insert(healthEntityUsers).values({
       healthEntityId: healthEntity.id,
@@ -44,20 +41,21 @@ export async function createHealthEntity(
 }
 
 export async function updateHealthEntity(
-  healthEntity: HealthEntity
+  healthEntity: Pick<HealthEntity, "id"> & Partial<HealthEntity>,
 ): Promise<HealthEntity> {
   const { id, ...updateValues } = healthEntity;
 
-  await db
+  const [result] = await db
     .update(healthEntities)
     .set(updateValues)
-    .where(eq(healthEntities.id, healthEntity.id));
+    .where(eq(healthEntities.id, healthEntity.id))
+    .returning();
 
-  return healthEntity;
+  return result;
 }
 
 export async function getHealthEntity(
-  healthEntityId: string
+  healthEntityId: string,
 ): Promise<HealthEntity | null> {
   const [healthEntity] = await db
     .select()
@@ -72,14 +70,14 @@ export async function getHealthEntity(
 }
 
 export async function getHealthEntityMembers(
-  healthEntityId: string
+  healthEntityId: string,
 ): Promise<HealthEntityUser[]> {
   const result = await db
     .select()
     .from(healthEntityUsers)
     .innerJoin(
       healthEntities,
-      eq(healthEntities.id, healthEntityUsers.healthEntityId)
+      eq(healthEntities.id, healthEntityUsers.healthEntityId),
     )
     .where(eq(healthEntities.id, healthEntityId));
 
@@ -97,8 +95,8 @@ export async function removeMember(request: RemoveMemberRequest) {
     .where(
       and(
         eq(healthEntityUsers.healthEntityId, request.healthEntityId),
-        eq(healthEntityUsers.email, request.email)
-      )
+        eq(healthEntityUsers.email, request.email),
+      ),
     );
 }
 
@@ -112,8 +110,8 @@ export async function getHealthEntityStats(healthEntityId: string) {
     .where(
       and(
         eq(jobOffers.healthEntityId, healthEntityId),
-        eq(jobApplications.status, "pending")
-      )
+        eq(jobApplications.status, "pending"),
+      ),
     );
 
   const jobOfferCount = await db
@@ -132,8 +130,8 @@ export async function getHealthEntityStats(healthEntityId: string) {
     .where(
       and(
         eq(jobOffers.healthEntityId, healthEntityId),
-        eq(jobApplications.status, "approved")
-      )
+        eq(jobApplications.status, "approved"),
+      ),
     );
 
   const activeEmployeesCount = await db
@@ -147,8 +145,8 @@ export async function getHealthEntityStats(healthEntityId: string) {
         eq(jobOffers.healthEntityId, healthEntityId),
         eq(jobApplications.status, "approved"),
         lte(jobApplications.startDate, new Date()),
-        gte(jobApplications.endDate, new Date())
-      )
+        gte(jobApplications.endDate, new Date()),
+      ),
     );
 
   return {

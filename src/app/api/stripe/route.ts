@@ -20,21 +20,22 @@ export async function POST(req: NextRequest) {
       process.env.STRIPE_WEBHOOK_SECRET!,
     );
   } catch (err) {
-    console.error(
-      `Error message: ${err instanceof Error ? err.message : "Unknown error"}`,
-    );
+    const errorMessage = `Error while processing webhook event: ${
+      err instanceof Error ? err.message : "Unknown error"
+    }`;
+
+    console.error(errorMessage);
     return NextResponse.json(
       {
-        message: `Failed to process webhook: ${
-          err instanceof Error ? err.message : "Unknown error"
-        }`,
+        message: errorMessage,
       },
       { status: 400 },
     );
   }
 
   if (event.type === "customer.subscription.created") {
-    console.log("customer.subscription.created handler");
+    console.log("Subscription created");
+    console.log("Metadata", event.data.object.metadata);
   }
 
   return NextResponse.json({
