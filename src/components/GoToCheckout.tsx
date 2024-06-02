@@ -1,9 +1,9 @@
 "use client";
 
 import { Button } from "./ui/button";
-import { createCheckoutSession } from "@/app/job-offer/list/actions";
+import { createCheckoutSession } from "@/actions/stripe";
 import { getSelectedHealthEntityId } from "@/utils/healthEntity";
-import getStripe from "@/utils/stripe";
+import { getStripe } from "@/utils/stripe";
 import { useMutation } from "@tanstack/react-query";
 
 export const GoToCheckout = () => {

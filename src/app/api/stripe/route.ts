@@ -1,6 +1,9 @@
 import { NextRequest, NextResponse } from "next/server";
 
 import Stripe from "stripe";
+import { db } from "@/server/database/connection";
+import { eq } from "drizzle-orm";
+import { healthEntities } from "@/server/database/schema";
 
 const stripe = new Stripe(process.env.STRIPE_SECRET_KEY!);
 
@@ -36,6 +39,17 @@ export async function POST(req: NextRequest) {
   if (event.type === "customer.subscription.created") {
     console.log("Subscription created");
     console.log("Metadata", event.data.object.metadata);
+    const eventData = event.data.object;
+
+    await db
+      .update(healthEntities)
+      .set({ subscriptionStatus: "active" })
+      .where(eq(healthEntities.stripeCustomerId, eventData.customer as string));
+
+    console.log(
+      "Activated subscription for health entity ",
+      eventData.customer,
+    );
   }
 
   return NextResponse.json({

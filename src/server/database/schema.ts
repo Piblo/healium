@@ -38,6 +38,9 @@ export const healthEntities = pgTable("health_entities", {
   subscriptionStatus: subscriptionStatus("subscription_status").default(
     "inactive",
   ),
+  stripeCustomerId: varchar("stripe_customer_id", {
+    length: 256,
+  }),
 });
 
 export type HealthEntity = typeof healthEntities.$inferSelect;
