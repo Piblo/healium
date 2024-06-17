@@ -20,7 +20,7 @@ export async function POST(req: NextRequest) {
     event = stripe.webhooks.constructEvent(
       body,
       sig,
-      process.env.STRIPE_WEBHOOK_SECRET!,
+      process.env.STRIPE_WEBHOOK_SECRET!
     );
   } catch (err) {
     const errorMessage = `Error while processing webhook event: ${
@@ -32,7 +32,7 @@ export async function POST(req: NextRequest) {
       {
         message: errorMessage,
       },
-      { status: 400 },
+      { status: 400 }
     );
   }
 
@@ -48,8 +48,19 @@ export async function POST(req: NextRequest) {
 
     console.log(
       "Activated subscription for health entity ",
-      eventData.customer,
+      eventData.customer
     );
+  }
+
+  if (event.type === "customer.subscription.deleted") {
+    const eventData = event.data.object;
+
+    await db
+      .update(healthEntities)
+      .set({ subscriptionStatus: "inactive" })
+      .where(eq(healthEntities.stripeCustomerId, eventData.customer as string));
+
+    console.log("Deleted subscription for health entity ", eventData.customer);
   }
 
   return NextResponse.json({
