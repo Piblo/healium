@@ -1,9 +1,7 @@
-import { Alert, AlertDescription, AlertTitle } from "@/components/ui/alert";
 import { Card, CardHeader } from "@/components/ui/card";
-import { FilePlus2, FileSearch, Info, Pencil, Users2 } from "lucide-react";
+import { FilePlus2, FileSearch, Pencil, Users2 } from "lucide-react";
 import { Stats, StatsSkeleton } from "./Stats";
 
-import { GoToCheckout } from "@/components/GoToCheckout";
 import Image from "next/image";
 import Link from "next/link";
 import { Suspense } from "react";
@@ -23,16 +21,6 @@ export default async function ManageHealthEntity() {
 
   return (
     <div className="container py-6">
-      {healthEntity.subscriptionStatus === "active" && (
-        <Alert className="w-fit mb-4">
-          <Info className="w-4 h-4" />
-          <AlertTitle>Modo gratuito</AlertTitle>
-          <AlertDescription>
-            Estas usando el modo gratuito, por lo cual solo podras publicar una
-            oferta de trabajo
-          </AlertDescription>
-        </Alert>
-      )}
       <div className="mb-6 flex items-center gap-4 flex-col md:flex-row">
         {healthEntity.logoUrl && (
           <Image
@@ -49,7 +37,7 @@ export default async function ManageHealthEntity() {
       <Suspense fallback={<StatsSkeleton />}>
         <Stats />
       </Suspense>
-      <GoToCheckout />
+
       <div className="grid gap-4 grid-cols-1 sm:grid-cols-2 md:grid-cols-3">
         <Link className="" href="/job-offer/list">
           <Card>

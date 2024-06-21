@@ -22,5 +22,9 @@ export const GoToCheckout = () => {
     });
   }
 
-  return <Button onClick={onClick}>Start checkout</Button>;
+  return (
+    <Button variant="link" onClick={onClick}>
+      Mejorar suscripción
+    </Button>
+  );
 };
