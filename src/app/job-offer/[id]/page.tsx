@@ -8,6 +8,7 @@ import Image from "next/image";
 import { Link } from "@/components/Link";
 import NextLink from "next/link";
 import { SearchOfferForm } from "@/components/SearchOfferForm";
+import { formatDateRange } from "@/utils/date";
 import { getContractTypeLabel } from "@/utils/contractType";
 import { notFound } from "next/navigation";
 import { trpc } from "@/trpc/server";
@@ -61,11 +62,9 @@ export default async function JobOffer({
             <Briefcase size={16} className="mr-2" />
             <span>
               {getContractTypeLabel(jobOffer.contractType ?? "full-time")}{" "}
-              {jobOffer.contractType === "fixed-term" && (
+              {jobOffer.startDate && jobOffer.endDate && (
                 <span>
-                  {" "}
-                  desde {jobOffer.startDate?.toLocaleDateString()} a{" "}
-                  {jobOffer.endDate?.toLocaleDateString()}
+                  {formatDateRange(jobOffer.startDate, jobOffer.endDate)}
                 </span>
               )}
             </span>

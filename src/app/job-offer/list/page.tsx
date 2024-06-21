@@ -6,6 +6,7 @@ import { BackButton } from "@/components/BackButton";
 import { Button } from "@/components/ui/button";
 import { JobOfferDropdownMenu } from "./JobOfferDropdownMenu";
 import Link from "next/link";
+import { Link as NavLink } from "@/components/Link";
 import { cookies } from "next/headers";
 import dayjs from "dayjs";
 import { trpc } from "@/trpc/server";
@@ -73,7 +74,12 @@ const JobOfferWithApplicationSummary = ({
   return (
     <Card className="">
       <CardHeader className="flex flex-row items-center justify-between pt-2 pb-1">
-        <div className="text-lg font-semibold">{title}</div>
+        <NavLink
+          href={`/job-offer/${id}`}
+          className="text-foreground text-lg font-semibold"
+        >
+          {title}
+        </NavLink>
         <JobOfferDropdownMenu jobOfferId={id} />
       </CardHeader>
       <CardContent className="flex flex-col gap-2">
