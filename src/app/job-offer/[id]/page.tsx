@@ -1,3 +1,4 @@
+import { Badge, badgeVariants } from "@/components/ui/badge";
 import { Mail, MapPin, Phone } from "lucide-react";
 
 import { BackButton } from "@/components/BackButton";
@@ -48,41 +49,56 @@ export default async function JobOffer({
       >
         {jobOffer.healthEntity.name}
       </Link>
+      <ul className="flex flex-wrap gap-2 text-sm mb-6">
+        <li>
+          <Badge variant="secondary" className="py-1">
+            <MapPin size={16} className="mr-2" /> {jobOffer.city} (
+            {jobOffer.region})
+          </Badge>
+        </li>
+        <li>
+          <Badge variant="secondary" className="py-1">
+            <Briefcase size={16} className="mr-2" />
+            <span>
+              {getContractTypeLabel(jobOffer.contractType ?? "full-time")}{" "}
+              {jobOffer.contractType === "fixed-term" && (
+                <span>
+                  {" "}
+                  desde {jobOffer.startDate?.toLocaleDateString()} a{" "}
+                  {jobOffer.endDate?.toLocaleDateString()}
+                </span>
+              )}
+            </span>
+          </Badge>
+        </li>
+        <li>
+          <Link
+            className={`text-foreground ${badgeVariants({
+              variant: "secondary",
+              className: "py-1 flex",
+            })}`}
+            href={`tel:${jobOffer.healthEntity.phoneNumber}`}
+          >
+            <Phone size={16} className="mr-2" />{" "}
+            {jobOffer.healthEntity.phoneNumber}
+          </Link>
+        </li>
+        <li>
+          <Link
+            className={`text-foreground ${badgeVariants({
+              variant: "secondary",
+              className: "py-1 flex",
+            })}`}
+            href={`mailto:${jobOffer.healthEntity.email}`}
+          >
+            <Mail size={16} className="mr-2" /> {jobOffer.healthEntity.email}
+          </Link>
+        </li>
+      </ul>
       <h2 className="text-lg font-bold">Descripción</h2>
       <p className="text-base mb-6 text-muted-foreground">
         {jobOffer.description}
       </p>
-      <ul className="text-sm space-y-2 mb-6">
-        <li className="flex items-center">
-          <MapPin size={16} className="mr-2" /> {jobOffer.city} (
-          {jobOffer.region})
-        </li>
-        <li className="flex items-center">
-          <Briefcase size={16} className="mr-2" />
-          <span>
-            {getContractTypeLabel(jobOffer.contractType ?? "full-time")}{" "}
-            {jobOffer.contractType === "fixed-term" && (
-              <span>
-                {" "}
-                desde {jobOffer.startDate?.toLocaleDateString()} a{" "}
-                {jobOffer.endDate?.toLocaleDateString()}
-              </span>
-            )}
-          </span>
-        </li>
-        <li className="flex items-center">
-          <Phone size={16} className="mr-2" />{" "}
-          <Link href={`tel:${jobOffer.healthEntity.phoneNumber}`}>
-            {jobOffer.healthEntity.phoneNumber}
-          </Link>
-        </li>
-        <li className="flex items-center">
-          <Mail size={16} className="mr-2" />{" "}
-          <Link href={`mailto:${jobOffer.healthEntity.email}`}>
-            {jobOffer.healthEntity.email}
-          </Link>
-        </li>
-      </ul>
       {jobOffer.healthEntity.description && (
         <div className="mb-8">
           <h2 className="text-lg font-bold mb-2">Sobre la entidad sanitaria</h2>
@@ -91,7 +107,7 @@ export default async function JobOffer({
           </p>
           <Link
             href={`/health-entity/${jobOffer.healthEntityId}`}
-            className="inline-block"
+            className="inline-block text-sm"
           >
             Ver más detalles
           </Link>

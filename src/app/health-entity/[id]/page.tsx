@@ -35,13 +35,13 @@ export default async function HealthEntity({ params }: HealthEntityProps) {
         />
       )}
       <h1 className="text-4xl mb-6">{healthEntity?.name}</h1>
-      <div className="mb-6 flex gap-6">
+      <div className="mb-6 flex gap-2 flex-wrap">
         {healthEntity.email && (
           <a
             href={`mailto:${healthEntity.email}`}
             className={cn(
               `flex gap-1 items-center`,
-              badgeVariants({ variant: "secondary" })
+              badgeVariants({ variant: "secondary", className: "py-1" })
             )}
           >
             <Mail className="h-4" /> {healthEntity.email}
@@ -66,7 +66,7 @@ export default async function HealthEntity({ params }: HealthEntityProps) {
           </p>
         ))}
       </div>
-      <h2 className="text-xl mb-2">Dirección</h2>
+      <h2 className="text-xl font-bold mb-2">Dirección</h2>
       <p className="dark:text-gray-400">{healthEntity.address}</p>
     </div>
   );
